@@ -1,105 +1,71 @@
-export async function onRequestPost(context) {
-  const { request, env } = context;
-  const cors = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-  if (request.method === "OPTIONS") {
-    return new Response(null, { headers: cors });
-  }
-  
-  const key = String(env.GEMINI_API_KEY || "").trim();
-  if (!key) {
-    return new Response(JSON.stringify({ error: "GEMINI_API_KEY не задан" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  }
 
-  let body;
+export async function onRequestPost({ request, env }) {
   try {
-    body = await request.json();
-  } catch {
-    return new Response(JSON.stringify({ error: "Неверный JSON" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  }
-
-  const question = String(body.question || "").trim().slice(0, 2000);
-  if (!question) {
-    return new Response(JSON.stringify({ error: "Пустой вопрос" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  }
-
-  const ctx = body.context || {};
-  const system =
-    "Ты финансовый помощник приложения Balance. Отвечай по-русски, кратко. Опирайся только на JSON пользователя. Не выдумывай цифры.";
-  
-  const model = String(env.GEMINI_MODEL || "gemini-2.5-flash").trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`;
-
-  const payload = {
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text:
-              system +
-              "\n\nКонтекст:\n" +
-              JSON.stringify(ctx).slice(0, 12000) +
-              "\n\nВопрос:\n" +
-              question,
-          },
-        ],
-      },
-    ],
-    generationConfig: { temperature: 0.4, maxOutputTokens: 1024 },
-  };
-
-  try {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await r.json();
-    if (!r.ok) {
-      const msg = (data && data.error && data.error.message) || "Ошибка Gemini";
-      return new Response(JSON.stringify({ error: msg }), {
-        status: 502,
-        headers: { "Content-Type": "application/json", ...cors },
-      });
+    if (!env.GEMINI_API_KEY) {
+      return Response.json(
+        { error: "Не задан GEMINI_API_KEY" },
+        { status: 500 }
+      );
     }
-    const text =
-      (data.candidates &&
-        data.candidates[0] &&
-        data.candidates[0].content &&
-        data.candidates[0].content.parts &&
-        data.candidates[0].content.parts.map((p) => p.text).join("")) ||
-      "Пустой ответ";
-    return new Response(JSON.stringify({ answer: text }), {
-      status: 200,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: "Ошибка запроса: " + err.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  }
-}
 
-export async function onRequestOptions() {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
-  });
+    const { question, context } = await request.json();
+
+    if (!question || typeof question !== "string") {
+      return Response.json(
+        { error: "Не задан вопрос" },
+        { status: 400 }
+      );
+    }
+
+    const prompt = `
+Ты финансовый AI-советник приложения BitBalance.
+Отвечай по-русски, понятно и конкретно.
+Учитывай финансовые данные пользователя.
+Не придумывай отсутствующие цифры.
+
+Данные пользователя:
+${JSON.stringify(context || {})}
+
+Вопрос:
+${question}
+`;
+
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": env.GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return Response.json(
+        { error: data.error?.message || "Ошибка Gemini API" },
+        { status: response.status }
+      );
+    }
+
+    const answer =
+      data.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("") || "Gemini не вернул ответ";
+
+    return Response.json({ answer });
+
+  } catch (error) {
+    return Response.json(
+      { error: error.message || "Внутренняя ошибка сервера" },
+      { status: 500 }
+    );
+  }
 }
