@@ -3,7 +3,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // API для AI
     if (url.pathname === "/api/ai") {
       if (request.method !== "POST") {
         return Response.json(
@@ -12,7 +11,6 @@ export default {
         );
       }
 
-      // Проверяем наличие ключа
       if (!env.GEMINI_API_KEY) {
         return Response.json(
           { error: "Не настроен GEMINI_API_KEY" },
@@ -48,7 +46,6 @@ export default {
           );
         }
 
-        // Системные инструкции включаем прямо в input
         const systemPrompt =
           "Ты финансовый AI-советник BitBalance. " +
           "Отвечай на русском языке. " +
@@ -58,98 +55,112 @@ export default {
           "Если информации недостаточно, прямо скажи об этом.";
 
         const input =
-          systemPrompt +
-          "\n\nДАННЫЕ ПОЛЬЗОВАТЕЛЯ:\n" +
+          "ДАННЫЕ ПОЛЬЗОВАТЕЛЯ:\n" +
           context +
-          "\n\nВОПРОС ПОЛЬЗОВАТЕЛЯ:\n" +
+          "\n\nВОПРОС:\n" +
           question;
 
-        // Запрос к Gemini
-        const response = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/interactions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-goog-api-key": env.GEMINI_API_KEY
-            },
-            body: JSON.stringify({
-              model: "gemini-3.8-flash",
-              store: false,
-              input: input
-            })
+        const models = [
+          "gemini-3.7-flash",
+          "gemini-3.5-flash-lite"
+        ];
+
+        let lastError = "";
+
+        for (const model of models) {
+          let response;
+
+          try {
+            response = await fetch(
+              "https://generativelanguage.googleapis.com/v1beta/interactions",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-goog-api-key": env.GEMINI_API_KEY
+                },
+                body: JSON.stringify({
+                  model,
+                  store: false,
+                  system_instruction: systemPrompt,
+                  input
+                }),
+                signal: AbortSignal.timeout(30000)
+              }
+            );
+          } catch (error) {
+            lastError = model + ": " + error.message;
+            continue;
           }
-        );
 
-        // Читаем полный ответ Google
-        const rawResponse = await response.text();
+          const raw = await response.text();
 
-        let result;
+          let result;
 
-        try {
-          result = JSON.parse(rawResponse);
-        } catch {
-          result = null;
-        }
+          try {
+            result = JSON.parse(raw);
+          } catch {
+            result = null;
+          }
 
-        // Показываем настоящую ошибку Gemini
-        if (!response.ok) {
-          const googleError =
-            result?.error?.message ||
-            result?.message ||
-            rawResponse ||
-            "Google не вернул описание ошибки";
+          if (!response.ok) {
+            lastError =
+              "Gemini " + model +
+              " HTTP " + response.status +
+              ": " +
+              (
+                result?.error?.message ||
+                raw.slice(0, 1000)
+              );
 
-          return Response.json(
-            {
-              error:
-                "Gemini API HTTP " +
-                response.status +
-                ": " +
-                String(googleError).slice(0, 1200)
-            },
-            { status: 502 }
-          );
-        }
+            if (
+              [429, 500, 502, 503, 504].includes(
+                response.status
+              )
+            ) {
+              continue;
+            }
 
-        if (!result) {
-          return Response.json(
-            {
-              error:
-                "Gemini вернул некорректный JSON: " +
-                rawResponse.slice(0, 1000)
-            },
-            { status: 502 }
-          );
-        }
+            return Response.json(
+              { error: lastError },
+              { status: 502 }
+            );
+          }
 
-        // Извлекаем текст ответа
-        const answer = (result.steps || [])
-          .filter(step => step.type === "model_output")
-          .flatMap(step => step.content || [])
-          .filter(item => item.type === "text")
-          .map(item => item.text || "")
-          .join("\n")
-          .trim();
+          const answer = (result?.steps || [])
+            .filter(step => step.type === "model_output")
+            .flatMap(step => step.content || [])
+            .filter(item => item.type === "text")
+            .map(item => item.text || "")
+            .join("\n")
+            .trim();
 
-        if (!answer) {
-          return Response.json(
-            {
-              error:
-                "Gemini не вернул текст. Статус: " +
-                (result.status || "неизвестен")
-            },
-            { status: 502 }
-          );
+          if (answer) {
+            return Response.json(
+              {
+                answer,
+                model
+              },
+              {
+                headers: {
+                  "Cache-Control": "no-store"
+                }
+              }
+            );
+          }
+
+          lastError =
+            "Модель " + model +
+            " не вернула текстовый ответ";
         }
 
         return Response.json(
-          { answer },
           {
-            headers: {
-              "Cache-Control": "no-store"
-            }
-          }
+            error:
+              "Не удалось получить ответ от Gemini. " +
+              lastError
+          },
+          { status: 502 }
         );
 
       } catch (error) {
@@ -164,7 +175,6 @@ export default {
       }
     }
 
-    // Все остальные запросы обслуживает сайт
     return env.ASSETS.fetch(request);
   }
 };
