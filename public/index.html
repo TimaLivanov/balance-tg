@@ -106,6 +106,8 @@
   .field > .recov-box button.recov.min b { color: #7dd3fc; }
   .field > input.hasrec { padding-right: 150px; }
   #toast {
+    position: fixed !important; top: 50% !important; bottom: auto !important; left: 50% !important; right: auto !important;
+    width: calc(100% - 32px); max-width: 420px; transform: translate(-50%, -50%);
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid rgba(129,140,248,.55);
     box-shadow: 0 0 0 1px rgba(99,102,241,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 30px rgba(99,102,241,.2);
@@ -113,8 +115,8 @@
   #toast.toast-ok { border-color: rgba(52,211,153,.55); box-shadow: 0 0 0 1px rgba(16,185,129,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 28px rgba(16,185,129,.18); }
   #toast.toast-warn { border-color: rgba(251,191,36,.55); box-shadow: 0 0 0 1px rgba(245,158,11,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 28px rgba(245,158,11,.18); }
   @keyframes toastIn {
-    from { opacity: 0; transform: translateY(-12px) scale(.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity: 0; transform: translate(-50%, calc(-50% - 12px)) scale(.96); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
   .toast-pop { animation: toastIn .28s ease-out; }
 
@@ -143,7 +145,7 @@
   html, body { min-height: 100%; }
   body.tg-app { min-height: var(--tg-viewport-stable-height, 100dvh); }
   body.tg-app main {
-    padding-top: max(12px, var(--tg-content-safe-area-inset-top, 0px));
+    padding-top: max(88px, calc(var(--tg-content-safe-area-inset-top, 0px) + 18px));
     padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
   }
   body.tg-app nav { padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px)); }
@@ -185,11 +187,6 @@
   <!-- ГЛАВНАЯ -->
   <section id="tab-home" class="space-y-4 fade-in">
     <div id="remind" class="card p-4 border border-amber-500/40"><div class="text-sm text-amber-200 mb-1">🔔 Не вносили данные 4 дн. Последняя запись — 13 ноября 2026.</div></div>
-    <div id="saveStrip" class="card p-3 border border-amber-500/50 flex items-center justify-between gap-2 hidden">
-      <span class="text-sm text-amber-200">● Есть несохранённые изменения</span>
-      <button class="btn btn-p py-1.5 px-3 text-sm" onclick="exportFile()">💾 Сохранить</button>
-    </div>
-
     <div class="flex items-center justify-between">
       <div>
         <div class="sub">Баланс</div>
@@ -202,7 +199,6 @@
       </div>
       <div class="flex gap-1.5">
         <button onclick="stepBack()" class="ico" title="Шаг назад — отменить последнее действие">↩</button>
-        <button onclick="exportFile()" class="ico" title="Сохранить файл">💾</button>
         <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn">👁</button>
       </div>
     </div>
@@ -538,9 +534,22 @@
 
     <div class="card p-4" id="aiCard">
       <div class="font-semibold mb-2">🤖 AI-советник</div>
-      <div class="sub text-[11px] mb-2">Советы по твоим цифрам (Gemini, бесплатно). Нужен деплой с /api/ai.</div>
-      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?" __gcruniqueid="47"></textarea>
-      <button type="button" class="btn btn-p w-full mt-2 py-2" onclick="askAI()">Спросить</button>
+      <div class="sub text-[11px] mb-2">Помнит последние сообщения и анализирует текущие финансовые данные.</div>
+      <label class="block text-xs text-slate-400 mb-1" for="aiPersonality">Характер советника</label>
+      <select id="aiPersonality" onchange="setAiPersonality(this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm mb-2">
+        <option value="choleric">Холерик — энергичный и требовательный</option>
+        <option value="economist">Экономист — точный и расчётливый</option>
+        <option value="miser">Жадина — бережёт каждую копейку</option>
+        <option value="entrepreneur">Предприниматель — ищет рост дохода</option>
+        <option value="generous">Щедрый — разумно тратит на близких</option>
+        <option value="mentor">Наставник — спокойный и дисциплинированный</option>
+      </select>
+      <div id="aiConversation" class="space-y-2 max-h-72 overflow-y-auto mb-2"></div>
+      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Напиши вопрос. Советник помнит контекст диалога…"></textarea>
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button type="button" class="btn btn-p py-2" onclick="askAI(false)">Спросить</button>
+        <button type="button" class="btn btn-g py-2" onclick="askAI(true)">Анализ отчёта</button>
+      </div>
       <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
     </div>
 
@@ -606,12 +615,6 @@
         <div class="font-semibold">🧾 История</div>
         <button class="btn btn-s py-1 text-xs" onclick="undoLast()">↩ Отменить последнюю</button>
       </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
-        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile').click()">⬇️ Импорт истории</button>
-      </div>
-      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)" __gcruniqueid="65">
-      <div class="sub">Экспорт — только операции (JSON). Импорт добавит записи без дублей по id.</div>
     </div>
     <div id="histList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Жинка</span><b class="text-red-300">−2&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319089)">✏️</button><button class="ico" onclick="delEntry(1794568319089)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−950 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+2&nbsp;600 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;720 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319088)">✏️</button><button class="ico" onclick="delEntry(1794568319088)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319087)">✏️</button><button class="ico" onclick="delEntry(1794568319087)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Интернет</span><b class="text-red-300">−100 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794506458967)">✏️</button><button class="ico" onclick="delEntry(1794506458967)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−6&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;280 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−600 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−8&nbsp;380 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355279)">✏️</button><button class="ico" onclick="delEntry(1794500355279)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026 <span class="sub font-normal">· Жинка</span></div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">долг «Жинка»</span><b class="text-red-300">+10&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">в копилку (из долга)</span><b class="text-emerald-300">+10&nbsp;000 ₽</b></div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="delEntry(1794500355278)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355276)">✏️</button><button class="ico" onclick="delEntry(1794500355276)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">11 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−850 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355275)">✏️</button><button class="ico" onclick="delEntry(1794500355275)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+12&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Марат учеридитель</span><b class="text-red-300">−12&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355274)">✏️</button><button class="ico" onclick="delEntry(1794500355274)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355273)">✏️</button><button class="ico" onclick="delEntry(1794500355273)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">9 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355272)">✏️</button><button class="ico" onclick="delEntry(1794500355272)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">7 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 900 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355270)">✏️</button><button class="ico" onclick="delEntry(1794500355270)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">6 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;400 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355269)">✏️</button><button class="ico" onclick="delEntry(1794500355269)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">5 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;800 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 500 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355268)">✏️</button><button class="ico" onclick="delEntry(1794500355268)">🗑</button></div></div></div></div>
   </section>
@@ -639,6 +642,20 @@
         <span>Не исчезать, пока не нажму</span>
         <input id="toastSticky" type="checkbox" onchange="setToastSticky(this.checked)">
       </label>
+    </div>
+
+    <div class="card p-4 space-y-3">
+      <div class="font-semibold">🤖 Характер ИИ</div>
+      <select id="aiPersonalitySettings" onchange="setAiPersonality(this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm">
+        <option value="choleric">Холерик — энергичный и требовательный</option>
+        <option value="economist">Экономист — точный и расчётливый</option>
+        <option value="miser">Жадина — бережёт каждую копейку</option>
+        <option value="entrepreneur">Предприниматель — ищет рост дохода</option>
+        <option value="generous">Щедрый — разумно тратит на близких</option>
+        <option value="mentor">Наставник — спокойный и дисциплинированный</option>
+      </select>
+      <div class="sub">Выбранный стиль влияет на тон и подход советника. История диалога сохраняется на этом устройстве.</div>
+      <button class="btn btn-s w-full py-2" onclick="clearAiConversation()">Очистить память диалога</button>
     </div>
 
     <div class="card p-4 space-y-3">
@@ -754,14 +771,6 @@
         </select>
         <button class="btn btn-d flex-1" onclick="deletePeriod()">🗑 Удалить операции</button>
       </div>
-      <button class="btn btn-s w-full" onclick="exportFile()">💾 Сохранить файл приложения</button>
-      <div class="sub">Скачивает Balance.html со всеми данными. Замените им старый файл.</div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
-        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile2').click()">⬇️ Импорт истории</button>
-      </div>
-      <input type="file" id="importHistFile2" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
-      <div class="sub">История операций в JSON. Импорт не затирает текущие записи с тем же id.</div>
       <button class="btn btn-d w-full" onclick="deleteAll()">🗑 Удалить всё</button>
       <div class="sub">Опасная зона: удалит операции, категории, долги и автоплатежи.</div>
     </div>
@@ -780,7 +789,7 @@
 <p><b>График.</b> Свечи считают путь операций внутри дня/периода (макс./мин. по цепочке: доход → траты → долг и т.д.). Нажатие на свечу — открытие, закрытие, максимум, минимум и список операций. День: 14 дней; неделя/месяц: по дням; год: по неделям.</p>
 <p><b>Уведомления.</b> Всплывающее сообщение с затемнением фона (успех / предупреждение). Отмена и удаление показывают, что именно отменено.</p>
 <p><b>↩ на главной</b> — шаг назад по любому действию (не только операции). В истории — отмена последней записи.</p>
-<p><b>Сохранение.</b> «💾 Сохранить» скачивает Balance.html с вашими данными. Замените им старый файл, иначе изменения пропадут.</p>
+<p><b>Сохранение.</b> Изменения автоматически сохраняются на этом устройстве после каждого изменения.</p>
 <p class="text-sky-200 font-semibold mt-3">🆕 Обновления (changelog)</p>
 <p><b>12.11.2026</b> — Экспорт истории с категориями/долгами; импорт воссоздаёт справочники; автодолги из нехватки видны в «Деньги».<br><b>12.11.2026</b> — График перенесён в аналитику + MA 7/25; тепловая карта обязательных; на главной сводный блок «день / копилка / долги».<br><b>12.11.2026</b> — График: вертикальные линии по времени, плотнее свечи, рабочие средние 7/25; подушка под «За день»; «Провести день» снова внизу, сворачивается вручную.<br><b>12.11.2026</b> — «Провести день» сверху и свёрнут; график ближе к Bybit; аналитика = тот же график + MA 7/25; тап по категории/долгу — последние 10 операций; расход из копилки виден в истории; импорт старой истории совместим.<br><b>12.11.2026</b> — Экспорт и импорт истории (JSON). Подписи без программного жаргона («итог за период», «уведомление»).<br><b>12.11.2026</b> — Исправлено: нераспределённый остаток дня снова явно уходит в копилку (и в уведомлении/истории).<br><b>12.11.2026</b> — Долг «получил деньги»: +копилка и +долг, баланс без изменений; галочка в форме; автодолг без зачисления в копилку; предупреждения в уведомлениях.</p>
 <p><b>12.11.2026</b> — График: high/low по цепочке операций; сводка по свече со списком операций; день = 14 дней.</p>
@@ -804,7 +813,7 @@
 </nav>
 
 <div id="toastBackdrop" class="fixed inset-0 z-[60] bg-black/55 backdrop-blur-[2px] hidden" onclick="hideToast()"></div>
-<div id="toast" onclick="hideToast()" class="fixed top-4 left-3 right-3 z-[70] mx-auto max-w-md text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden">Файл сохранён. Замените им старый Balance.html<div class="text-[11px] text-slate-400 mt-2 text-center">нажмите, чтобы закрыть</div></div>
+<div id="toast" onclick="hideToast()" class="fixed z-[70] text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden"></div>
 
 <!-- Диалог нехватки средств -->
 <div id="shortfallModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
@@ -946,7 +955,6 @@ function confirmStep(key, text) {
 let state = null;
 let undoStack = []; // снимки state для «Шаг назад»
 let R = {};
-let exported = '';
 let editingId = null;
 let uiEdit = null; // { kind: 'cat'|'debt', id }
 let entryMode = 'full';
@@ -1033,6 +1041,8 @@ function migrate(s) {
     toastMode: s.toastMode || 'auto',
     toastSec: Math.max(1, num(s.toastSec) || 6),
     toastSticky: !!s.toastSticky,
+    aiPersonality: ['choleric','economist','miser','entrepreneur','generous','mentor'].includes(s.aiPersonality) ? s.aiPersonality : 'choleric',
+    aiConversation: Array.isArray(s.aiConversation) ? s.aiConversation.filter(m => m && ['user','assistant'].includes(m.role)).slice(-20).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 5000) })) : [],
     remindDays: Math.max(0, Math.round(num(s.remindDays) ?? 2)),
     incomeCats,
     cats,
@@ -3462,62 +3472,83 @@ function initTelegram() {
   } catch (e) { console.warn(e); }
 }
 
-function buildAiContext() {
+const AI_PERSONALITIES = {
+  choleric: 'Ты энергичный холерик-тренер по личным финансам. Держи пользователя в тонусе, говори прямо, требовательно и конкретно, без унижения и грубости. Не начинай каждый ответ с приветствия. Требуй действий, ставь короткие измеримые задачи, отмечай прогресс.',
+  economist: 'Ты строгий финансовый экономист. Проверяй арифметику, показывай допущения, сравнивай сценарии и не делай выводов без данных. Не приветствуй повторно.',
+  miser: 'Ты бережливый финансовый стратег. Ищи утечки, лишние расходы, более дешёвые альтернативы и способы сохранить деньги. Не предлагай опасную экономию на здоровье и обязательствах. Не приветствуй повторно.',
+  entrepreneur: 'Ты предприимчивый бизнес-наставник. Ищи реалистичные способы увеличить доход, монетизировать навыки и улучшить денежный поток. Считай риски и окупаемость. Не приветствуй повторно.',
+  generous: 'Ты разумный и щедрый советник. Помогай планировать траты на семью, близких и радости жизни без разрушения финансовой устойчивости. Не стыди за траты. Не приветствуй повторно.',
+  mentor: 'Ты спокойный, дисциплинированный наставник. Поддерживай, объясняй простыми словами, помогай выстраивать привычки и последовательные шаги. Не приветствуй повторно.'
+};
+function setAiPersonality(value) {
+  state.aiPersonality = Object.prototype.hasOwnProperty.call(AI_PERSONALITIES, value) ? value : 'choleric';
+  update();
+  if ($('aiPersonality')) $('aiPersonality').value = state.aiPersonality;
+  if ($('aiPersonalitySettings')) $('aiPersonalitySettings').value = state.aiPersonality;
+}
+function clearAiConversation() {
+  state.aiConversation = [];
+  update();
+  renderAiConversation();
+  if ($('aiAnswer')) { $('aiAnswer').textContent = ''; $('aiAnswer').classList.add('hidden'); }
+  toast('История диалога очищена');
+}
+function renderAiConversation() {
+  const box = $('aiConversation');
+  if (!box) return;
+  const items = state.aiConversation || [];
+  box.innerHTML = items.map(m => '<div class="rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ' + (m.role === 'user' ? 'bg-indigo-500/15 ml-5' : 'bg-slate-800/80 mr-5') + '"><div class="text-[10px] text-slate-400 mb-1">' + (m.role === 'user' ? 'Ты' : 'Советник') + '</div>' + esc(m.text) + '</div>').join('');
+  box.scrollTop = box.scrollHeight;
+}
+function buildAiContext(includeReport) {
   const topExp = [];
   try {
     const by = {};
     (state.history || []).forEach(h => {
       if (h.type === 'debt') return;
-      Object.keys(h.expenses || {}).forEach(k => {
-        by[k] = (by[k] || 0) + num(h.expenses[k]);
-      });
+      Object.keys(h.expenses || {}).forEach(k => { by[k] = (by[k] || 0) + num(h.expenses[k]); });
     });
-    Object.keys(by).sort((a, b) => by[b] - by[a]).slice(0, 8).forEach(k => {
-      topExp.push({ name: catName(k), amount: Math.round(by[k]) });
-    });
+    Object.keys(by).sort((a, b) => by[b] - by[a]).slice(0, 8).forEach(k => topExp.push({ name: catName(k), amount: Math.round(by[k]) }));
   } catch (e) {}
   const debts = (state.debts || []).filter(d => !d.archived).map(d => ({
     name: d.name,
     remain: Math.round((R.debtRemain && R.debtRemain[d.id] != null) ? R.debtRemain[d.id] : d.amount),
-    due: d.due || null,
-    overdue: !!(d.due && d.due < todayStr())
+    due: d.due || null, overdue: !!(d.due && d.due < todayStr())
   })).filter(d => d.remain > 0).slice(0, 12);
-
-  return {
-    balance: Math.round(R.balance || 0),
-    cash: Math.round(R.cash || 0),
-    cushion: Math.round(R.cush || 0),
-    debtTotal: Math.round(R.debtTotal || 0),
-    debts,
-    topExpenses: topExp,
-    windowDays: state.windowDays || 30,
-    today: todayStr()
+  const ctx = {
+    balance: Math.round(R.balance || 0), cash: Math.round(R.cash || 0), cushion: Math.round(R.cush || 0),
+    debtTotal: Math.round(R.debtTotal || 0), debts, topExpenses: topExp,
+    windowDays: state.windowDays || 30, today: todayStr(),
+    personality: AI_PERSONALITIES[state.aiPersonality || 'choleric'],
+    conversation: (state.aiConversation || []).slice(-8).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 700) }))
   };
+  if (includeReport) ctx.report = buildReport().replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').slice(0, 18000);
+  return ctx;
 }
-
-async function askAI() {
-  const q = ($('aiQuestion') && $('aiQuestion').value || '').trim();
-  if (!q) { toast('Напиши вопрос', 'warn'); return; }
+async function askAI(analyzeReport) {
+  const input = $('aiQuestion');
+  const q = (input && input.value || '').trim() || (analyzeReport ? 'Проанализируй мой финансовый отчёт: найди главные проблемы, ошибки, риски и предложи приоритетный план действий.' : 'Проанализируй моё текущее финансовое положение и предложи следующий конкретный шаг.');
   const ans = $('aiAnswer');
-  if (ans) {
-    ans.classList.remove('hidden');
-    ans.innerHTML = '<span class="sub">Думаю…</span>';
-  }
+  if (ans) { ans.classList.remove('hidden'); ans.innerHTML = '<span class="sub">Анализирую…</span>'; }
+  const messages = (state.aiConversation || []).slice(-8).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 700) })).concat([{ role: 'user', text: q.slice(0, 2000) }]);
   try {
     const r = await fetch('/api/ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: q, context: buildAiContext() })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, context: Object.assign(buildAiContext(!!analyzeReport), { conversation: messages }) })
     });
     const data = await r.json();
     if (!r.ok || data.error) {
       if (ans) ans.textContent = 'Ошибка: ' + (data.error || r.status);
-      toast('AI недоступен — проверь деплой и GEMINI_API_KEY', 'warn');
-      return;
+      toast('AI недоступен — проверь Worker и GEMINI_API_KEY', 'warn'); return;
     }
-    if (ans) ans.textContent = data.answer || 'Пусто';
+    const answer = String(data.answer || 'Пустой ответ');
+    state.aiConversation = messages.concat([{ role: 'assistant', text: answer }]).slice(-20);
+    update();
+    renderAiConversation();
+    if (ans) { ans.textContent = answer; ans.classList.remove('hidden'); }
+    if (input) input.value = '';
   } catch (e) {
-    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nОткрой приложение через Cloudflare Worker и проверь доступность /api/ai.';
+    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nОткрой приложение через Cloudflare Worker и проверь /api/ai.';
   }
 }
 
@@ -3974,18 +4005,27 @@ function renderReport() {
   const f = $('rpFrame');
   if (f) f.srcdoc = buildReport();
 }
-function downloadReport() {
+async function downloadReport() {
   try {
     const html = buildReport();
-    const blob = new Blob([html], { type: 'text/html' });
+    const filename = 'BitBalance_Отчёт_' + todayStr() + '.html';
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const file = new File([blob], filename, { type: 'text/html' });
+    if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+      await navigator.share({ files: [file], title: 'Финансовый отчёт BitBalance' });
+      toast('Отчёт передан в меню сохранения');
+      return;
+    }
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'Финансовый_отчёт_' + todayStr() + '.html';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    toast('Отчёт скачан');
-  } catch (err) { showError('Отчёт', err); }
+    a.href = url; a.download = filename; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    toast('Если загрузка не началась, открой отчёт в новой вкладке и сохрани его через меню браузера');
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    showError('Отчёт', err);
+  }
 }
 
 /* ===================== SETTINGS & INFO ===================== */
@@ -4091,6 +4131,8 @@ function enableReminders() {
 function renderInfo() {
   applyAppearance();
   if ($('toastMode')) $('toastMode').value = state.toastMode;
+  if ($('aiPersonality')) $('aiPersonality').value = state.aiPersonality || 'choleric';
+  if ($('aiPersonalitySettings')) $('aiPersonalitySettings').value = state.aiPersonality || 'choleric';
   if ($('toastSec')) $('toastSec').value = state.toastSec;
   if ($('toastSticky')) $('toastSticky').checked = !!state.toastSticky;
   if ($('remindDays')) $('remindDays').value = state.remindDays;
@@ -4120,7 +4162,7 @@ function renderInfo() {
 <p><b>График.</b> Свечи считают путь операций внутри дня/периода (макс./мин. по цепочке: доход → траты → долг и т.д.). Нажатие на свечу — открытие, закрытие, максимум, минимум и список операций. День: 14 дней; неделя/месяц: по дням; год: по неделям.</p>
 <p><b>Уведомления.</b> Всплывающее сообщение с затемнением фона (успех / предупреждение). Отмена и удаление показывают, что именно отменено.</p>
 <p><b>↩ на главной</b> — шаг назад по любому действию (не только операции). В истории — отмена последней записи.</p>
-<p><b>Сохранение.</b> «💾 Сохранить» скачивает Balance.html с вашими данными. Замените им старый файл, иначе изменения пропадут.</p>
+<p><b>Сохранение.</b> Изменения автоматически сохраняются на этом устройстве после каждого изменения.</p>
 <p class="text-sky-200 font-semibold mt-3">🆕 Обновления (changelog)</p>
 <p><b>12.11.2026</b> — Экспорт истории с категориями/долгами; импорт воссоздаёт справочники; автодолги из нехватки видны в «Деньги».<br><b>12.11.2026</b> — График перенесён в аналитику + MA 7/25; тепловая карта обязательных; на главной сводный блок «день / копилка / долги».<br><b>12.11.2026</b> — График: вертикальные линии по времени, плотнее свечи, рабочие средние 7/25; подушка под «За день»; «Провести день» снова внизу, сворачивается вручную.<br><b>12.11.2026</b> — «Провести день» сверху и свёрнут; график ближе к Bybit; аналитика = тот же график + MA 7/25; тап по категории/долгу — последние 10 операций; расход из копилки виден в истории; импорт старой истории совместим.<br><b>12.11.2026</b> — Экспорт и импорт истории (JSON). Подписи без программного жаргона («итог за период», «уведомление»).<br><b>12.11.2026</b> — Исправлено: нераспределённый остаток дня снова явно уходит в копилку (и в уведомлении/истории).<br><b>12.11.2026</b> — Долг «получил деньги»: +копилка и +долг, баланс без изменений; галочка в форме; автодолг без зачисления в копилку; предупреждения в уведомлениях.</p>
 <p><b>12.11.2026</b> — График: high/low по цепочке операций; сводка по свече со списком операций; день = 14 дней.</p>
@@ -4148,13 +4190,7 @@ function showTab(name) {
   window.scrollTo(0, 0);
 }
 
-function refreshSaveStrip() {
-  const el = $('saveStrip');
-  if (el) el.classList.toggle('hidden', JSON.stringify(state) === exported);
-}
-
 function renderAll() {
-  safe('сохранение', refreshSaveStrip);
   safe('внешний вид', applyAppearance);
   safe('напоминание', renderReminder);
   safe('главная', renderHome);
@@ -4395,9 +4431,7 @@ function exportFile() {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    exported = JSON.stringify(state);
-    refreshSaveStrip();
-    toast('Файл сохранён. Замените им старый Balance.html');
+    toast('Файл приложения сформирован');
   } catch (err) { showError('Сохранение', err); }
 }
 
@@ -4411,9 +4445,8 @@ function init() {
   if ($('dDate')) $('dDate').value = todayStr();
   update();
   showTab('home');
+  renderAiConversation();
   window.addEventListener('resize', () => safe('график', renderHome));
-  exported = JSON.stringify(state);
-  refreshSaveStrip();
 }
 init();
 initWelcome();
