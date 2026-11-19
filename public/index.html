@@ -484,11 +484,6 @@
     </div>
 
     <div class="card p-4">
-      <div class="font-semibold mb-3">Здоровье денег</div>
-      <div id="anHealth" class="space-y-4"><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Обязательные расходы</span><b><span class="acc">84%</span> дохода</b></div><div class="sub mt-0.5">Порог: не выше 50%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Остаток после трат</span><b><span class="acc">9%</span> дохода</b></div><div class="sub mt-0.5">Порог: не ниже 20%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Запас прочности</span><b><span class="acc">0</span> дн.</b></div><div class="sub mt-0.5">Порог: не меньше 30 дн.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Долги</span><b>закроются за <span class="acc">42</span> мес.</b></div><div class="sub mt-0.5">Порог: закрыть за 12 мес.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#34d399"></span>Дни в плюсе / минусе</span><b><span class="text-emerald-300">5</span> / <span class="text-red-300">2</span></b></div><div class="sub mt-0.5">Порог: плюсовых ≥ минусовых</div></div></div>
-    </div>
-
-    <div class="card p-4">
       <div class="font-semibold mb-2">График баланса</div>
       <div class="flex items-center gap-1 mb-2 flex-nowrap overflow-x-auto" style="scrollbar-width:none">
         <button class="tfbtn shrink-0" data-antf="day" onclick="setAnTf('day')">День</button>
@@ -504,32 +499,8 @@
         <div id="anCandlePop" class="hidden absolute top-2 right-2 max-w-[78%] card p-3 text-xs z-10 shadow-xl"></div>
       </div>
       <div id="anChartEmpty" class="sub mt-2 hidden">Проведите день, чтобы увидеть график</div>
-      <div id="anChartSummary" class="grid grid-cols-2 gap-2 mt-3 text-xs"><div class="card p-2"><div class="sub">Открытие</div><b>−728&nbsp;900 ₽</b></div><div class="card p-2"><div class="sub">Закрытие</div><b>−736&nbsp;780 ₽</b></div><div class="card p-2"><div class="sub">Изменение</div><b class="text-red-300">−7&nbsp;880 ₽</b></div><div class="card p-2"><div class="sub">Свечей</div><b>2</b></div></div>
+      <div id="anChartSummary" class="grid grid-cols-2 gap-2 mt-3 text-xs"></div>
       <div class="sub mt-2">MA 7/25 — скользящие средние по закрытию свечи (жёлтая / золотая). Вертикальные линии — периоды.</div>
-    </div>
-
-    <div class="card p-4">
-      <div class="font-semibold mb-1">🔥 Тепловая карта · обязательные</div>
-      <div class="sub mb-3">Размер — сумма последнего пополнения. Цвет — % к предыдущему пополнению этой же категории (1000→1200 = +20%). Красный = выросло, зелёный = снизилось.</div>
-      <div id="anHeat" class="w-full" style="min-height:120px"><div style="display:flex;flex-wrap:wrap;gap:4px;width:100%"><div style="flex:47.62 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(246,70,93,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Жена</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↑ 100.0%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">2&nbsp;000 ₽ <span style="opacity:.8">← 1&nbsp;000 ₽</span></div></div><div style="flex:23.81 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(14,203,129,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Квартира</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↓ 84.6%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">1&nbsp;000 ₽ <span style="opacity:.8">← 6&nbsp;500 ₽</span></div></div><div style="flex:22.62 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(246,70,93,0.51);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Продукты</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↑ 11.8%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">950 ₽ <span style="opacity:.8">← 850 ₽</span></div></div><div style="flex:22.00 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(14,203,129,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Родненький</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↓ 75.0%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">150 ₽ <span style="opacity:.8">← 600 ₽</span></div></div><div style="flex:22.00 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(71,85,105,0.85);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Интернет</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">—</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">100 ₽</div></div></div></div>
-      <div id="anHeatEmpty" class="sub hidden">Нет обязательных категорий с тратами за период</div>
-    </div>
-
-
-    
-    <!-- скрытые слоты для совместимости с renderHome -->
-    <div class="hidden">
-      <span id="hTodayInc">+0 ₽</span><span id="hTodayExp">0 ₽</span>
-      <span id="anCash">220 ₽</span><span id="hDebt">737&nbsp;000 ₽</span>
-      <span id="hCush">0 ₽</span><span id="hCushRec"><span class="rec">Рек. <b class="acc">7&nbsp;600 ₽</b> в день · до цели ещё <b class="acc">683&nbsp;571,43 ₽</b> · к добору ~98&nbsp;800 ₽</span></span><i id="hCushBar" style="width: 0%;"></i>
-    </div>
-<div class="card p-4">
-      <div class="font-semibold mb-3">Главное</div>
-      <div id="anInsights" class="space-y-2"><div class="card p-2 mb-2 grid grid-cols-2 gap-2 text-center text-xs"><div><div class="sub">Долги</div><b class="text-red-300 text-sm">737&nbsp;000 ₽</b></div><div><div class="sub">Копилка</div><b class="text-emerald-300 text-sm">220 ₽</b></div></div><div class="text-sm text-slate-200">Баланс сейчас <b class="acc">−736&nbsp;780 ₽</b>: копилка <b class="acc">220 ₽</b> + подушка <b class="acc">0 ₽</b> − долги <b class="acc">737&nbsp;000 ₽</b>.</div><div class="text-sm text-slate-200">Доход в день <b class="acc">6&nbsp;375 ₽</b>, траты <b class="acc">5&nbsp;785 ₽</b>, остаётся <b class="acc">590 ₽</b> до долгов.</div><div class="text-sm text-slate-200">При текущем потоке долги закроются примерно через <b class="acc">1250</b> дн. (≈ 42 мес.).</div><div class="text-sm text-slate-200">Больше всего уходит на «Квартира»: <b class="acc">31&nbsp;000 ₽</b> (67% трат).</div><div class="text-sm text-slate-200">Прогноз баланса через 30 дней: <b class="acc">−719&nbsp;080 ₽</b>.</div></div>
-    </div>
-    <div class="card p-4">
-      <div class="font-semibold mb-1">💡 Совет дня</div>
-      <div id="anTip" class="text-sm text-slate-200 leading-relaxed">Не сравнивай себя с чужим доходом. Сравни этот месяц с прошлым своим. Из необязательных за учёт ~3&nbsp;380 ₽: 10% ≈ 338 ₽ — хороший взнос в подушку.</div>
     </div>
 
     <div class="card p-4" id="aiCard">
@@ -552,6 +523,47 @@
       </div>
       <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
     </div>
+
+    <div class="card p-4">
+      <div class="font-semibold mb-1">Здоровье денег</div><div class="sub mb-3">Оценка по данным выбранного периода и вашим порогам. Чем больше заполнена история, тем точнее результат.</div>
+      <div id="anHealth" class="space-y-4"><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Обязательные расходы</span><b><span class="acc">84%</span> дохода</b></div><div class="sub mt-0.5">Порог: не выше 50%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Остаток после трат</span><b><span class="acc">9%</span> дохода</b></div><div class="sub mt-0.5">Порог: не ниже 20%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Запас прочности</span><b><span class="acc">0</span> дн.</b></div><div class="sub mt-0.5">Порог: не меньше 30 дн.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Долги</span><b>закроются за <span class="acc">42</span> мес.</b></div><div class="sub mt-0.5">Порог: закрыть за 12 мес.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#34d399"></span>Дни в плюсе / минусе</span><b><span class="text-emerald-300">5</span> / <span class="text-red-300">2</span></b></div><div class="sub mt-0.5">Порог: плюсовых ≥ минусовых</div></div></div>
+    </div>
+
+    <div class="card p-4">
+      <div class="font-semibold mb-1">🔥 Тепловая карта · обязательные</div>
+      <div class="sub mb-3">Размер блока показывает последний записанный расход по обязательной категории. Цвет и процент сравнивают его с предыдущей записью этой же категории: красный — расход вырос, зелёный — снизился, серый — пока нет сравнения.</div>
+      <div id="anHeat" class="w-full" style="min-height:120px"></div>
+      <div id="anHeatEmpty" class="sub hidden">Нет обязательных категорий с тратами за период</div>
+    </div>
+
+<div class="card p-4">
+      <div class="font-semibold mb-3">Разбор периода</div>
+      <div id="anInsights" class="space-y-2"><div class="card p-2 mb-2 grid grid-cols-2 gap-2 text-center text-xs"><div><div class="sub">Долги</div><b class="text-red-300 text-sm">737&nbsp;000 ₽</b></div><div><div class="sub">Копилка</div><b class="text-emerald-300 text-sm">220 ₽</b></div></div><div class="text-sm text-slate-200">Баланс сейчас <b class="acc">−736&nbsp;780 ₽</b>: копилка <b class="acc">220 ₽</b> + подушка <b class="acc">0 ₽</b> − долги <b class="acc">737&nbsp;000 ₽</b>.</div><div class="text-sm text-slate-200">Доход в день <b class="acc">6&nbsp;375 ₽</b>, траты <b class="acc">5&nbsp;785 ₽</b>, остаётся <b class="acc">590 ₽</b> до долгов.</div><div class="text-sm text-slate-200">При текущем потоке долги закроются примерно через <b class="acc">1250</b> дн. (≈ 42 мес.).</div><div class="text-sm text-slate-200">Больше всего уходит на «Квартира»: <b class="acc">31&nbsp;000 ₽</b> (67% трат).</div><div class="text-sm text-slate-200">Прогноз баланса через 30 дней: <b class="acc">−719&nbsp;080 ₽</b>.</div></div>
+    </div>
+
+    <div class="card p-4">
+      <div class="font-semibold mb-1">💡 Совет дня</div>
+      <div id="anTip" class="text-sm text-slate-200 leading-relaxed">Не сравнивай себя с чужим доходом. Сравни этот месяц с прошлым своим. Из необязательных за учёт ~3&nbsp;380 ₽: 10% ≈ 338 ₽ — хороший взнос в подушку.</div>
+    </div>
+
+
+
+
+
+
+
+
+    
+    <!-- скрытые слоты для совместимости с renderHome -->
+    <div class="hidden">
+      <span id="hTodayInc">+0 ₽</span><span id="hTodayExp">0 ₽</span>
+      <span id="anCash">220 ₽</span><span id="hDebt">737&nbsp;000 ₽</span>
+      <span id="hCush">0 ₽</span><span id="hCushRec"><span class="rec">Рек. <b class="acc">7&nbsp;600 ₽</b> в день · до цели ещё <b class="acc">683&nbsp;571,43 ₽</b> · к добору ~98&nbsp;800 ₽</span></span><i id="hCushBar" style="width: 0%;"></i>
+    </div>
+
+
+
+
 
 
     <div class="card p-4">
@@ -3331,18 +3343,18 @@ function renderNeedHeatmap(el, items) {
     // ширина от 22% до 100% пропорционально, минимум читаемый
     const flex = Math.max(0.22, share) * 100;
     const pctTxt = it.pct == null ? '—' : ((it.pct >= 0 ? '↑ ' : '↓ ') + Math.abs(it.pct).toFixed(1) + '%');
-    const signCls = it.pct == null ? '' : (it.pct >= 0 ? '' : '');
     html += '<div style="flex:' + flex.toFixed(2) + ' 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:' + heatColor(it.pct) + ';display:flex;flex-direction:column;justify-content:center">';
     html += '<div style="font-weight:700;font-size:13px;color:#fff">' + esc(it.name) + '</div>';
     html += '<div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">' + pctTxt + '</div>';
-    html += '<div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">' + shown(it.amount) + (it.prevAmount != null ? ' <span style="opacity:.8">← ' + shown(it.prevAmount) + '</span>' : '') + '</div>';
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.92);margin-top:2px">' + shown(it.amount) + (it.prevAmount != null ? ' <span style="opacity:.8">← ' + shown(it.prevAmount) + '</span>' : '') + '</div>';
+    html += '<div style="font-size:10px;color:rgba(255,255,255,0.68);margin-top:2px">' + fmtDateRu(it.lastDate) + (it.prevDate ? ' · до этого ' + fmtDateRu(it.prevDate) : '') + '</div>';
     html += '</div>';
   });
   html += '</div>';
   el.innerHTML = html;
 }
 function renderAnalyticsHeat() {
-  // Для каждой обязательной категории: последнее пополнение vs предыдущее (не период к периоду)
+  // Для каждой обязательной категории: последний расход сравнивается с предыдущей записью этой категории.
   const needIds = state.cats.filter(c => c.need && !c.archived).map(c => String(c.id));
   const byCat = {};
   needIds.forEach(id => { byCat[id] = []; });
@@ -3746,9 +3758,13 @@ function renderAnalytics() {
 
   const st = (ok, warn) => ok ? 'ok' : (warn ? 'warn' : 'bad');
   const dot = s => '<span class="inline-block w-2 h-2 rounded-full mr-1" style="background:' + (s === 'ok' ? '#34d399' : s === 'warn' ? '#fbbf24' : '#f87171') + '"></span>';
-  const row = (label, val, status, rule) =>
-    '<div><div class="flex justify-between items-center text-sm"><span class="text-slate-300">' + dot(status) + label + '</span><b>' + val + '</b></div>' +
-    '<div class="sub mt-0.5">Порог: ' + rule + '</div></div>';
+  const row = (label, val, status, rule, pct) => {
+    const width = pct == null ? 0 : Math.max(0, Math.min(100, pct));
+    const color = status === 'ok' ? '#34d399' : status === 'warn' ? '#fbbf24' : '#f87171';
+    return '<div class="space-y-1"><div class="flex justify-between items-center text-sm gap-2"><span class="text-slate-300">' + dot(status) + label + '</span><b class="text-right">' + val + '</b></div>' +
+      '<div style="height:5px;border-radius:99px;background:rgba(71,85,105,.35);overflow:hidden"><i style="display:block;height:100%;width:' + width.toFixed(1) + '%;background:' + color + ';border-radius:99px"></i></div>' +
+      '<div class="sub">Ориентир: ' + rule + '</div></div>';
+  };
 
   const sNeeds = st(needsPct <= H.needsMax, false);
   const sSave = st(savePct >= H.saveMin, savePct >= H.saveMin / 2);
@@ -3756,12 +3772,15 @@ function renderAnalytics() {
   const sDebt = !debtOpen ? 'ok' : (monthsToFree == null ? 'bad' : st(monthsToFree <= H.debtMonths, monthsToFree <= H.debtMonths * 2));
   const sPlus = posDays >= negDays ? 'ok' : 'warn';
 
-  $('anHealth').innerHTML =
-    row('Обязательные расходы', '<span class="acc">' + Math.round(needsPct) + '%</span> дохода', sNeeds, 'не выше ' + H.needsMax + '%') +
-    row('Остаток после трат', '<span class="acc">' + Math.round(savePct) + '%</span> дохода', sSave, 'не ниже ' + H.saveMin + '%') +
-    row('Запас прочности', (runway != null ? '<span class="acc">' + Math.round(runway) + '</span> дн.' : '—'), sRun, 'не меньше ' + H.runwayMin + ' дн.') +
-    row('Долги', !debtOpen ? 'нет' : (monthsToFree != null && monthsToFree <= 60 ? 'закроются за <span class="acc">' + Math.ceil(monthsToFree) + '</span> мес.' : 'при потоке не закроются'), sDebt, 'закрыть за ' + H.debtMonths + ' мес.') +
-    row('Дни в плюсе / минусе', '<span class="text-emerald-300">' + posDays + '</span> / <span class="text-red-300">' + negDays + '</span>', sPlus, 'плюсовых ≥ минусовых');
+  const healthScore = [sNeeds, sSave, sRun, sDebt, sPlus].reduce((n, x) => n + (x === 'ok' ? 2 : x === 'warn' ? 1 : 0), 0);
+  const healthLabel = healthScore >= 8 ? 'Хорошее состояние' : healthScore >= 5 ? 'Есть над чем поработать' : 'Нужен финансовый план';
+  const healthColor = healthScore >= 8 ? 'text-emerald-300' : healthScore >= 5 ? 'text-amber-300' : 'text-red-300';
+  $('anHealth').innerHTML = '<div class="flex items-center justify-between gap-2 rounded-xl bg-slate-900/50 p-3 mb-1"><div><div class="text-xs text-slate-400">Общая оценка</div><div class="font-semibold ' + healthColor + '">' + healthLabel + '</div></div><div class="text-2xl font-bold ' + healthColor + '">' + healthScore + '<span class="text-xs text-slate-400"> / 10</span></div></div>' +
+    row('Обязательные расходы', '<span class="acc">' + Math.round(needsPct) + '%</span> дохода', sNeeds, 'не выше ' + H.needsMax + '%', needsPct) +
+    row('Остаток после трат', '<span class="acc">' + Math.round(savePct) + '%</span> дохода', sSave, 'не ниже ' + H.saveMin + '%', savePct) +
+    row('Запас прочности', (runway != null ? '<span class="acc">' + Math.round(runway) + '</span> дн.' : '—'), sRun, 'не меньше ' + H.runwayMin + ' дн.', runway == null ? null : runway / H.runwayMin * 100) +
+    row('Долги', !debtOpen ? 'нет' : (monthsToFree != null && monthsToFree <= 60 ? 'закроются за <span class="acc">' + Math.ceil(monthsToFree) + '</span> мес.' : 'при потоке не закроются'), sDebt, 'закрыть за ' + H.debtMonths + ' мес.', !debtOpen ? 100 : monthsToFree == null ? 0 : H.debtMonths / Math.max(H.debtMonths, monthsToFree) * 100) +
+    row('Дни в плюсе / минусе', '<span class="text-emerald-300">' + posDays + '</span> / <span class="text-red-300">' + negDays + '</span>', sPlus, 'плюсовых ≥ минусовых', posDays + negDays ? posDays / (posDays + negDays) * 100 : 0);
 
   // Insights
   const ins = [];
@@ -4550,3 +4569,4 @@ initWelcome();
 
 
 </body></html>
+<!-- BitBalance part 2: analytics layout, money-health score/bars, heatmap date transparency. -->
