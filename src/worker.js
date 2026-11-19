@@ -261,8 +261,10 @@ async function parseJson(request) {
     return null;
   }
 }
-async function authHandler(request, env, url, pathname) {
+
+async function authHandler(request, env, url, pathname, diagnostic) {
   const db = env.DB;
+  diagnostic.stage = "auth_handler";
 
   if (pathname === "/api/auth/me" && request.method === "GET") {
     const user = await findAuthenticatedUser(request, db);
@@ -297,6 +299,7 @@ async function authHandler(request, env, url, pathname) {
     return responseJson({ error: "Недопустимый источник запроса" }, 403);
   }
 
+  diagnostic.stage = "auth_parse_body";
   const body = await parseJson(request);
   if (!body) return responseJson({ error: "Некорректный JSON" }, 400);
 
@@ -311,12 +314,14 @@ async function authHandler(request, env, url, pathname) {
     return responseJson({ error: "Пароль должен содержать от 10 до 200 символов" }, 400);
   }
 
+  diagnostic.stage = "auth_make_attempt_key";
   const attemptKey = await makeAttemptKey(email, getClientIp(request));
   if (await isLoginBlocked(db, attemptKey)) {
     return responseJson({ error: "Слишком много попыток. Попробуй позже." }, 429);
   }
 
   if (pathname === "/api/auth/register") {
+    diagnostic.stage = "register_check_existing_user";
     const existing = await db.prepare("SELECT id FROM bb_users WHERE email = ?")
       .bind(email).first();
 
@@ -326,18 +331,28 @@ async function authHandler(request, env, url, pathname) {
 
     const userId = randomToken(18);
     const now = new Date().toISOString();
+
+    diagnostic.stage = "register_hash_password";
     const credentials = await hashPassword(password);
 
+    diagnostic.stage = "register_insert_user";
     try {
       await db.prepare(`INSERT INTO bb_users
         (id, email, password_hash, password_salt, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?)`
       ).bind(userId, email, credentials.hash, credentials.salt, now, now).run();
-    } catch {
-      return responseJson({ error: "Не удалось создать аккаунт. Возможно, email уже зарегистрирован." }, 409);
+    } catch (error) {
+      return responseJson({
+        error: "Не удалось создать аккаунт",
+        stage: diagnostic.stage,
+        details: String(error?.message || error)
+      }, 409);
     }
 
+    diagnostic.stage = "register_create_session";
     const token = await createSession(db, userId);
+
+    diagnostic.stage = "register_clear_login_failures";
     await clearLoginFailures(db, attemptKey);
 
     return responseJson(
@@ -475,23 +490,45 @@ async function userDataHandler(request, user, db) {
     const row = await db.prepare(
       "SELECT data_json, version, updated_at FROM bb_user_data WHERE user_id = ?"
     ).bind(user.id).first();
+
     if (!row) return responseJson({ exists: false, data: null, version: 0 });
+
     let data;
-    try { data = JSON.parse(row.data_json); }
-    catch { return responseJson({ error: "Сохранённые данные повреждены" }, 500); }
-    return responseJson({ exists: true, data, version: row.version, updated_at: row.updated_at });
+    try {
+      data = JSON.parse(row.data_json);
+    } catch {
+      return responseJson({ error: "Сохранённые данные повреждены" }, 500);
+    }
+
+    return responseJson({
+      exists: true,
+      data,
+      version: row.version,
+      updated_at: row.updated_at
+    });
   }
 
-  if (request.method !== "PUT") return responseJson({ error: "Метод не поддерживается" }, 405);
+  if (request.method !== "PUT") {
+    return responseJson({ error: "Метод не поддерживается" }, 405);
+  }
+
   const length = Number(request.headers.get("Content-Length") || 0);
-  if (length > 1_000_000) return responseJson({ error: "Слишком большой объём данных" }, 413);
+  if (length > 1_000_000) {
+    return responseJson({ error: "Слишком большой объём данных" }, 413);
+  }
+
   const body = await parseJson(request);
   if (!body || typeof body.data !== "object" || body.data === null || Array.isArray(body.data)) {
     return responseJson({ error: "Некорректные финансовые данные" }, 400);
   }
+
   const json = JSON.stringify(body.data);
-  if (json.length > 900_000) return responseJson({ error: "Данные превышают допустимый размер" }, 413);
+  if (json.length > 900_000) {
+    return responseJson({ error: "Данные превышают допустимый размер" }, 413);
+  }
+
   const now = new Date().toISOString();
+
   // UPSERT выполняется только для user_id из проверенной сессии, а не из тела запроса.
   await db.prepare(`INSERT INTO bb_user_data (user_id, data_json, version, updated_at)
     VALUES (?, ?, 1, ?)
@@ -500,10 +537,17 @@ async function userDataHandler(request, user, db) {
       version = bb_user_data.version + 1,
       updated_at = excluded.updated_at`
   ).bind(user.id, json, now).run();
+
   const row = await db.prepare("SELECT version FROM bb_user_data WHERE user_id = ?")
     .bind(user.id).first();
-  return responseJson({ ok: true, version: row?.version || 1, updated_at: now });
+
+  return responseJson({
+    ok: true,
+    version: row?.version || 1,
+    updated_at: now
+  });
 }
+
 async function aiHandler(request, env, user) {
   if (request.method !== "POST") {
     return responseJson({ error: "Method not allowed" }, 405, { Allow: "POST" });
@@ -521,11 +565,13 @@ async function aiHandler(request, env, user) {
   const contextText = JSON.stringify(appContext);
 
   if (!question) return responseJson({ error: "Пустой вопрос" }, 400);
+
   if (question.length > MAX_QUESTION || contextText.length > MAX_CONTEXT) {
     return responseJson({ error: "Слишком большой запрос" }, 413);
   }
 
   const personal = user ? await loadPersonalContext(env.DB, user.id) : null;
+
   const input =
     "ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ИЗ ПРИЛОЖЕНИЯ:\n" + contextText +
     (personal ? "\n\nДОЛГОВРЕМЕННАЯ ПАМЯТЬ ЭТОГО АККАУНТА:\n" + personal.memory : "") +
@@ -564,6 +610,7 @@ async function aiHandler(request, env, user) {
 
     const raw = await response.text();
     let result;
+
     try {
       result = JSON.parse(raw);
     } catch {
@@ -576,6 +623,7 @@ async function aiHandler(request, env, user) {
         (result?.error?.message || raw.slice(0, 800));
 
       if ([429, 500, 502, 503, 504].includes(response.status)) continue;
+
       return responseJson({ error: lastError }, 502);
     }
 
@@ -613,6 +661,7 @@ async function aiHandler(request, env, user) {
 
 export default {
   async fetch(request, env) {
+    const diagnostic = { stage: "request_start" };
     const url = new URL(request.url);
     const pathname = url.pathname;
 
@@ -626,6 +675,7 @@ export default {
       }
 
       // Инициализация схемы идемпотентна: только CREATE IF NOT EXISTS.
+      diagnostic.stage = "ensure_schema";
       await ensureSchema(env.DB);
 
       if (pathname === "/api/health" && request.method === "GET") {
@@ -638,14 +688,16 @@ export default {
       }
 
       if (pathname.startsWith("/api/auth/")) {
-        return await authHandler(request, env, url, pathname);
+        return await authHandler(request, env, url, pathname, diagnostic);
       }
 
       if (pathname === "/api/data") {
         const user = await findAuthenticatedUser(request, env.DB);
+
         if (request.method !== "GET" && !originAllowed(request, url)) {
           return responseJson({ error: "Недопустимый источник запроса" }, 403);
         }
+
         return await userDataHandler(request, user, env.DB);
       }
 
@@ -660,6 +712,7 @@ export default {
 
       if (pathname === "/api/ai/history" || pathname === "/api/ai/memory") {
         const user = await findAuthenticatedUser(request, env.DB);
+
         if (!user) {
           return responseJson({ error: "Требуется вход в аккаунт" }, 401);
         }
@@ -677,8 +730,14 @@ export default {
 
       return responseJson({ error: "API endpoint не найден" }, 404);
     } catch (error) {
+      console.error("BitBalance Worker error:", {
+        stage: diagnostic.stage,
+        details: String(error?.stack || error?.message || error)
+      });
+
       return responseJson({
         error: "Ошибка Worker",
+        stage: diagnostic.stage,
         details: String(error?.message || error)
       }, 500);
     }
