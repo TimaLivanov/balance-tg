@@ -978,10 +978,10 @@ export default {
         String(error?.stack || error?.message || error)
       );
 
-      return errorJson(
-        "Ошибка Worker",
-        500,
-        String(error?.message || error)
+      return responseJson({
+  error: "Ошибка Worker",
+  details: String(error?.stack || error?.message || error)
+}, 500);
       );
     }
   }
