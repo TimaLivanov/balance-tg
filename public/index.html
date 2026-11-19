@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<html lang="ru" __gcrremoteframetoken="fcf6740d949bcf2175bd4104e9a4d376" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
 <meta name="theme-color" content="#0b1020">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Баланс</title>
+<title>BitBalance — личные финансы</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
@@ -138,9 +138,45 @@
     border-radius: 18px 18px 0 0; padding: 16px;
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* BitBalance: адаптация под Telegram Mini App и мобильные safe areas */
+  html, body { min-height: 100%; }
+  body.tg-app { min-height: var(--tg-viewport-stable-height, 100dvh); }
+  body.tg-app main {
+    padding-top: max(12px, var(--tg-content-safe-area-inset-top, 0px));
+    padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+  }
+  body.tg-app nav { padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px)); }
+  button, input, select, textarea { touch-action: manipulation; }
+  .welcome-screen {
+    position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center;
+    padding: max(22px, env(safe-area-inset-top, 0px)) 20px max(22px, env(safe-area-inset-bottom, 0px));
+    background: radial-gradient(900px 600px at 50% 0%, #25205a 0%, #0b1020 62%);
+  }
+  .welcome-card {
+    width: 100%; max-width: 390px; padding: 28px 22px; text-align: center;
+    border: 1px solid rgba(148,163,184,.18); border-radius: 24px;
+    background: linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.98));
+    box-shadow: 0 24px 80px rgba(0,0,0,.38);
+  }
+  .welcome-logo { width: 68px; height: 68px; margin: 0 auto 18px; display:flex; align-items:center; justify-content:center;
+    border-radius: 22px; background: linear-gradient(135deg, var(--acc), var(--acc2)); font-size: 30px; }
+  .welcome-title { font-size: 27px; line-height: 1.15; font-weight: 800; letter-spacing: -.03em; }
+  .welcome-sub { margin: 12px 0 22px; color: #a8b4c7; font-size: 14px; line-height: 1.55; }
+  .welcome-note { margin-top: 14px; color: #8492a8; font-size: 11px; line-height: 1.45; }
 </style>
 <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.col-span-4{grid-column:span 4 / span 4}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mr-1{margin-right:0.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.h-2{height:0.5rem}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-20{width:5rem}.w-2{width:0.5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-l{border-left-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-700\/40{background-color:rgb(51 65 85 / 0.4)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-2\.5{padding:0.625rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[11px\]{font-size:11px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.text-\[10px\]{font-size:10px}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-semibold{font-weight:600}.font-medium{font-weight:500}.font-normal{font-weight:400}.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:0.5rem}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-2{width:0.5rem}.w-full{width:100%}.w-20{width:5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-b{border-bottom-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-red-400\/40{border-color:rgb(248 113 113 / 0.4)}.border-red-400\/50{border-color:rgb(248 113 113 / 0.5)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-amber-500\/20{background-color:rgb(245 158 11 / 0.2)}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.bg-red-500\/20{background-color:rgb(239 68 68 / 0.2)}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.pb-2{padding-bottom:0.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-normal{font-weight:400}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.opacity-60{opacity:0.6}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style></head>
 <body class="text-slate-100 min-h-screen" style="background: radial-gradient(1200px 600px at 10% -10%, #1e1b4b 0%, #0b1020 55%) fixed;">
+<div id="welcomeScreen" class="welcome-screen">
+  <div class="welcome-card">
+    <div class="welcome-logo">₽</div>
+    <div class="welcome-title">BitBalance</div>
+    <div class="welcome-sub">Личный финансовый помощник. Учитывайте доходы, расходы, долги и накопления в одном месте.</div>
+    <button type="button" class="btn btn-p w-full" onclick="skipWelcome()">Продолжить без входа</button>
+    <div class="welcome-note">Регистрация и вход появятся позже. Сейчас можно пользоваться приложением в гостевом режиме.</div>
+  </div>
+</div>
+
 
 <div id="errBanner" onclick="this.classList.add('hidden')" class="hidden fixed top-0 left-0 right-0 z-50 bg-red-600/95 text-white text-xs p-3 cursor-pointer"></div>
 
@@ -214,22 +250,22 @@
         <div>
           <div class="field">
             <span class="lbl">Доход, ₽</span>
-            <input type="number" step="any" inputmode="decimal" id="qhIncAmt" placeholder="0" class="" oninput="syncQhRec()">
+            <input type="number" step="any" inputmode="decimal" id="qhIncAmt" placeholder="0" class="" oninput="syncQhRec()" __gcruniqueid="40">
             <div class="recov-box" id="qhIncRecBox"></div>
           </div>
-          <select id="qhIncSrc" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select>
+          <select id="qhIncSrc" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs" __gcruniqueid="41"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select>
         </div>
         <div>
           <div class="field">
             <span class="lbl">Расход, ₽</span>
-            <input type="number" step="any" inputmode="decimal" id="qhExpAmt" placeholder="0" class="" oninput="syncQhRec()">
+            <input type="number" step="any" inputmode="decimal" id="qhExpAmt" placeholder="0" class="" oninput="syncQhRec()" __gcruniqueid="42">
             <div class="recov-box" id="qhExpRecBox"></div>
           </div>
-          <select id="qhExpCat" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs"><optgroup label="Категории"><option value="c:1">Квартира · обяз.</option><option value="c:2">Жена · обяз.</option><option value="c:3">Авто</option><option value="c:4">Продукты · обяз.</option><option value="c:1794500355271">Родненький · обяз.</option><option value="c:1794506458964">Интернет · обяз.</option></optgroup><optgroup label="Подушка"><option value="cush">🛟 Пополнить подушку</option></optgroup><optgroup label="Долги"><option value="d:1">→ Мурад Квен</option><option value="d:2">→ Кемыч</option><option value="d:3">→ Аресты</option><option value="d:1794049419537">→ Марат учеридитель</option><option value="d:1794049419539">→ Марат повар</option><option value="d:1794049419541">→ Штраф Авто</option><option value="d:1794049419543">→ Штраф Мусор</option><option value="d:1794500355277">→ Жинка</option></optgroup></select>
+          <select id="qhExpCat" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs" __gcruniqueid="43"><optgroup label="Категории"><option value="c:1">Квартира · обяз.</option><option value="c:2">Жена · обяз.</option><option value="c:3">Авто</option><option value="c:4">Продукты · обяз.</option><option value="c:1794500355271">Родненький · обяз.</option><option value="c:1794506458964">Интернет · обяз.</option></optgroup><optgroup label="Подушка"><option value="cush">🛟 Пополнить подушку</option></optgroup><optgroup label="Долги"><option value="d:1">→ Мурад Квен</option><option value="d:2">→ Кемыч</option><option value="d:3">→ Аресты</option><option value="d:1794049419537">→ Марат учеридитель</option><option value="d:1794049419539">→ Марат повар</option><option value="d:1794049419541">→ Штраф Авто</option><option value="d:1794049419543">→ Штраф Мусор</option><option value="d:1794500355277">→ Жинка</option></optgroup></select>
         </div>
       </div>
       <div class="field">
-        <input type="text" id="qhNote" placeholder="примечание" class="w-full" autocomplete="off">
+        <input type="text" id="qhNote" placeholder="примечание" class="w-full" autocomplete="off" __gcruniqueid="44">
       </div>
       <div class="flex gap-2">
         <button type="button" class="btn btn-g flex-1 py-2 text-sm" onclick="quickHomeDo('inc')">+ Доход</button>
@@ -263,7 +299,7 @@
 
     <div id="debtConfirm" class="hidden card p-4 border border-amber-500/50 space-y-3">
       <div id="dcText" class="text-sm text-amber-200"></div>
-      <div class="field"><span class="lbl">Название долга</span><input type="text" id="dcName"></div>
+      <div class="field"><span class="lbl">Название долга</span><input type="text" id="dcName" __gcruniqueid="45"></div>
       <div class="field"><span class="lbl">Срок погашения (необязательно)</span><input type="date" id="dcDue"></div>
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-p" onclick="confirmDebt()">Создать долг и провести</button>
@@ -271,12 +307,12 @@
       </div>
     </div>
 
-    <form id="dayForm" onsubmit="submitDay(event)" class="space-y-4">
+    <form id="dayForm" onsubmit="submitDay(event)" class="space-y-4" __gcruniqueid="1">
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Доход</div>
         <div class="grid grid-cols-5 gap-2">
-          <div class="field col-span-3"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="income" placeholder="0" oninput="syncUndist()" onfocus="expandDayEntry()"></div>
-          <div class="field col-span-2"><span class="lbl">Категория</span><select id="incomeCat"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select></div>
+          <div class="field col-span-3"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="income" placeholder="0" oninput="syncUndist()" onfocus="expandDayEntry()" __gcruniqueid="2"></div>
+          <div class="field col-span-2"><span class="lbl">Категория</span><select id="incomeCat" __gcruniqueid="3"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select></div>
         </div>
         <div id="undistBox" class="text-sm mt-1 flex justify-between items-center px-1">
           <span class="sub">Не распределено</span>
@@ -285,23 +321,23 @@
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Траты</div>
-        <div id="expInputs" class="space-y-2"><div class="field opacity-60"><span class="lbl">Квартира · обяз. · 🔒 план закрыт</span><input type="number" step="any" inputmode="decimal" data-exp="1" placeholder="0" class="" oninput="syncUndist()" disabled="" title="План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана."><div class="sub text-[10px] text-amber-300 mt-0.5">План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана.</div></div><div class="field"><span class="lbl">Жена · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="2" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1500)"><b>рек.</b> 1&nbsp;500 ₽</button></div></div><div class="field"><span class="lbl">Авто</span><input type="number" step="any" inputmode="decimal" data-exp="3" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1126.6666666666667)"><b>рек.</b> 1&nbsp;200 ₽</button></div></div><div class="field"><span class="lbl">Продукты · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="4" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1266.6666666666667)"><b>рек.</b> 1&nbsp;300 ₽</button></div></div><div class="field"><span class="lbl">Родненький · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794500355271" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,300)"><b>рек.</b> 300 ₽</button></div></div><div class="field"><span class="lbl">Интернет · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794506458964" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,100)"><b>рек.</b> 100 ₽</button><button type="button" class="recov min" onclick="fillRec(this,107.6923076923077)"><b>мин.</b> 200 ₽</button></div></div></div>
+        <div id="expInputs" class="space-y-2"><div class="field opacity-60"><span class="lbl">Квартира · обяз. · 🔒 план закрыт</span><input type="number" step="any" inputmode="decimal" data-exp="1" placeholder="0" class="" oninput="syncUndist()" disabled="" title="План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана." __gcruniqueid="4"><div class="sub text-[10px] text-amber-300 mt-0.5">План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана.</div></div><div class="field"><span class="lbl">Жена · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="2" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="5"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1500)"><b>рек.</b> 1&nbsp;500 ₽</button></div></div><div class="field"><span class="lbl">Авто</span><input type="number" step="any" inputmode="decimal" data-exp="3" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="6"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1126.6666666666667)"><b>рек.</b> 1&nbsp;200 ₽</button></div></div><div class="field"><span class="lbl">Продукты · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="4" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="7"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1266.6666666666667)"><b>рек.</b> 1&nbsp;300 ₽</button></div></div><div class="field"><span class="lbl">Родненький · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794500355271" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="8"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,300)"><b>рек.</b> 300 ₽</button></div></div><div class="field"><span class="lbl">Интернет · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794506458964" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="9"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,100)"><b>рек.</b> 100 ₽</button><button type="button" class="recov min" onclick="fillRec(this,107.6923076923077)"><b>мин.</b> 200 ₽</button></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Погашение долгов</div>
-        <div id="debtInputs" class="space-y-2"><div class="field"><span class="lbl">Мурад Квен · остаток 80&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1818.1818181818182)"><b>рек.</b> 1&nbsp;900 ₽</button></div></div><div class="field"><span class="lbl">Кемыч · остаток 160&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="2" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,3636.3636363636365)"><b>рек.</b> 3&nbsp;700 ₽</button></div></div><div class="field"><span class="lbl">Аресты · остаток 440&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="3" placeholder="0" class="" oninput="syncUndist()"></div><div class="field"><span class="lbl">Марат учеридитель · остаток 37&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419537" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,840.9090909090909)"><b>рек.</b> 900 ₽</button></div></div><div class="field"><span class="lbl">Марат повар · остаток 3&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419539" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,68.18181818181819)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Штраф Авто · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419541" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,170.45454545454547)"><b>рек.</b> 200 ₽</button></div></div><div class="field"><span class="lbl">Штраф Мусор · остаток 2&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419543" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,45.45454545454545)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Жинка · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794500355277" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,7500)"><b>рек.</b> 7&nbsp;500 ₽</button></div></div></div>
+        <div id="debtInputs" class="space-y-2"><div class="field"><span class="lbl">Мурад Квен · остаток 80&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="10"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1818.1818181818182)"><b>рек.</b> 1&nbsp;900 ₽</button></div></div><div class="field"><span class="lbl">Кемыч · остаток 160&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="2" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="11"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,3636.3636363636365)"><b>рек.</b> 3&nbsp;700 ₽</button></div></div><div class="field"><span class="lbl">Аресты · остаток 440&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="3" placeholder="0" class="" oninput="syncUndist()" __gcruniqueid="12"></div><div class="field"><span class="lbl">Марат учеридитель · остаток 37&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419537" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="13"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,840.9090909090909)"><b>рек.</b> 900 ₽</button></div></div><div class="field"><span class="lbl">Марат повар · остаток 3&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419539" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="14"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,68.18181818181819)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Штраф Авто · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419541" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="15"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,170.45454545454547)"><b>рек.</b> 200 ₽</button></div></div><div class="field"><span class="lbl">Штраф Мусор · остаток 2&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419543" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="16"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,45.45454545454545)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Жинка · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794500355277" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="17"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,7500)"><b>рек.</b> 7&nbsp;500 ₽</button></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">📈 Накопления и инвестиции</div>
-        <div id="savInputs" class="space-y-2"><div class="space-y-2 p-2 rounded-xl bg-slate-900/40"><div class="flex items-center justify-between gap-2"><div class="text-sm font-medium min-w-0">Копилка Ястреб <span class="sub">· цель · 0 ₽</span></div><button type="button" class="btn btn-d text-xs px-3 py-1.5 shrink-0" onclick="spendGoal(9001)">Потратить</button></div><div class="field"><span class="lbl">Пополнить, ₽</span><input type="number" step="any" inputmode="decimal" data-sav="9001" placeholder="0" class="" oninput="syncUndist()"></div></div></div>
+        <div id="savInputs" class="space-y-2"><div class="space-y-2 p-2 rounded-xl bg-slate-900/40"><div class="flex items-center justify-between gap-2"><div class="text-sm font-medium min-w-0">Копилка Ястреб <span class="sub">· цель · 0 ₽</span></div><button type="button" class="btn btn-d text-xs px-3 py-1.5 shrink-0" onclick="spendGoal(9001)">Потратить</button></div><div class="field"><span class="lbl">Пополнить, ₽</span><input type="number" step="any" inputmode="decimal" data-sav="9001" placeholder="0" class="" oninput="syncUndist()" __gcruniqueid="18"></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">🛟 Подушка</div>
-        <div id="cushField"><div class="field"><span class="lbl">Пополнить подушку, ₽</span><input type="number" step="any" inputmode="decimal" id="cushIn" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,98738.09523809522)"><b>рек.</b> 98&nbsp;800 ₽</button></div></div></div>
-        <div class="field"><span class="lbl">Снять из подушки, ₽</span><input type="number" step="any" inputmode="decimal" id="cushOut" placeholder="0" oninput="syncUndist()"></div>
+        <div id="cushField"><div class="field"><span class="lbl">Пополнить подушку, ₽</span><input type="number" step="any" inputmode="decimal" id="cushIn" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="19"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,98738.09523809522)"><b>рек.</b> 98&nbsp;800 ₽</button></div></div></div>
+        <div class="field"><span class="lbl">Снять из подушки, ₽</span><input type="number" step="any" inputmode="decimal" id="cushOut" placeholder="0" oninput="syncUndist()" __gcruniqueid="20"></div>
       </div>
       <div class="card p-4">
-        <div class="field"><span class="lbl">Заметка</span><input type="text" id="note" placeholder="например: смена"></div>
+        <div class="field"><span class="lbl">Заметка</span><input type="text" id="note" placeholder="например: смена" __gcruniqueid="21"></div>
       </div>
       <button type="submit" id="submitBtn" class="btn btn-p w-full shadow-lg shadow-indigo-900/40">Провести день</button>
     </form>
@@ -322,9 +358,9 @@
       <div id="catTotals" class="space-y-1 pt-2 border-t border-slate-700/50"></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-sky-300">＋ Новая категория</summary>
-        <form onsubmit="addCat(event)" class="space-y-2 mt-3">
-          <div class="field"><span class="lbl">Название</span><input type="text" id="cName" required=""></div>
-          <div class="field"><span class="lbl">Плановая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="cPlanAmt"></div>
+        <form onsubmit="addCat(event)" class="space-y-2 mt-3" __gcruniqueid="22">
+          <div class="field"><span class="lbl">Название</span><input type="text" id="cName" required="" __gcruniqueid="23"></div>
+          <div class="field"><span class="lbl">Плановая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="cPlanAmt" __gcruniqueid="24"></div>
           <div class="field"><span class="lbl">Срок плана (необязательно)</span><input type="date" id="cPlanDate"></div>
           <div class="flex gap-2 text-xs sub">
             <label class="flex items-center gap-2"><input type="checkbox" id="cNeed"> обязательная (в подушку)</label>
@@ -347,9 +383,9 @@
       <div id="debtTotals" class="space-y-1 pt-2 border-t border-slate-700/50"></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-indigo-300">＋ Новый долг</summary>
-        <form onsubmit="addDebt(event)" class="space-y-2 mt-3">
-          <div class="field"><span class="lbl">Название (у кого / за что)</span><input type="text" id="dName" required=""></div>
-          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="dAmt" required=""></div>
+        <form onsubmit="addDebt(event)" class="space-y-2 mt-3" __gcruniqueid="25">
+          <div class="field"><span class="lbl">Название (у кого / за что)</span><input type="text" id="dName" required="" __gcruniqueid="26"></div>
+          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="dAmt" required="" __gcruniqueid="27"></div>
           <div class="field"><span class="lbl">Срок погашения (необязательно)</span><input type="date" id="dDue"></div>
           <label class="flex items-start gap-2 text-sm text-slate-300 px-1">
             <input type="checkbox" id="dCredit" checked="" class="mt-1">
@@ -370,15 +406,15 @@
       <div id="savList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">Копилка Ястреб <span class="pill bg-emerald-500/15 text-emerald-300 text-[10px]">цель</span></div><div class="sub mt-0.5">вложено 0 ₽ из 100&nbsp;000 ₽</div></div><div class="flex gap-1"><button class="ico" onclick="spendGoal(9001)" title="Потратить">💸</button><button class="ico" onclick="editSav(9001)" title="Изменить">✏️</button><button class="ico" onclick="delSaving(9001)" title="Удалить">🗑</button></div></div><div class="bar mt-2"><i class="bg-emerald-400" style="width:0%"></i></div></div></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-emerald-300">＋ Новая цель / инвестиция</summary>
-        <form onsubmit="addSaving(event)" class="space-y-2 mt-3">
+        <form onsubmit="addSaving(event)" class="space-y-2 mt-3" __gcruniqueid="28">
           <div class="field"><span class="lbl">Тип</span>
-            <select id="sKind">
+            <select id="sKind" __gcruniqueid="29">
               <option value="goal">Цель (можно потратить целиком)</option>
               <option value="invest">Инвестиция (закрыть с возвратом)</option>
             </select>
           </div>
-          <div class="field"><span class="lbl">Название</span><input type="text" id="sName" required=""></div>
-          <div class="field"><span class="lbl">Целевая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="sAmt"></div>
+          <div class="field"><span class="lbl">Название</span><input type="text" id="sName" required="" __gcruniqueid="30"></div>
+          <div class="field"><span class="lbl">Целевая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="sAmt" __gcruniqueid="31"></div>
           <div class="field"><span class="lbl">Срок (необязательно)</span><input type="date" id="sDate"></div>
           <button class="btn btn-p w-full">Добавить</button>
         </form>
@@ -399,8 +435,8 @@
     <div class="card p-4 space-y-3">
       <div class="font-semibold">💼 Доходные категории</div>
       <div id="incList" class="space-y-2"><div class="flex justify-between items-center card p-2.5"><span>Работа</span></div><div class="flex justify-between items-center card p-2.5"><span>Подработка</span><button class="ico" style="width:28px;height:28px;font-size:12px" onclick="delIncomeCat(1794049419536)">🗑</button></div></div>
-      <form onsubmit="addIncomeCat(event)" class="flex gap-2">
-        <div class="field flex-1"><span class="lbl">Новая категория дохода</span><input type="text" id="icName" required=""></div>
+      <form onsubmit="addIncomeCat(event)" class="flex gap-2" __gcruniqueid="32">
+        <div class="field flex-1"><span class="lbl">Новая категория дохода</span><input type="text" id="icName" required="" __gcruniqueid="33"></div>
         <button class="btn btn-s">＋</button>
       </form>
     </div>
@@ -410,20 +446,20 @@
       <div id="apList" class="space-y-2"><div class="sub text-center py-2">Нет автоплатежей</div></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-violet-300">＋ Новый автоплатёж</summary>
-        <form onsubmit="addAutopay(event)" class="space-y-2 mt-3">
-          <div class="field"><span class="lbl">Название</span><input type="text" id="apName" required=""></div>
-          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="apAmt" required=""></div>
+        <form onsubmit="addAutopay(event)" class="space-y-2 mt-3" __gcruniqueid="34">
+          <div class="field"><span class="lbl">Название</span><input type="text" id="apName" required="" __gcruniqueid="35"></div>
+          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="apAmt" required="" __gcruniqueid="36"></div>
           <div class="grid grid-cols-2 gap-2">
             <div class="field">
               <span class="lbl">Периодичность</span>
-              <select id="apMode" onchange="document.getElementById('apDayBox').classList.toggle('hidden', this.value!=='monthly')">
+              <select id="apMode" onchange="document.getElementById('apDayBox').classList.toggle('hidden', this.value!=='monthly')" __gcruniqueid="37">
                 <option value="daily">Каждый день</option>
                 <option value="monthly">Каждый месяц</option>
               </select>
             </div>
-            <div id="apDayBox" class="field hidden"><span class="lbl">Число месяца</span><input type="number" id="apDay" min="1" max="31" value="1"></div>
+            <div id="apDayBox" class="field hidden"><span class="lbl">Число месяца</span><input type="number" id="apDay" min="1" max="31" value="1" __gcruniqueid="38"></div>
           </div>
-          <div class="field"><span class="lbl">Категория</span><select id="apCat"><option value="1">Квартира</option><option value="2">Жена</option><option value="3">Авто</option><option value="4">Продукты</option><option value="1794500355271">Родненький</option><option value="1794506458964">Интернет</option></select></div>
+          <div class="field"><span class="lbl">Категория</span><select id="apCat" __gcruniqueid="39"><option value="1">Квартира</option><option value="2">Жена</option><option value="3">Авто</option><option value="4">Продукты</option><option value="1794500355271">Родненький</option><option value="1794506458964">Интернет</option></select></div>
           <button class="btn btn-p w-full">Добавить автоплатёж</button>
         </form>
       </details>
@@ -435,7 +471,7 @@
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
         <div class="font-semibold">📊 Аналитика</div>
-        <select id="anPeriod" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="anPeriod" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="46">
           <option value="7">7 дней</option>
           <option value="30" selected="">30 дней</option>
           <option value="90">90 дней</option>
@@ -503,7 +539,7 @@
     <div class="card p-4" id="aiCard">
       <div class="font-semibold mb-2">🤖 AI-советник</div>
       <div class="sub text-[11px] mb-2">Советы по твоим цифрам (Gemini, бесплатно). Нужен деплой с /api/ai.</div>
-      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?"></textarea>
+      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?" __gcruniqueid="47"></textarea>
       <button type="button" class="btn btn-p w-full mt-2 py-2" onclick="askAI()">Спросить</button>
       <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
     </div>
@@ -529,7 +565,7 @@
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
         <div class="font-semibold">Расходы по категориям <span id="anExpTotal" class="text-sky-300 font-bold text-sm">46&nbsp;280 ₽</span></div>
-        <select id="anMode" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-xs">
+        <select id="anMode" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-xs" __gcruniqueid="48">
           <option value="total">доля от трат</option>
           <option value="income">доля от дохода</option>
         </select>
@@ -547,7 +583,7 @@
     <div class="card p-4 space-y-3">
       <div class="flex items-center justify-between">
         <div class="font-semibold">📄 Отчёт для консультанта</div>
-        <select id="rpPeriod" onchange="renderReport()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="rpPeriod" onchange="renderReport()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="49">
           <option value="7">7 дней</option>
           <option value="30" selected="">30 дней</option>
           <option value="90">90 дней</option>
@@ -574,7 +610,7 @@
         <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
         <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile').click()">⬇️ Импорт истории</button>
       </div>
-      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
+      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)" __gcruniqueid="65">
       <div class="sub">Экспорт — только операции (JSON). Импорт добавит записи без дублей по id.</div>
     </div>
     <div id="histList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Жинка</span><b class="text-red-300">−2&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319089)">✏️</button><button class="ico" onclick="delEntry(1794568319089)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−950 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+2&nbsp;600 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;720 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319088)">✏️</button><button class="ico" onclick="delEntry(1794568319088)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319087)">✏️</button><button class="ico" onclick="delEntry(1794568319087)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Интернет</span><b class="text-red-300">−100 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794506458967)">✏️</button><button class="ico" onclick="delEntry(1794506458967)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−6&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;280 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−600 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−8&nbsp;380 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355279)">✏️</button><button class="ico" onclick="delEntry(1794500355279)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026 <span class="sub font-normal">· Жинка</span></div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">долг «Жинка»</span><b class="text-red-300">+10&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">в копилку (из долга)</span><b class="text-emerald-300">+10&nbsp;000 ₽</b></div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="delEntry(1794500355278)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355276)">✏️</button><button class="ico" onclick="delEntry(1794500355276)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">11 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−850 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355275)">✏️</button><button class="ico" onclick="delEntry(1794500355275)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+12&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Марат учеридитель</span><b class="text-red-300">−12&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355274)">✏️</button><button class="ico" onclick="delEntry(1794500355274)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355273)">✏️</button><button class="ico" onclick="delEntry(1794500355273)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">9 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355272)">✏️</button><button class="ico" onclick="delEntry(1794500355272)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">7 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 900 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355270)">✏️</button><button class="ico" onclick="delEntry(1794500355270)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">6 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;400 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355269)">✏️</button><button class="ico" onclick="delEntry(1794500355269)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">5 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;800 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 500 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355268)">✏️</button><button class="ico" onclick="delEntry(1794500355268)">🗑</button></div></div></div></div>
@@ -586,7 +622,7 @@
       <div class="font-semibold">🔔 Уведомления</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Время показа</span>
-        <select id="toastMode" onchange="setToastMode(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="toastMode" onchange="setToastMode(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="50">
           <option value="auto">Авто</option>
           <option value="short">Короткое, 4 с</option>
           <option value="normal">Обычное, 8 с</option>
@@ -597,7 +633,7 @@
       <div class="sub">Авто: чем длиннее текст, тем дольше сообщение.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Своё время, секунд</span>
-        <input id="toastSec" type="number" min="1" onchange="setToastSec(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <input id="toastSec" type="number" min="1" onchange="setToastSec(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="51">
       </div>
       <label class="flex items-center justify-between gap-3 text-sm">
         <span>Не исчезать, пока не нажму</span>
@@ -609,7 +645,7 @@
       <div class="font-semibold">⏰ Напоминания</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Напоминать, если не вносили дней</span>
-        <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="52">
       </div>
       <div class="sub">0 — выключить. Напоминание появляется на главной.</div>
       <button class="btn btn-s w-full py-2" onclick="enableReminders()">🔔 Разрешить системные уведомления</button>
@@ -619,19 +655,19 @@
       <div class="font-semibold">⚙️ Правило распределения</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Пресет нормы</span>
-        <select id="preset" onchange="setPreset(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="preset" onchange="setPreset(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="53">
           <option value="50/30/20">50 / 30 / 20</option>
           <option value="70/20/10">70 / 20 / 10</option>
           <option value="custom">Своё</option>
         </select>
       </div>
-      <div class="field"><span class="lbl">Норма обязательных, %</span><input type="number" id="nNeeds" onchange="setNormVal('needs', this.value)"></div>
-      <div class="field"><span class="lbl">Норма прочих, %</span><input type="number" id="nWants" onchange="setNormVal('wants', this.value)"></div>
+      <div class="field"><span class="lbl">Норма обязательных, %</span><input type="number" id="nNeeds" onchange="setNormVal('needs', this.value)" __gcruniqueid="54"></div>
+      <div class="field"><span class="lbl">Норма прочих, %</span><input type="number" id="nWants" onchange="setNormVal('wants', this.value)" __gcruniqueid="55"></div>
       <div class="card p-3 space-y-3 border border-sky-500/20 bg-slate-900/30">
         <div class="font-semibold text-sky-200">🛟 Настройки подушки</div>
         <div class="field">
           <span class="lbl">На сколько месяцев запасов</span>
-          <select id="cmSelect" onchange="setCushionMonths(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
+          <select id="cmSelect" onchange="setCushionMonths(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="56">
             <option value="1">1 мес</option>
             <option value="2">2 мес</option>
             <option value="3">3 мес</option>
@@ -643,7 +679,7 @@
         </div>
         <div class="field">
           <span class="lbl">Что учитывать в цели подушки</span>
-          <select id="cushInclude" onchange="setCushionInclude(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
+          <select id="cushInclude" onchange="setCushionInclude(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="57">
             <option value="need">Только обязательные</option>
             <option value="need_rare">Обязательные + редкие</option>
             <option value="all">Все категории расходов</option>
@@ -651,7 +687,7 @@
         </div>
         <div class="field">
           <span class="lbl">От чего считать месячную сумму</span>
-          <select id="cushBase" onchange="setCushionBase(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
+          <select id="cushBase" onchange="setCushionBase(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="58">
             <option value="avg">Факт: среднее по твоим тратам</option>
             <option value="rec">Рекомендуемые платежи (рек.)</option>
             <option value="min">Минимальные платежи (мин./план), иначе рек.</option>
@@ -659,10 +695,10 @@
         </div>
         <div class="sub">Цель = выбранная база × месяцы. Рек. пополнения = сколько ещё не хватает до цели, размазанное по дням. Если подушка ≥ цели — «цель набрана», рек. = 0.</div>
       </div>
-      <div class="field"><span class="lbl">Окно для среднего, дней</span><input type="number" id="winDays" min="1" onchange="setWindow(this.value)"></div>
+      <div class="field"><span class="lbl">Окно для среднего, дней</span><input type="number" id="winDays" min="1" onchange="setWindow(this.value)" __gcruniqueid="59"></div>
       <div class="field">
         <span class="lbl">Порядок погашения долгов</span>
-        <select id="strategy" onchange="setStrategy(this.value)">
+        <select id="strategy" onchange="setStrategy(this.value)" __gcruniqueid="60">
           <option value="snow">Снежок: мелкие сначала</option>
           <option value="aval">Лавина: крупные сначала</option>
           <option value="order">По порядку добавления</option>
@@ -670,7 +706,7 @@
       </div>
       <div class="field">
         <span class="lbl">Порог заметности статьи</span>
-        <select id="cutLevel" onchange="setCutLevel(this.value)">
+        <select id="cutLevel" onchange="setCutLevel(this.value)" __gcruniqueid="61">
           <option value="econ">Экономичный (от 5%)</option>
           <option value="eff">Эффективный (от 10%)</option>
           <option value="fast">Быстрый (от 20%)</option>
@@ -680,17 +716,17 @@
 
     <div class="card p-4 space-y-3">
       <div class="font-semibold">❤️ Здоровье денег: пороги</div>
-      <div class="field"><span class="lbl">Обязательные не выше, %</span><input type="number" id="hNeeds" onchange="setHealth('needsMax', this.value)"></div>
-      <div class="field"><span class="lbl">Остаток не ниже, %</span><input type="number" id="hSave" onchange="setHealth('saveMin', this.value)"></div>
-      <div class="field"><span class="lbl">Запас не меньше, дней</span><input type="number" id="hRunway" onchange="setHealth('runwayMin', this.value)"></div>
-      <div class="field"><span class="lbl">Долги закрыть за, мес.</span><input type="number" id="hDebtM" onchange="setHealth('debtMonths', this.value)"></div>
+      <div class="field"><span class="lbl">Обязательные не выше, %</span><input type="number" id="hNeeds" onchange="setHealth('needsMax', this.value)" __gcruniqueid="62"></div>
+      <div class="field"><span class="lbl">Остаток не ниже, %</span><input type="number" id="hSave" onchange="setHealth('saveMin', this.value)" __gcruniqueid="63"></div>
+      <div class="field"><span class="lbl">Запас не меньше, дней</span><input type="number" id="hRunway" onchange="setHealth('runwayMin', this.value)" __gcruniqueid="64"></div>
+      <div class="field"><span class="lbl">Долги закрыть за, мес.</span><input type="number" id="hDebtM" onchange="setHealth('debtMonths', this.value)" __gcruniqueid="65"></div>
     </div>
 
     <div class="card p-4 space-y-3">
       <div class="font-semibold">🎨 Внешний вид</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Размер шрифта</span>
-        <select id="fontSizeSel" onchange="setFontSize(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="fontSizeSel" onchange="setFontSize(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="66">
           <option value="s">Мелкий</option>
           <option value="m" selected="">Обычный</option>
           <option value="l">Крупный</option>
@@ -698,7 +734,7 @@
       </div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Цвет акцента</span>
-        <select id="accentSel" onchange="setAccent(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+        <select id="accentSel" onchange="setAccent(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="67">
           <option value="indigo">Индиго</option>
           <option value="emerald">Изумрудный</option>
           <option value="sky">Голубой</option>
@@ -710,7 +746,7 @@
     <div class="card p-4 space-y-3">
       <div class="font-semibold">💾 Данные</div>
       <div class="flex gap-2">
-        <select id="delPeriod" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
+        <select id="delPeriod" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="68">
           <option value="7">за 7 дней</option>
           <option value="30">за 30 дней</option>
           <option value="90">за 90 дней</option>
@@ -776,7 +812,7 @@
     <div class="font-semibold text-amber-200">Не хватает денег</div>
     <div id="sfText" class="text-sm text-slate-300"></div>
     <div id="sfDebtForm" class="hidden space-y-2">
-      <div class="field"><span class="lbl">Название нового долга</span><input type="text" id="sfDebtName" placeholder="Долг из трат"></div>
+      <div class="field"><span class="lbl">Название нового долга</span><input type="text" id="sfDebtName" placeholder="Долг из трат" __gcruniqueid="69"></div>
       <div class="field"><span class="lbl">Срок (необязательно)</span><input type="date" id="sfDebtDue"></div>
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-p" onclick="sfConfirmDebt()">Создать долг и провести</button>
@@ -793,7 +829,7 @@
 
 <script id="appScript">
 /* ===================== STATE ===================== */
-const defaultState = /*__STATE__*/{"v":12,"startCash":0,"startCushion":0,"cushionMonths":3,"cushionInclude":"need","cushionBase":"avg","windowDays":30,"strategy":"snow","hideBal":false,"chartMode":"candle","tf":"day","fontSize":"m","accent":"indigo","toastMode":"auto","toastSec":6,"toastSticky":false,"remindDays":2,"incomeCats":[{"id":1,"name":"Работа"}],"cats":[],"debts":[],"autopay":[],"savings":[],"history":[],"cutLevel":"eff","preset":"50/30/20","budget":{"needs":50,"wants":30,"goals":10,"cushion":10},"health":{"needsMax":50,"saveMin":20,"runwayMin":30,"debtMonths":12}}/*__STATE_END__*/;
+const defaultState = /*__STATE__*/{"v":12,"startCash":0,"startCushion":0,"cushionMonths":3,"cushionInclude":"need","cushionBase":"avg","windowDays":30,"strategy":"snow","hideBal":false,"chartMode":"candle","tf":"day","fontSize":"m","accent":"indigo","toastMode":"auto","toastSec":6,"toastSticky":false,"remindDays":2,"incomeCats":[{"id":1,"name":"Работа"}],"cats":[{"id":1,"name":"Жильё","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":2,"name":"Продукты","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":3,"name":"Транспорт","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":4,"name":"Связь","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":5,"name":"Прочее","need":false,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null}],"debts":[],"autopay":[],"savings":[],"history":[],"cutLevel":"eff","preset":"50/30/20","budget":{"needs":50,"wants":30,"goals":10,"cushion":10},"health":{"needsMax":50,"saveMin":20,"runwayMin":30,"debtMonths":12}}/*__STATE_END__*/;
 
 /* ===================== UTILS ===================== */
 const $ = id => document.getElementById(id);
@@ -3379,17 +3415,49 @@ function renderWorkStats() {
 }
 
 
+function skipWelcome() {
+  try { localStorage.setItem('bitbalance-guest-mode-v1', '1'); } catch (e) {}
+  const screen = $('welcomeScreen');
+  if (screen) screen.classList.add('hidden');
+}
+function initWelcome() {
+  try {
+    if (localStorage.getItem('bitbalance-guest-mode-v1') === '1') {
+      const screen = $('welcomeScreen');
+      if (screen) screen.classList.add('hidden');
+    }
+  } catch (e) {}
+}
+
 /* ========== Telegram Mini App + AI ========== */
+function updateTelegramViewport() {
+  try {
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg) return;
+    const root = document.documentElement;
+    if (Number(tg.viewportHeight) > 0) root.style.setProperty('--tg-viewport-height', tg.viewportHeight + 'px');
+    if (Number(tg.viewportStableHeight) > 0) root.style.setProperty('--tg-viewport-stable-height', tg.viewportStableHeight + 'px');
+    const safe = tg.safeAreaInset || {};
+    const content = tg.contentSafeAreaInset || {};
+    root.style.setProperty('--tg-safe-area-inset-top', Math.max(0, Number(safe.top) || 0) + 'px');
+    root.style.setProperty('--tg-safe-area-inset-bottom', Math.max(0, Number(safe.bottom) || 0) + 'px');
+    root.style.setProperty('--tg-content-safe-area-inset-top', Math.max(0, Number(content.top) || 0) + 'px');
+  } catch (e) {}
+}
+
 function initTelegram() {
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
     if (!tg) return;
-    tg.ready();
-    tg.expand();
-    if (tg.themeParams && tg.themeParams.bg_color) {
-      document.body.style.background = tg.themeParams.bg_color;
-    }
-    // user id для будущей синхронизации
+    document.body.classList.add('tg-app');
+    if (typeof tg.ready === 'function') tg.ready();
+    if (typeof tg.expand === 'function') tg.expand();
+    if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#0b1020');
+    if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#0b1020');
+    if (tg.themeParams && tg.themeParams.bg_color) document.body.style.backgroundColor = tg.themeParams.bg_color;
+    updateTelegramViewport();
+    if (typeof tg.onEvent === 'function') tg.onEvent('viewportChanged', updateTelegramViewport);
+    // Telegram user data is retained for a future verified server-side login flow.
     window._tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
   } catch (e) { console.warn(e); }
 }
@@ -3449,7 +3517,7 @@ async function askAI() {
     }
     if (ans) ans.textContent = data.answer || 'Пусто';
   } catch (e) {
-    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nЛокально без Cloudflare /api/ai не работает. Задеплой Pages.';
+    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nОткрой приложение через Cloudflare Worker и проверь доступность /api/ai.';
   }
 }
 
@@ -4132,7 +4200,7 @@ function update() {
   safe('пересчёт', recalc);
   safe('spentBase', syncAllSpentBases);
   renderAll();
-  try { localStorage.setItem('balance-clean-v1', JSON.stringify(state)); } catch (e) {}
+  try { localStorage.setItem('bitbalance-guest-state-v1', JSON.stringify(state)); } catch (e) {}
 }
 
 function exportHistory() {
@@ -4336,7 +4404,7 @@ function exportFile() {
 function init() {
   state = migrate(JSON.parse(JSON.stringify(defaultState)));
   try {
-    const raw = localStorage.getItem('balance-clean-v1');
+    const raw = localStorage.getItem('bitbalance-guest-state-v1');
     if (raw) state = migrate(JSON.parse(raw));
   } catch (e) {}
   $('entryDate').value = todayStr();
@@ -4348,6 +4416,7 @@ function init() {
   refreshSaveStrip();
 }
 init();
+initWelcome();
 </script>
 
 
