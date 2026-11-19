@@ -978,9 +978,11 @@ export default {
         String(error?.stack || error?.message || error)
       );
 
-      return responseJson({
-  error: "Ошибка Worker",
-  details: String(error?.stack || error?.message || error)
+      const details = String(error?.stack || error?.message || error);
+
+return responseJson({
+  error: "Ошибка Worker: " + details,
+  details
 }, 500);
       );
     }
