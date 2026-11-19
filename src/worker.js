@@ -154,6 +154,15 @@ async function ensureSchema(db) {
     window_started_at TEXT NOT NULL,
     blocked_until TEXT
   )`).run();
+
+  // Полное финансовое состояние каждого аккаунта хранится отдельно.
+  await db.prepare(`CREATE TABLE IF NOT EXISTS bb_user_data (
+    user_id TEXT PRIMARY KEY,
+    data_json TEXT NOT NULL,
+    version INTEGER NOT NULL DEFAULT 1,
+    updated_at TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES bb_users(id) ON DELETE CASCADE
+  )`).run();
 }
 
 function originAllowed(request, url) {
@@ -252,7 +261,6 @@ async function parseJson(request) {
     return null;
   }
 }
-
 async function authHandler(request, env, url, pathname) {
   const db = env.DB;
 
@@ -460,6 +468,42 @@ async function saveAiMessages(db, userId, question, answer) {
   ]);
 }
 
+async function userDataHandler(request, user, db) {
+  if (!user) return responseJson({ error: "Требуется вход в аккаунт" }, 401);
+
+  if (request.method === "GET") {
+    const row = await db.prepare(
+      "SELECT data_json, version, updated_at FROM bb_user_data WHERE user_id = ?"
+    ).bind(user.id).first();
+    if (!row) return responseJson({ exists: false, data: null, version: 0 });
+    let data;
+    try { data = JSON.parse(row.data_json); }
+    catch { return responseJson({ error: "Сохранённые данные повреждены" }, 500); }
+    return responseJson({ exists: true, data, version: row.version, updated_at: row.updated_at });
+  }
+
+  if (request.method !== "PUT") return responseJson({ error: "Метод не поддерживается" }, 405);
+  const length = Number(request.headers.get("Content-Length") || 0);
+  if (length > 1_000_000) return responseJson({ error: "Слишком большой объём данных" }, 413);
+  const body = await parseJson(request);
+  if (!body || typeof body.data !== "object" || body.data === null || Array.isArray(body.data)) {
+    return responseJson({ error: "Некорректные финансовые данные" }, 400);
+  }
+  const json = JSON.stringify(body.data);
+  if (json.length > 900_000) return responseJson({ error: "Данные превышают допустимый размер" }, 413);
+  const now = new Date().toISOString();
+  // UPSERT выполняется только для user_id из проверенной сессии, а не из тела запроса.
+  await db.prepare(`INSERT INTO bb_user_data (user_id, data_json, version, updated_at)
+    VALUES (?, ?, 1, ?)
+    ON CONFLICT(user_id) DO UPDATE SET
+      data_json = excluded.data_json,
+      version = bb_user_data.version + 1,
+      updated_at = excluded.updated_at`
+  ).bind(user.id, json, now).run();
+  const row = await db.prepare("SELECT version FROM bb_user_data WHERE user_id = ?")
+    .bind(user.id).first();
+  return responseJson({ ok: true, version: row?.version || 1, updated_at: now });
+}
 async function aiHandler(request, env, user) {
   if (request.method !== "POST") {
     return responseJson({ error: "Method not allowed" }, 405, { Allow: "POST" });
@@ -588,12 +632,21 @@ export default {
         return responseJson({
           ok: true,
           database: true,
+          account_storage: true,
           gemini_configured: Boolean(env.GEMINI_API_KEY)
         });
       }
 
       if (pathname.startsWith("/api/auth/")) {
         return await authHandler(request, env, url, pathname);
+      }
+
+      if (pathname === "/api/data") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        if (request.method !== "GET" && !originAllowed(request, url)) {
+          return responseJson({ error: "Недопустимый источник запроса" }, 403);
+        }
+        return await userDataHandler(request, user, env.DB);
       }
 
       if (pathname === "/api/ai") {
