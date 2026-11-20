@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<html lang="ru" __gcrremoteframetoken="fcf6740d949bcf2175bd4104e9a4d376" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
 <meta name="theme-color" content="#0b1020">
+<meta name="description" content="BitBalance — учёт личных финансов, долгов и накоплений">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>BitBalance — личные финансы</title>
+<title>Баланс</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
@@ -106,8 +107,6 @@
   .field > .recov-box button.recov.min b { color: #7dd3fc; }
   .field > input.hasrec { padding-right: 150px; }
   #toast {
-    position: fixed !important; top: 50% !important; bottom: auto !important; left: 50% !important; right: auto !important;
-    width: calc(100% - 32px); max-width: 420px; transform: translate(-50%, -50%);
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid rgba(129,140,248,.55);
     box-shadow: 0 0 0 1px rgba(99,102,241,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 30px rgba(99,102,241,.2);
@@ -115,8 +114,8 @@
   #toast.toast-ok { border-color: rgba(52,211,153,.55); box-shadow: 0 0 0 1px rgba(16,185,129,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 28px rgba(16,185,129,.18); }
   #toast.toast-warn { border-color: rgba(251,191,36,.55); box-shadow: 0 0 0 1px rgba(245,158,11,.25), 0 12px 40px rgba(0,0,0,.65), 0 0 28px rgba(245,158,11,.18); }
   @keyframes toastIn {
-    from { opacity: 0; transform: translate(-50%, calc(-50% - 12px)) scale(.96); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    from { opacity: 0; transform: translateY(-12px) scale(.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .toast-pop { animation: toastIn .28s ease-out; }
 
@@ -140,73 +139,24 @@
     border-radius: 18px 18px 0 0; padding: 16px;
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-
-  /* BitBalance: адаптация под Telegram Mini App и мобильные safe areas */
-  html, body { min-height: 100%; }
-  body.tg-app { min-height: var(--tg-viewport-stable-height, 100dvh); }
-  body.tg-app main {
-    padding-top: max(88px, calc(var(--tg-content-safe-area-inset-top, 0px) + 18px));
-    padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
-  }
-  body.tg-app nav { padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px)); }
-  button, input, select, textarea { touch-action: manipulation; }
-  .welcome-screen {
-    position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center;
-    padding: max(22px, env(safe-area-inset-top, 0px)) 20px max(22px, env(safe-area-inset-bottom, 0px));
-    background: radial-gradient(900px 600px at 50% 0%, #25205a 0%, #0b1020 62%);
-  }
-  .welcome-card {
-    width: 100%; max-width: 390px; padding: 28px 22px; text-align: center;
-    border: 1px solid rgba(148,163,184,.18); border-radius: 24px;
-    background: linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.98));
-    box-shadow: 0 24px 80px rgba(0,0,0,.38);
-  }
-  .welcome-logo { width: 68px; height: 68px; margin: 0 auto 18px; display:flex; align-items:center; justify-content:center;
-    border-radius: 22px; background: linear-gradient(135deg, var(--acc), var(--acc2)); font-size: 30px; }
-  .welcome-title { font-size: 27px; line-height: 1.15; font-weight: 800; letter-spacing: -.03em; }
-  .welcome-sub { margin: 12px 0 22px; color: #a8b4c7; font-size: 14px; line-height: 1.55; }
-  .welcome-note { margin-top: 14px; color: #8492a8; font-size: 11px; line-height: 1.45; }
-
-  #bbAuthGate { z-index: 200; }
-  #bbAuthGate input { color: #f1f5f9; outline: none; }
-  #bbAuthGate input:focus { border-color: #818cf8; }
-  #bbAccountBar { position: relative; z-index: 5; }
 </style>
 <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.col-span-4{grid-column:span 4 / span 4}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mr-1{margin-right:0.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.h-2{height:0.5rem}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-20{width:5rem}.w-2{width:0.5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-l{border-left-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-700\/40{background-color:rgb(51 65 85 / 0.4)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-2\.5{padding:0.625rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[11px\]{font-size:11px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.text-\[10px\]{font-size:10px}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-semibold{font-weight:600}.font-medium{font-weight:500}.font-normal{font-weight:400}.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:0.5rem}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-2{width:0.5rem}.w-full{width:100%}.w-20{width:5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-b{border-bottom-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-red-400\/40{border-color:rgb(248 113 113 / 0.4)}.border-red-400\/50{border-color:rgb(248 113 113 / 0.5)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-amber-500\/20{background-color:rgb(245 158 11 / 0.2)}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.bg-red-500\/20{background-color:rgb(239 68 68 / 0.2)}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.pb-2{padding-bottom:0.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-normal{font-weight:400}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.opacity-60{opacity:0.6}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style></head>
 <body class="text-slate-100 min-h-screen" style="background: radial-gradient(1200px 600px at 10% -10%, #1e1b4b 0%, #0b1020 55%) fixed;">
-<div id="bbAuthGate" class="welcome-screen">
-  <div class="welcome-card">
-    <div class="welcome-logo">₽</div>
-    <div class="welcome-title">BitBalance</div>
-    <div class="welcome-sub">Личный финансовый помощник. Войди или создай аккаунт — твои данные будут храниться отдельно и синхронизироваться с сервером.</div>
-    <div class="flex gap-2 mb-3">
-      <button id="bbLoginTab" type="button" class="btn btn-p flex-1" onclick="bbSetAuthMode('login')">Вход</button>
-      <button id="bbRegisterTab" type="button" class="btn btn-s flex-1" onclick="bbSetAuthMode('register')">Регистрация</button>
-    </div>
-    <form id="bbAuthForm" class="space-y-3" onsubmit="event.preventDefault();bbAuthenticate();">
-      <label class="field block"><span class="lbl">Электронная почта</span><input id="bbAuthEmail" type="email" autocomplete="username" placeholder="name@example.com" required></label>
-      <label class="field block"><span class="lbl">Пароль</span><input id="bbAuthPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Не менее 8 символов" required></label>
-      <div id="bbAuthError" class="hidden text-sm text-red-300 text-left"></div>
-      <button id="bbAuthSubmit" type="submit" class="btn btn-p w-full">Войти</button>
-    </form>
-    <div class="welcome-note">Данные старого гостевого режима автоматически не переносятся. Каждый новый аккаунт начинает с чистого состояния.</div>
-  </div>
-</div>
-<div id="bbAccountBar" class="hidden max-w-md mx-auto px-4 pt-3">
-  <div class="card p-3 flex items-center justify-between gap-2">
-    <div class="min-w-0"><div class="sub">Аккаунт</div><div id="bbAccountEmail" class="text-sm font-semibold truncate"></div><div id="bbSyncStatus" class="sub">Синхронизация включена</div></div>
-    <button type="button" class="btn btn-s shrink-0" onclick="bbLogoutNow()">Выйти</button>
-  </div>
-</div>
-
 
 <div id="errBanner" onclick="this.classList.add('hidden')" class="hidden fixed top-0 left-0 right-0 z-50 bg-red-600/95 text-white text-xs p-3 cursor-pointer"></div>
 
 <main class="max-w-md mx-auto px-4 pt-4 pb-28 space-y-4">
+<div id="guestModeHint" class="sub text-center py-1">Гостевой режим · данные хранятся на этом устройстве</div>
+
 
   <!-- ГЛАВНАЯ -->
   <section id="tab-home" class="space-y-4 fade-in">
     <div id="remind" class="card p-4 border border-amber-500/40"><div class="text-sm text-amber-200 mb-1">🔔 Не вносили данные 4 дн. Последняя запись — 13 ноября 2026.</div></div>
+    <div id="saveStrip" class="card p-3 border border-amber-500/50 flex items-center justify-between gap-2 hidden">
+      <span class="text-sm text-amber-200">● Есть несохранённые изменения</span>
+      <button class="btn btn-p py-1.5 px-3 text-sm" onclick="exportFile()">💾 Сохранить</button>
+    </div>
+
     <div class="flex items-center justify-between">
       <div>
         <div class="sub">Баланс</div>
@@ -219,6 +169,7 @@
       </div>
       <div class="flex gap-1.5">
         <button onclick="stepBack()" class="ico" title="Шаг назад — отменить последнее действие">↩</button>
+        <button onclick="exportFile()" class="ico" title="Сохранить файл">💾</button>
         <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn">👁</button>
       </div>
     </div>
@@ -235,7 +186,7 @@
         <button class="tfbtn shrink-0" data-tf="year" onclick="setTf('year')">Год</button>
         <button class="modebtn on shrink-0" data-mode="candle" onclick="setMode('candle')">Свечи</button>
         <button class="modebtn shrink-0" data-mode="line" onclick="setMode('line')">Линия</button>
-        <button class="seg shrink-0" id="hMaBtn" onclick="toggleHomeMa()" title="Moving Average 7 и 25">MA</button>
+        <button class="seg shrink-0" id="hMaBtn" onclick="toggleHomeMa()" title="Moving Average 7 и 25">MA</button><button class="seg shrink-0" onclick="changeChartZoom(1)" title="Увеличить">＋</button><button class="seg shrink-0" onclick="changeChartZoom(-1)" title="Уменьшить">－</button>
       </div>
       <div class="relative w-full h-56 rounded-xl overflow-hidden">
         <canvas id="chart" class="w-full h-full" width="1110" height="672"></canvas>
@@ -402,7 +353,7 @@
         <form onsubmit="addDebt(event)" class="space-y-2 mt-3" __gcruniqueid="25">
           <div class="field"><span class="lbl">Название (у кого / за что)</span><input type="text" id="dName" required="" __gcruniqueid="26"></div>
           <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="dAmt" required="" __gcruniqueid="27"></div>
-          <div class="field"><span class="lbl">Срок погашения (необязательно)</span><input type="date" id="dDue"></div>
+          <div class="grid grid-cols-2 gap-2"><div class="field"><span class="lbl">Дата возникновения долга</span><input type="date" id="dDate"></div><div class="field"><span class="lbl">Срок погашения</span><input type="date" id="dDue"></div></div>
           <label class="flex items-start gap-2 text-sm text-slate-300 px-1">
             <input type="checkbox" id="dCredit" checked="" class="mt-1">
             <span><b>Деньги уже получил → в копилку</b><br>
@@ -504,6 +455,11 @@
     </div>
 
     <div class="card p-4">
+      <div class="font-semibold mb-3">Здоровье денег</div>
+      <div id="anHealth" class="space-y-4"><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Обязательные расходы</span><b><span class="acc">84%</span> дохода</b></div><div class="sub mt-0.5">Порог: не выше 50%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Остаток после трат</span><b><span class="acc">9%</span> дохода</b></div><div class="sub mt-0.5">Порог: не ниже 20%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Запас прочности</span><b><span class="acc">0</span> дн.</b></div><div class="sub mt-0.5">Порог: не меньше 30 дн.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Долги</span><b>закроются за <span class="acc">42</span> мес.</b></div><div class="sub mt-0.5">Порог: закрыть за 12 мес.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#34d399"></span>Дни в плюсе / минусе</span><b><span class="text-emerald-300">5</span> / <span class="text-red-300">2</span></b></div><div class="sub mt-0.5">Порог: плюсовых ≥ минусовых</div></div></div>
+    </div>
+
+    <div class="card p-4">
       <div class="font-semibold mb-2">График баланса</div>
       <div class="flex items-center gap-1 mb-2 flex-nowrap overflow-x-auto" style="scrollbar-width:none">
         <button class="tfbtn shrink-0" data-antf="day" onclick="setAnTf('day')">День</button>
@@ -512,65 +468,23 @@
         <button class="tfbtn shrink-0" data-antf="year" onclick="setAnTf('year')">Год</button>
         <button class="modebtn on shrink-0" data-anmode="candle" onclick="setAnMode('candle')">Свечи</button>
         <button class="modebtn shrink-0" data-anmode="line" onclick="setAnMode('line')">Линия</button>
-        <button class="seg on shrink-0" id="anMaBtn" onclick="toggleAnMa()" title="MA 7 и 25">MA</button>
+        <button class="seg on shrink-0" id="anMaBtn" onclick="toggleAnMa()" title="MA 7 и 25">MA</button><button class="seg shrink-0" onclick="changeChartZoom(1)" title="Увеличить">＋</button><button class="seg shrink-0" onclick="changeChartZoom(-1)" title="Уменьшить">－</button>
       </div>
       <div class="relative w-full h-72 rounded-xl overflow-hidden bg-slate-950/50">
         <canvas id="anChart" class="w-full h-full" width="960" height="660"></canvas>
         <div id="anCandlePop" class="hidden absolute top-2 right-2 max-w-[78%] card p-3 text-xs z-10 shadow-xl"></div>
       </div>
       <div id="anChartEmpty" class="sub mt-2 hidden">Проведите день, чтобы увидеть график</div>
-      <div id="anChartSummary" class="grid grid-cols-2 gap-2 mt-3 text-xs"></div>
+      <div id="anChartSummary" class="grid grid-cols-2 gap-2 mt-3 text-xs"><div class="card p-2"><div class="sub">Открытие</div><b>−728&nbsp;900 ₽</b></div><div class="card p-2"><div class="sub">Закрытие</div><b>−736&nbsp;780 ₽</b></div><div class="card p-2"><div class="sub">Изменение</div><b class="text-red-300">−7&nbsp;880 ₽</b></div><div class="card p-2"><div class="sub">Свечей</div><b>2</b></div></div>
       <div class="sub mt-2">MA 7/25 — скользящие средние по закрытию свечи (жёлтая / золотая). Вертикальные линии — периоды.</div>
-    </div>
-
-    <div class="card p-4" id="aiCard">
-      <div class="font-semibold mb-2">🤖 AI-советник</div>
-      <div class="sub text-[11px] mb-2">Помнит последние сообщения и анализирует текущие финансовые данные.</div>
-      <label class="block text-xs text-slate-400 mb-1" for="aiPersonality">Характер советника</label>
-      <select id="aiPersonality" onchange="setAiPersonality(this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm mb-2">
-        <option value="choleric">Холерик — энергичный и требовательный</option>
-        <option value="economist">Экономист — точный и расчётливый</option>
-        <option value="miser">Жадина — бережёт каждую копейку</option>
-        <option value="entrepreneur">Предприниматель — ищет рост дохода</option>
-        <option value="generous">Щедрый — разумно тратит на близких</option>
-        <option value="mentor">Наставник — спокойный и дисциплинированный</option>
-      </select>
-      <div id="aiConversation" class="space-y-2 max-h-72 overflow-y-auto mb-2"></div>
-      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Напиши вопрос. Советник помнит контекст диалога…"></textarea>
-      <div class="grid grid-cols-2 gap-2 mt-2">
-        <button type="button" class="btn btn-p py-2" onclick="askAI(false)">Спросить</button>
-        <button type="button" class="btn btn-g py-2" onclick="askAI(true)">Анализ отчёта</button>
-      </div>
-      <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
-    </div>
-
-    <div class="card p-4">
-      <div class="font-semibold mb-1">Здоровье денег</div><div class="sub mb-3">Оценка по данным выбранного периода и вашим порогам. Чем больше заполнена история, тем точнее результат.</div>
-      <div id="anHealth" class="space-y-4"><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Обязательные расходы</span><b><span class="acc">84%</span> дохода</b></div><div class="sub mt-0.5">Порог: не выше 50%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Остаток после трат</span><b><span class="acc">9%</span> дохода</b></div><div class="sub mt-0.5">Порог: не ниже 20%</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Запас прочности</span><b><span class="acc">0</span> дн.</b></div><div class="sub mt-0.5">Порог: не меньше 30 дн.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#f87171"></span>Долги</span><b>закроются за <span class="acc">42</span> мес.</b></div><div class="sub mt-0.5">Порог: закрыть за 12 мес.</div></div><div><div class="flex justify-between items-center text-sm"><span class="text-slate-300"><span class="inline-block w-2 h-2 rounded-full mr-1" style="background:#34d399"></span>Дни в плюсе / минусе</span><b><span class="text-emerald-300">5</span> / <span class="text-red-300">2</span></b></div><div class="sub mt-0.5">Порог: плюсовых ≥ минусовых</div></div></div>
     </div>
 
     <div class="card p-4">
       <div class="font-semibold mb-1">🔥 Тепловая карта · обязательные</div>
-      <div class="sub mb-3">Размер блока показывает последний записанный расход по обязательной категории. Цвет и процент сравнивают его с предыдущей записью этой же категории: красный — расход вырос, зелёный — снизился, серый — пока нет сравнения.</div>
-      <div id="anHeat" class="w-full" style="min-height:120px"></div>
+      <div class="sub mb-3">Размер — сумма последнего пополнения. Цвет — % к предыдущему пополнению этой же категории (1000→1200 = +20%). Красный = выросло, зелёный = снизилось.</div>
+      <div id="anHeat" class="w-full" style="min-height:120px"><div style="display:flex;flex-wrap:wrap;gap:4px;width:100%"><div style="flex:47.62 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(246,70,93,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Жена</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↑ 100.0%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">2&nbsp;000 ₽ <span style="opacity:.8">← 1&nbsp;000 ₽</span></div></div><div style="flex:23.81 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(14,203,129,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Квартира</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↓ 84.6%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">1&nbsp;000 ₽ <span style="opacity:.8">← 6&nbsp;500 ₽</span></div></div><div style="flex:22.62 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(246,70,93,0.51);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Продукты</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↑ 11.8%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">950 ₽ <span style="opacity:.8">← 850 ₽</span></div></div><div style="flex:22.00 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(14,203,129,0.90);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Родненький</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">↓ 75.0%</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">150 ₽ <span style="opacity:.8">← 600 ₽</span></div></div><div style="flex:22.00 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:rgba(71,85,105,0.85);display:flex;flex-direction:column;justify-content:center"><div style="font-weight:700;font-size:13px;color:#fff">Интернет</div><div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">—</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">100 ₽</div></div></div></div>
       <div id="anHeatEmpty" class="sub hidden">Нет обязательных категорий с тратами за период</div>
     </div>
-
-<div class="card p-4">
-      <div class="font-semibold mb-3">Разбор периода</div>
-      <div id="anInsights" class="space-y-2"><div class="card p-2 mb-2 grid grid-cols-2 gap-2 text-center text-xs"><div><div class="sub">Долги</div><b class="text-red-300 text-sm">737&nbsp;000 ₽</b></div><div><div class="sub">Копилка</div><b class="text-emerald-300 text-sm">220 ₽</b></div></div><div class="text-sm text-slate-200">Баланс сейчас <b class="acc">−736&nbsp;780 ₽</b>: копилка <b class="acc">220 ₽</b> + подушка <b class="acc">0 ₽</b> − долги <b class="acc">737&nbsp;000 ₽</b>.</div><div class="text-sm text-slate-200">Доход в день <b class="acc">6&nbsp;375 ₽</b>, траты <b class="acc">5&nbsp;785 ₽</b>, остаётся <b class="acc">590 ₽</b> до долгов.</div><div class="text-sm text-slate-200">При текущем потоке долги закроются примерно через <b class="acc">1250</b> дн. (≈ 42 мес.).</div><div class="text-sm text-slate-200">Больше всего уходит на «Квартира»: <b class="acc">31&nbsp;000 ₽</b> (67% трат).</div><div class="text-sm text-slate-200">Прогноз баланса через 30 дней: <b class="acc">−719&nbsp;080 ₽</b>.</div></div>
-    </div>
-
-    <div class="card p-4">
-      <div class="font-semibold mb-1">💡 Совет дня</div>
-      <div id="anTip" class="text-sm text-slate-200 leading-relaxed">Не сравнивай себя с чужим доходом. Сравни этот месяц с прошлым своим. Из необязательных за учёт ~3&nbsp;380 ₽: 10% ≈ 338 ₽ — хороший взнос в подушку.</div>
-    </div>
-
-
-
-
-
-
 
 
     
@@ -580,10 +494,22 @@
       <span id="anCash">220 ₽</span><span id="hDebt">737&nbsp;000 ₽</span>
       <span id="hCush">0 ₽</span><span id="hCushRec"><span class="rec">Рек. <b class="acc">7&nbsp;600 ₽</b> в день · до цели ещё <b class="acc">683&nbsp;571,43 ₽</b> · к добору ~98&nbsp;800 ₽</span></span><i id="hCushBar" style="width: 0%;"></i>
     </div>
+<div class="card p-4">
+      <div class="font-semibold mb-3">Главное</div>
+      <div id="anInsights" class="space-y-2"><div class="card p-2 mb-2 grid grid-cols-2 gap-2 text-center text-xs"><div><div class="sub">Долги</div><b class="text-red-300 text-sm">737&nbsp;000 ₽</b></div><div><div class="sub">Копилка</div><b class="text-emerald-300 text-sm">220 ₽</b></div></div><div class="text-sm text-slate-200">Баланс сейчас <b class="acc">−736&nbsp;780 ₽</b>: копилка <b class="acc">220 ₽</b> + подушка <b class="acc">0 ₽</b> − долги <b class="acc">737&nbsp;000 ₽</b>.</div><div class="text-sm text-slate-200">Доход в день <b class="acc">6&nbsp;375 ₽</b>, траты <b class="acc">5&nbsp;785 ₽</b>, остаётся <b class="acc">590 ₽</b> до долгов.</div><div class="text-sm text-slate-200">При текущем потоке долги закроются примерно через <b class="acc">1250</b> дн. (≈ 42 мес.).</div><div class="text-sm text-slate-200">Больше всего уходит на «Квартира»: <b class="acc">31&nbsp;000 ₽</b> (67% трат).</div><div class="text-sm text-slate-200">Прогноз баланса через 30 дней: <b class="acc">−719&nbsp;080 ₽</b>.</div></div>
+    </div>
+    <div class="card p-4">
+      <div class="font-semibold mb-1">💡 Совет дня</div>
+      <div id="anTip" class="text-sm text-slate-200 leading-relaxed">Не сравнивай себя с чужим доходом. Сравни этот месяц с прошлым своим. Из необязательных за учёт ~3&nbsp;380 ₽: 10% ≈ 338 ₽ — хороший взнос в подушку.</div>
+    </div>
 
-
-
-
+    <div class="card p-4" id="aiCard">
+      <div class="font-semibold mb-2">🤖 AI-советник</div>
+      <div class="sub text-[11px] mb-2">Советы по твоим цифрам (Gemini, бесплатно). Нужен деплой с /api/ai.</div>
+      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?" __gcruniqueid="47"></textarea>
+      <button type="button" class="btn btn-p w-full mt-2 py-2" onclick="askAI()">Спросить</button>
+      <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
+    </div>
 
 
     <div class="card p-4">
@@ -647,6 +573,12 @@
         <div class="font-semibold">🧾 История</div>
         <button class="btn btn-s py-1 text-xs" onclick="undoLast()">↩ Отменить последнюю</button>
       </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
+        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile').click()">⬇️ Импорт истории</button>
+      </div>
+      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)" __gcruniqueid="65">
+      <div class="sub">Экспорт — только операции (JSON). Импорт добавит записи без дублей по id.</div>
     </div>
     <div id="histList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Жинка</span><b class="text-red-300">−2&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319089)">✏️</button><button class="ico" onclick="delEntry(1794568319089)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−950 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+2&nbsp;600 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;720 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319088)">✏️</button><button class="ico" onclick="delEntry(1794568319088)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319087)">✏️</button><button class="ico" onclick="delEntry(1794568319087)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Интернет</span><b class="text-red-300">−100 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794506458967)">✏️</button><button class="ico" onclick="delEntry(1794506458967)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−6&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;280 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−600 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−8&nbsp;380 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355279)">✏️</button><button class="ico" onclick="delEntry(1794500355279)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026 <span class="sub font-normal">· Жинка</span></div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">долг «Жинка»</span><b class="text-red-300">+10&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">в копилку (из долга)</span><b class="text-emerald-300">+10&nbsp;000 ₽</b></div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="delEntry(1794500355278)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355276)">✏️</button><button class="ico" onclick="delEntry(1794500355276)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">11 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−850 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355275)">✏️</button><button class="ico" onclick="delEntry(1794500355275)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+12&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Марат учеридитель</span><b class="text-red-300">−12&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355274)">✏️</button><button class="ico" onclick="delEntry(1794500355274)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355273)">✏️</button><button class="ico" onclick="delEntry(1794500355273)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">9 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355272)">✏️</button><button class="ico" onclick="delEntry(1794500355272)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">7 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 900 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355270)">✏️</button><button class="ico" onclick="delEntry(1794500355270)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">6 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;400 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355269)">✏️</button><button class="ico" onclick="delEntry(1794500355269)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">5 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;800 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 500 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355268)">✏️</button><button class="ico" onclick="delEntry(1794500355268)">🗑</button></div></div></div></div>
   </section>
@@ -674,60 +606,6 @@
         <span>Не исчезать, пока не нажму</span>
         <input id="toastSticky" type="checkbox" onchange="setToastSticky(this.checked)">
       </label>
-    </div>
-
-    <div class="card p-4 space-y-3" id="aiBehaviorSettings">
-      <div class="font-semibold">🤖 Поведение финансового помощника</div>
-      <div class="sub">Настрой, каким будет советник. Изменения сохраняются автоматически и влияют на его ответы.</div>
-      <label class="block text-xs text-slate-400" for="aiPersonalitySettings">Характер помощника</label>
-      <select id="aiPersonalitySettings" onchange="setAiPersonality(this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm">
-        <option value="choleric">Холерик — энергичный и требовательный</option>
-        <option value="economist">Экономист — точный и расчётливый</option>
-        <option value="miser">Жадина — бережёт каждую копейку</option>
-        <option value="entrepreneur">Предприниматель — ищет рост дохода</option>
-        <option value="generous">Щедрый — разумно тратит на близких</option>
-        <option value="mentor">Наставник — спокойный и дисциплинированный</option>
-      </select>
-
-      <label class="block text-xs text-slate-400" for="aiTone">Стиль общения</label>
-      <select id="aiTone" onchange="setAiBehavior('aiTone', this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm">
-        <option value="soft">Мягкий — спокойно и поддерживающе</option>
-        <option value="balanced">Сбалансированный — прямо, но уважительно</option>
-        <option value="strict">Строгий — требовательно, без грубости</option>
-      </select>
-
-      <label class="block text-xs text-slate-400" for="aiInitiative">Инициативность</label>
-      <select id="aiInitiative" onchange="setAiBehavior('aiInitiative', this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm">
-        <option value="on_request">Только по запросу</option>
-        <option value="smart">Умный помощник — сам замечает важное</option>
-        <option value="coach">Проактивный тренер — предлагает следующие шаги</option>
-      </select>
-
-      <label class="block text-xs text-slate-400" for="aiAdviceFrequency">Частота советов</label>
-      <select id="aiAdviceFrequency" onchange="setAiBehavior('aiAdviceFrequency', this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm">
-        <option value="rare">Редко — только самое важное</option>
-        <option value="moderate">Умеренно — когда совет действительно полезен</option>
-        <option value="often">Часто — дополнительные идеи и рекомендации</option>
-      </select>
-
-      <div class="border-t border-slate-700 pt-3 space-y-2">
-        <div class="font-medium text-sm">🔔 О чём напоминать</div>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="morning" onchange="setAiNotification('morning',this.checked)"> Утренние планы</label>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="day" onchange="setAiNotification('day',this.checked)"> Дневные напоминания</label>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="evening" onchange="setAiNotification('evening',this.checked)"> Вечерний итог</label>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="debts" onchange="setAiNotification('debts',this.checked)"> Долги и приближающиеся платежи</label>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="overspending" onchange="setAiNotification('overspending',this.checked)"> Перерасходы</label>
-        <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="savings" onchange="setAiNotification('savings',this.checked)"> Накопления и цели</label>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <div><label class="block text-xs text-slate-400 mb-1" for="aiNotifyTime">Начало напоминаний</label><input id="aiNotifyTime" type="time" onchange="setAiBehavior('aiNotifyTime',this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm"></div>
-        <div><label class="block text-xs text-slate-400 mb-1" for="aiMaxNotifications">Лимит в день</label><input id="aiMaxNotifications" type="number" min="1" max="10" onchange="setAiBehavior('aiMaxNotifications',this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm"></div>
-        <div><label class="block text-xs text-slate-400 mb-1" for="aiQuietStart">Тихие часы: с</label><input id="aiQuietStart" type="time" onchange="setAiBehavior('aiQuietStart',this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm"></div>
-        <div><label class="block text-xs text-slate-400 mb-1" for="aiQuietEnd">Тихие часы: до</label><input id="aiQuietEnd" type="time" onchange="setAiBehavior('aiQuietEnd',this.value)" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm"></div>
-      </div>
-      <div class="sub">Эти параметры задают правила советника. Сейчас напоминания приложения работают, пока оно открыто; фоновые Telegram-уведомления здесь не включаются.</div>
-      <button class="btn btn-s w-full py-2" onclick="clearAiConversation()">Очистить память диалога</button>
     </div>
 
     <div class="card p-4 space-y-3">
@@ -843,6 +721,14 @@
         </select>
         <button class="btn btn-d flex-1" onclick="deletePeriod()">🗑 Удалить операции</button>
       </div>
+      <button class="btn btn-s w-full" onclick="exportFile()">💾 Сохранить файл приложения</button>
+      <div class="sub">Скачивает Balance.html со всеми данными. Замените им старый файл.</div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
+        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile2').click()">⬇️ Импорт истории</button>
+      </div>
+      <input type="file" id="importHistFile2" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
+      <div class="sub">История операций в JSON. Импорт не затирает текущие записи с тем же id.</div>
       <button class="btn btn-d w-full" onclick="deleteAll()">🗑 Удалить всё</button>
       <div class="sub">Опасная зона: удалит операции, категории, долги и автоплатежи.</div>
     </div>
@@ -861,7 +747,7 @@
 <p><b>График.</b> Свечи считают путь операций внутри дня/периода (макс./мин. по цепочке: доход → траты → долг и т.д.). Нажатие на свечу — открытие, закрытие, максимум, минимум и список операций. День: 14 дней; неделя/месяц: по дням; год: по неделям.</p>
 <p><b>Уведомления.</b> Всплывающее сообщение с затемнением фона (успех / предупреждение). Отмена и удаление показывают, что именно отменено.</p>
 <p><b>↩ на главной</b> — шаг назад по любому действию (не только операции). В истории — отмена последней записи.</p>
-<p><b>Сохранение.</b> Изменения автоматически сохраняются на этом устройстве после каждого изменения.</p>
+<p><b>Сохранение.</b> «💾 Сохранить» скачивает Balance.html с вашими данными. Замените им старый файл, иначе изменения пропадут.</p>
 <p class="text-sky-200 font-semibold mt-3">🆕 Обновления (changelog)</p>
 <p><b>12.11.2026</b> — Экспорт истории с категориями/долгами; импорт воссоздаёт справочники; автодолги из нехватки видны в «Деньги».<br><b>12.11.2026</b> — График перенесён в аналитику + MA 7/25; тепловая карта обязательных; на главной сводный блок «день / копилка / долги».<br><b>12.11.2026</b> — График: вертикальные линии по времени, плотнее свечи, рабочие средние 7/25; подушка под «За день»; «Провести день» снова внизу, сворачивается вручную.<br><b>12.11.2026</b> — «Провести день» сверху и свёрнут; график ближе к Bybit; аналитика = тот же график + MA 7/25; тап по категории/долгу — последние 10 операций; расход из копилки виден в истории; импорт старой истории совместим.<br><b>12.11.2026</b> — Экспорт и импорт истории (JSON). Подписи без программного жаргона («итог за период», «уведомление»).<br><b>12.11.2026</b> — Исправлено: нераспределённый остаток дня снова явно уходит в копилку (и в уведомлении/истории).<br><b>12.11.2026</b> — Долг «получил деньги»: +копилка и +долг, баланс без изменений; галочка в форме; автодолг без зачисления в копилку; предупреждения в уведомлениях.</p>
 <p><b>12.11.2026</b> — График: high/low по цепочке операций; сводка по свече со списком операций; день = 14 дней.</p>
@@ -885,7 +771,7 @@
 </nav>
 
 <div id="toastBackdrop" class="fixed inset-0 z-[60] bg-black/55 backdrop-blur-[2px] hidden" onclick="hideToast()"></div>
-<div id="toast" onclick="hideToast()" class="fixed z-[70] text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden"></div>
+<div id="toast" onclick="hideToast()" class="fixed top-4 left-3 right-3 z-[70] mx-auto max-w-md text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden">Файл сохранён. Замените им старый Balance.html<div class="text-[11px] text-slate-400 mt-2 text-center">нажмите, чтобы закрыть</div></div>
 
 <!-- Диалог нехватки средств -->
 <div id="shortfallModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
@@ -910,7 +796,7 @@
 
 <script id="appScript">
 /* ===================== STATE ===================== */
-const defaultState = /*__STATE__*/{"v":12,"startCash":0,"startCushion":0,"cushionMonths":3,"cushionInclude":"need","cushionBase":"avg","windowDays":30,"strategy":"snow","hideBal":false,"chartMode":"candle","tf":"day","fontSize":"m","accent":"indigo","toastMode":"auto","toastSec":6,"toastSticky":false,"remindDays":2,"incomeCats":[{"id":1,"name":"Работа"}],"cats":[{"id":1,"name":"Жильё","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":2,"name":"Продукты","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":3,"name":"Транспорт","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":4,"name":"Связь","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":5,"name":"Прочее","need":false,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null}],"debts":[],"autopay":[],"savings":[],"history":[],"cutLevel":"eff","preset":"50/30/20","budget":{"needs":50,"wants":30,"goals":10,"cushion":10},"health":{"needsMax":50,"saveMin":20,"runwayMin":30,"debtMonths":12}}/*__STATE_END__*/;
+const defaultState = /*__STATE__*/{"v":12,"startCash":0,"startCushion":0,"cushionMonths":3,"cushionInclude":"need","cushionBase":"avg","windowDays":30,"strategy":"snow","hideBal":false,"chartMode":"candle","tf":"day","fontSize":"m","accent":"indigo","toastMode":"auto","toastSec":6,"toastSticky":false,"remindDays":2,"incomeCats":[{"id":1,"name":"Работа"},{"id":1794049419536,"name":"Подработка"}],"cats":[{"id":1,"name":"Квартира","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":{"amount":30000,"date":"2026-11-12","start":"2026-11-07"}},{"id":2,"name":"Жена","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":3,"name":"Авто","need":false,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":4,"name":"Продукты","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":1794500355271,"name":"Родненький","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":null},{"id":1794506458964,"name":"Интернет","need":true,"rare":false,"archived":false,"resetDate":"","spentBase":0,"plan":{"amount":1500,"date":"2026-11-30","start":"2026-11-12"}}],"debts":[{"id":1,"name":"Мурад Квен","amount":80000,"due":"2026-12-31","date":"","rate":0,"archived":false,"archivedAt":""},{"id":2,"name":"Кемыч","amount":160000,"due":"2026-12-31","date":"","rate":0,"archived":false,"archivedAt":""},{"id":3,"name":"Аресты","amount":440000,"due":"","date":"","rate":0,"archived":false,"archivedAt":""},{"id":1794049419537,"name":"Марат учеридитель","amount":49000,"due":"2026-12-31","date":"2026-11-07","rate":0,"archived":false,"archivedAt":""},{"id":1794049419539,"name":"Марат повар","amount":3000,"due":"2026-12-31","date":"2026-11-07","rate":0,"archived":false,"archivedAt":""},{"id":1794049419541,"name":"Штраф Авто","amount":7500,"due":"2026-12-31","date":"2026-11-07","rate":0,"archived":false,"archivedAt":""},{"id":1794049419543,"name":"Штраф Мусор","amount":2000,"due":"2026-12-31","date":"2026-11-07","rate":0,"archived":false,"archivedAt":""},{"id":1794500355277,"name":"Жинка","amount":10000,"due":"2026-11-16","date":"2026-11-12","rate":0,"archived":false,"archivedAt":""}],"autopay":[],"savings":[{"id":9001,"name":"Копилка Ястреб","kind":"goal","archived":false,"closedAt":"","closedAs":"","closedAmount":0,"closedFunded":0,"plan":{"amount":100000,"date":"","start":"2026-11-01"}}],"history":[{"id":1794500355268,"type":"day","date":"2026-11-05","income":4000,"incomeCat":"1","expenses":{"2":1000,"3":1800,"4":700},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355269,"type":"day","date":"2026-11-06","income":5000,"incomeCat":"1","expenses":{"1":3500,"4":1400},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355270,"type":"day","date":"2026-11-07","income":5000,"incomeCat":"1","expenses":{"1":3000,"4":1700},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355272,"type":"day","date":"2026-11-09","income":5000,"incomeCat":"1","expenses":{"1":3000,"4":2000,"1794500355271":300},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355273,"type":"day","date":"2026-11-10","income":5000,"incomeCat":"1","expenses":{"1":5000},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355274,"type":"day","date":"2026-11-10","income":12000,"incomeCat":"1794049419536","expenses":{},"debtPays":{"1794049419537":12000},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355275,"type":"day","date":"2026-11-11","income":5000,"incomeCat":"1","expenses":{"1":4000,"4":850,"1794500355271":150},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355276,"type":"day","date":"2026-11-12","income":5000,"incomeCat":"1","expenses":{"1":5000},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794500355278,"type":"debt","date":"2026-11-12","income":0,"incomeCat":null,"expenses":{},"debtPays":{},"cushOut":0,"cushIn":0,"note":"Жинка","debtId":1794500355277,"debtAmt":10000,"creditCash":true},{"id":1794500355279,"type":"day","date":"2026-11-12","income":0,"incomeCat":"1","expenses":{"1":6500,"3":1280,"1794500355271":600},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794506458967,"type":"day","date":"2026-11-12","income":0,"incomeCat":"1","expenses":{"1794506458964":100},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794568319087,"type":"day","date":"2026-11-13","income":0,"incomeCat":"1","expenses":{"2":2000},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794568319088,"type":"day","date":"2026-11-13","income":5000,"incomeCat":"1","expenses":{"1":1000,"3":300,"4":950,"1794500355271":150},"debtPays":{},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]},{"id":1794568319089,"type":"day","date":"2026-11-13","income":0,"incomeCat":"1","expenses":{},"debtPays":{"1794500355277":2500},"savings":{},"savSpend":{},"cushOut":0,"cushIn":0,"note":"","autoItems":[],"autoMk":[]}],"cutLevel":"eff","preset":"50/30/20","budget":{"needs":50,"wants":30,"goals":10,"cushion":10},"health":{"needsMax":50,"saveMin":20,"runwayMin":30,"debtMonths":12}}/*__STATE_END__*/;
 
 /* ===================== UTILS ===================== */
 const $ = id => document.getElementById(id);
@@ -1027,6 +913,7 @@ function confirmStep(key, text) {
 let state = null;
 let undoStack = []; // снимки state для «Шаг назад»
 let R = {};
+let exported = '';
 let editingId = null;
 let uiEdit = null; // { kind: 'cat'|'debt', id }
 let entryMode = 'full';
@@ -1034,6 +921,7 @@ let anTf = 'week';
 let anMode = 'candle';
 let anMa = true;
 let homeMa = false;
+let chartZoom = 1; // 0.5–2.5: число отображаемых свечей
 let quickKind = 'exp';
 let notifiedDay = null;
 
@@ -1113,16 +1001,6 @@ function migrate(s) {
     toastMode: s.toastMode || 'auto',
     toastSec: Math.max(1, num(s.toastSec) || 6),
     toastSticky: !!s.toastSticky,
-    aiPersonality: ['choleric','economist','miser','entrepreneur','generous','mentor'].includes(s.aiPersonality) ? s.aiPersonality : 'choleric',
-    aiTone: ['soft','balanced','strict'].includes(s.aiTone) ? s.aiTone : 'balanced',
-    aiInitiative: ['on_request','smart','coach'].includes(s.aiInitiative) ? s.aiInitiative : 'smart',
-    aiAdviceFrequency: ['rare','moderate','often'].includes(s.aiAdviceFrequency) ? s.aiAdviceFrequency : 'moderate',
-    aiNotifications: Array.isArray(s.aiNotifications) ? [...new Set(s.aiNotifications.filter(x => ['morning','day','evening','debts','overspending','savings'].includes(x)))].slice(0, 6) : ['debts','overspending'],
-    aiNotifyTime: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(s.aiNotifyTime || '')) ? s.aiNotifyTime : '09:00',
-    aiQuietStart: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(s.aiQuietStart || '')) ? s.aiQuietStart : '22:00',
-    aiQuietEnd: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(s.aiQuietEnd || '')) ? s.aiQuietEnd : '08:00',
-    aiMaxNotifications: Math.min(10, Math.max(1, Math.round(num(s.aiMaxNotifications) || 3))),
-    aiConversation: Array.isArray(s.aiConversation) ? s.aiConversation.filter(m => m && ['user','assistant'].includes(m.role)).slice(-20).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 5000) })) : [],
     remindDays: Math.max(0, Math.round(num(s.remindDays) ?? 2)),
     incomeCats,
     cats,
@@ -1571,7 +1449,8 @@ function drawBalanceChart(canvasId, bars, mode, emptyId, tf, opts) {
   }
   if (!bars.length) return;
 
-  const show = bars.slice(-60);
+  const visibleCount = Math.max(8, Math.min(60, Math.round(60 / chartZoom)));
+  const show = bars.slice(-visibleCount);
   const vals = [];
   show.forEach(b => vals.push(b.high, b.low, b.open, b.close));
   let maxV = Math.max(...vals);
@@ -1731,6 +1610,12 @@ function drawBalanceChart(canvasId, bars, mode, emptyId, tf, opts) {
     });
   }
 }
+function changeChartZoom(direction) {
+  chartZoom = Math.max(0.5, Math.min(2.5, Math.round((chartZoom + direction * 0.25) * 100) / 100));
+  renderHome();
+  renderAnalytics();
+}
+
 function lastColor(show) {
   if (!show.length) return '#0ecb81';
   const a = show[0].open, b = show[show.length - 1].close;
@@ -2999,7 +2884,8 @@ function debtEditor(d) {
     '<div class="field"><span class="lbl">Название</span><input id="edName" value="' + esc(d.name) + '"></div>' +
     '<div class="grid grid-cols-2 gap-2">' +
     '<div class="field"><span class="lbl">Сумма, ₽</span><input id="edAmt" type="number" step="any" value="' + d.amount + '"></div>' +
-    '<div class="field"><span class="lbl">Срок</span><input id="edDue" type="date" value="' + esc(d.due || '') + '"></div>' +
+    '<div class="field"><span class="lbl">Дата возникновения</span><input id="edDate" type="date" value="' + esc(d.date || '') + '"></div>' +
+    '<div class="field col-span-2"><span class="lbl">Срок погашения</span><input id="edDue" type="date" value="' + esc(d.due || '') + '"></div>' +
     '</div>' +
     '<div class="flex gap-2 justify-end">' +
     '<button class="btn btn-p py-2" onclick="saveDebtEdit(' + d.id + ')">Сохранить</button>' +
@@ -3060,7 +2946,12 @@ function saveDebtEdit(id) {
   const amt = num($('edAmt').value);
   if (amt > 0) d.amount = amt;
   const due = $('edDue').value;
+  const created = $('edDate') ? $('edDate').value : d.date;
+  const oldDate = d.date;
+  d.date = isDate(created) ? created : (d.date || todayStr());
   d.due = isDate(due) ? due : '';
+  const debtEntry = state.history.find(h => h.type === 'debt' && String(h.debtId) === String(d.id));
+  if (debtEntry && oldDate !== d.date) debtEntry.date = d.date;
   uiEdit = null;
   update();
   toast('Долг обновлён');
@@ -3091,6 +2982,7 @@ function delCat(id) {
 }
 function addDebt(e) {
   e.preventDefault();
+  if ($('dDate') && !$('dDate').value) $('dDate').value = todayStr();
   pushUndo();
   const name = $('dName').value.trim();
   const amt = num($('dAmt').value);
@@ -3363,18 +3255,18 @@ function renderNeedHeatmap(el, items) {
     // ширина от 22% до 100% пропорционально, минимум читаемый
     const flex = Math.max(0.22, share) * 100;
     const pctTxt = it.pct == null ? '—' : ((it.pct >= 0 ? '↑ ' : '↓ ') + Math.abs(it.pct).toFixed(1) + '%');
+    const signCls = it.pct == null ? '' : (it.pct >= 0 ? '' : '');
     html += '<div style="flex:' + flex.toFixed(2) + ' 1 28%;min-width:28%;min-height:72px;border-radius:14px;padding:10px;background:' + heatColor(it.pct) + ';display:flex;flex-direction:column;justify-content:center">';
     html += '<div style="font-weight:700;font-size:13px;color:#fff">' + esc(it.name) + '</div>';
     html += '<div style="font-size:12px;color:rgba(255,255,255,0.92);margin-top:2px">' + pctTxt + '</div>';
-    html += '<div style="font-size:11px;color:rgba(255,255,255,0.92);margin-top:2px">' + shown(it.amount) + (it.prevAmount != null ? ' <span style="opacity:.8">← ' + shown(it.prevAmount) + '</span>' : '') + '</div>';
-    html += '<div style="font-size:10px;color:rgba(255,255,255,0.68);margin-top:2px">' + fmtDateRu(it.lastDate) + (it.prevDate ? ' · до этого ' + fmtDateRu(it.prevDate) : '') + '</div>';
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px">' + shown(it.amount) + (it.prevAmount != null ? ' <span style="opacity:.8">← ' + shown(it.prevAmount) + '</span>' : '') + '</div>';
     html += '</div>';
   });
   html += '</div>';
   el.innerHTML = html;
 }
 function renderAnalyticsHeat() {
-  // Для каждой обязательной категории: последний расход сравнивается с предыдущей записью этой категории.
+  // Для каждой обязательной категории: последнее пополнение vs предыдущее (не период к периоду)
   const needIds = state.cats.filter(c => c.need && !c.archived).map(c => String(c.id));
   const byCat = {};
   needIds.forEach(id => { byCat[id] = []; });
@@ -3505,305 +3397,77 @@ function renderWorkStats() {
 }
 
 
-// BitBalance account storage: all personal data is scoped to the authenticated session.
-const BB_API = '';
-let bbAuthMode = 'login';
-let bbSaveTimer = null;
-let bbSaveQueue = Promise.resolve();
-let bbLastSaved = '';
-let bbAccountReady = false;
-let bbAccountEmailValue = '';
-function bbApi(path, options = {}) {
-  const headers = Object.assign({}, options.headers || {});
-  if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
-  return fetch(BB_API + path, Object.assign({ credentials: 'same-origin' }, options, { headers }));
-}
-function bbSetAuthMode(mode) {
-  bbAuthMode = mode === 'register' ? 'register' : 'login';
-  const login = $('bbLoginTab'), register = $('bbRegisterTab'), submit = $('bbAuthSubmit'), pass = $('bbAuthPassword');
-  if (login) login.className = 'btn ' + (bbAuthMode === 'login' ? 'btn-p' : 'btn-s') + ' flex-1';
-  if (register) register.className = 'btn ' + (bbAuthMode === 'register' ? 'btn-p' : 'btn-s') + ' flex-1';
-  if (submit) submit.textContent = bbAuthMode === 'login' ? 'Войти' : 'Создать аккаунт';
-  if (pass) pass.autocomplete = bbAuthMode === 'login' ? 'current-password' : 'new-password';
-  bbShowAuthError('');
-}
-function bbShowAuthError(message) {
-  const el = $('bbAuthError');
-  if (!el) return;
-  el.textContent = message || '';
-  el.classList.toggle('hidden', !message);
-}
-function bbShowAuth(message) {
-  bbAccountReady = false;
-  const gate = $('bbAuthGate'), bar = $('bbAccountBar');
-  if (gate) gate.classList.remove('hidden');
-  if (bar) bar.classList.add('hidden');
-  bbShowAuthError(message || '');
-}
-function bbHideAuth(email) {
-  const gate = $('bbAuthGate'), bar = $('bbAccountBar'), label = $('bbAccountEmail');
-  if (gate) gate.classList.add('hidden');
-  if (bar) bar.classList.remove('hidden');
-  if (label) label.textContent = email || '';
-  bbAccountEmailValue = email || '';
-  bbAccountReady = true;
-  bbSetSyncStatus('Данные синхронизированы');
-}
-function bbSetSyncStatus(message, bad) {
-  const el = $('bbSyncStatus');
-  if (!el) return;
-  el.textContent = message;
-  el.style.color = bad ? '#fca5a5' : '#94a3b8';
-}
-async function bbLoadAccountData() {
-  const response = await bbApi('/api/data');
-  const result = await response.json();
-  if (!response.ok || result.error) throw new Error(result.error || 'Не удалось загрузить данные аккаунта');
-  if (result.exists && result.data && typeof result.data === 'object') {
-    state = migrate(result.data);
-    bbLastSaved = JSON.stringify(state);
-  } else {
-    state = migrate(JSON.parse(JSON.stringify(defaultState)));
-    bbLastSaved = '';
-  }
-  update();
-  if (!result.exists) {
-    if (bbSaveTimer) clearTimeout(bbSaveTimer);
-    const initialSnapshot = JSON.stringify(state);
-    const saveResponse = await bbApi('/api/data', { method: 'PUT', body: JSON.stringify({ data: state }) });
-    const saveResult = await saveResponse.json();
-    if (!saveResponse.ok || saveResult.error) throw new Error(saveResult.error || 'Не удалось сохранить начальное состояние');
-    bbLastSaved = initialSnapshot;
-  }
-}
-function bbSaveNow() {
-  if (!bbAccountReady) return Promise.resolve();
-  if (bbSaveTimer) { clearTimeout(bbSaveTimer); bbSaveTimer = null; }
-  const snapshot = JSON.stringify(state);
-  if (snapshot === bbLastSaved) return bbSaveQueue;
-  bbSetSyncStatus('Сохранение…');
-  bbSaveQueue = bbSaveQueue.then(async () => {
-    const response = await bbApi('/api/data', { method: 'PUT', body: JSON.stringify({ data: JSON.parse(snapshot) }) });
-    const result = await response.json();
-    if (!response.ok || result.error) throw new Error(result.error || 'Ошибка сохранения');
-    bbLastSaved = snapshot;
-    bbSetSyncStatus('Данные синхронизированы');
-  }).catch(error => {
-    bbSetSyncStatus('Ошибка синхронизации: ' + (error.message || error), true);
-  });
-  return bbSaveQueue;
-}
-function bbScheduleSave() {
-  if (!bbAccountReady) return;
-  if (bbSaveTimer) clearTimeout(bbSaveTimer);
-  bbSaveTimer = setTimeout(() => { bbSaveTimer = null; bbSaveNow(); }, 500);
-}
-async function bbAuthenticate() {
-  const email = ($('bbAuthEmail')?.value || '').trim().toLowerCase();
-  const password = $('bbAuthPassword')?.value || '';
-  const submit = $('bbAuthSubmit');
-  if (!email || !password) return bbShowAuthError('Введи почту и пароль.');
-  if (password.length < 8) return bbShowAuthError('Пароль должен содержать не менее 8 символов.');
-  if (submit) { submit.disabled = true; submit.textContent = 'Подождите…'; }
-  bbShowAuthError('');
-  try {
-    const endpoint = bbAuthMode === 'register' ? '/api/auth/register' : '/api/auth/login';
-    const response = await bbApi(endpoint, { method: 'POST', body: JSON.stringify({ email, password }) });
-    const result = await response.json();
-    if (!response.ok || result.error) throw new Error(result.error || 'Не удалось выполнить вход');
-    await bbLoadAccountData();
-    bbHideAuth(result.user?.email || result.email || email);
-    const bar = $('bbAccountBar');
-    if (bar) bar.classList.remove('hidden');
-  } catch (error) {
-    bbShowAuth(error.message || 'Ошибка авторизации');
-  } finally {
-    if (submit) { submit.disabled = false; submit.textContent = bbAuthMode === 'login' ? 'Войти' : 'Создать аккаунт'; }
-  }
-}
-async function bbLogoutNow() {
-  if (!bbAccountReady) return;
-  await bbSaveNow();
-  try { await bbApi('/api/auth/logout', { method: 'POST' }); } catch (e) {}
-  bbAccountReady = false;
-  bbLastSaved = '';
-  bbAccountEmailValue = '';
-  state = migrate(JSON.parse(JSON.stringify(defaultState)));
-  renderAll();
-  bbShowAuth('');
-}
-async function bbStart() {
-  try {
-    const response = await bbApi('/api/auth/me');
-    const result = await response.json();
-    if (!response.ok || !result.authenticated) { bbShowAuth(''); return; }
-    await bbLoadAccountData();
-    bbHideAuth(result.user?.email || result.email || 'Аккаунт');
-  } catch (error) {
-    bbShowAuth(error.message || 'Не удалось подключиться к серверу. Проверь Worker.');
-  }
-}
-
-function skipWelcome() { bbShowAuth('Для продолжения войди в аккаунт или зарегистрируйся.'); }
-function initWelcome() { bbShowAuth(''); }
-
 /* ========== Telegram Mini App + AI ========== */
-function updateTelegramViewport() {
-  try {
-    const tg = window.Telegram && window.Telegram.WebApp;
-    if (!tg) return;
-    const root = document.documentElement;
-    if (Number(tg.viewportHeight) > 0) root.style.setProperty('--tg-viewport-height', tg.viewportHeight + 'px');
-    if (Number(tg.viewportStableHeight) > 0) root.style.setProperty('--tg-viewport-stable-height', tg.viewportStableHeight + 'px');
-    const safe = tg.safeAreaInset || {};
-    const content = tg.contentSafeAreaInset || {};
-    root.style.setProperty('--tg-safe-area-inset-top', Math.max(0, Number(safe.top) || 0) + 'px');
-    root.style.setProperty('--tg-safe-area-inset-bottom', Math.max(0, Number(safe.bottom) || 0) + 'px');
-    root.style.setProperty('--tg-content-safe-area-inset-top', Math.max(0, Number(content.top) || 0) + 'px');
-  } catch (e) {}
-}
-
 function initTelegram() {
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
     if (!tg) return;
-    document.body.classList.add('tg-app');
-    if (typeof tg.ready === 'function') tg.ready();
-    if (typeof tg.expand === 'function') tg.expand();
-    if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#0b1020');
-    if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#0b1020');
-    if (tg.themeParams && tg.themeParams.bg_color) document.body.style.backgroundColor = tg.themeParams.bg_color;
-    updateTelegramViewport();
-    if (typeof tg.onEvent === 'function') tg.onEvent('viewportChanged', updateTelegramViewport);
-    // Telegram user data is retained for a future verified server-side login flow.
+    tg.ready();
+    tg.expand();
+    if (tg.themeParams && tg.themeParams.bg_color) {
+      document.body.style.background = tg.themeParams.bg_color;
+    }
+    // user id для будущей синхронизации
     window._tgUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
   } catch (e) { console.warn(e); }
 }
 
-const AI_PERSONALITIES = {
-  choleric: 'Ты энергичный холерик-тренер по личным финансам. Держи пользователя в тонусе, говори прямо, требовательно и конкретно, без унижения и грубости. Не начинай каждый ответ с приветствия. Требуй действий, ставь короткие измеримые задачи, отмечай прогресс.',
-  economist: 'Ты строгий финансовый экономист. Проверяй арифметику, показывай допущения, сравнивай сценарии и не делай выводов без данных. Не приветствуй повторно.',
-  miser: 'Ты бережливый финансовый стратег. Ищи утечки, лишние расходы, более дешёвые альтернативы и способы сохранить деньги. Не предлагай опасную экономию на здоровье и обязательствах. Не приветствуй повторно.',
-  entrepreneur: 'Ты предприимчивый бизнес-наставник. Ищи реалистичные способы увеличить доход, монетизировать навыки и улучшить денежный поток. Считай риски и окупаемость. Не приветствуй повторно.',
-  generous: 'Ты разумный и щедрый советник. Помогай планировать траты на семью, близких и радости жизни без разрушения финансовой устойчивости. Не стыди за траты. Не приветствуй повторно.',
-  mentor: 'Ты спокойный, дисциплинированный наставник. Поддерживай, объясняй простыми словами, помогай выстраивать привычки и последовательные шаги. Не приветствуй повторно.'
-};
-function setAiPersonality(value) {
-  state.aiPersonality = Object.prototype.hasOwnProperty.call(AI_PERSONALITIES, value) ? value : 'choleric';
-  update();
-  if ($('aiPersonality')) $('aiPersonality').value = state.aiPersonality;
-  if ($('aiPersonalitySettings')) $('aiPersonalitySettings').value = state.aiPersonality;
-}
-function setAiBehavior(key, value) {
-  const allowed = {
-    aiTone: ['soft','balanced','strict'],
-    aiInitiative: ['on_request','smart','coach'],
-    aiAdviceFrequency: ['rare','moderate','often']
-  };
-  if (key === 'aiNotifyTime' || key === 'aiQuietStart' || key === 'aiQuietEnd') {
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(String(value))) return;
-    state[key] = String(value);
-  } else if (key === 'aiMaxNotifications') {
-    state.aiMaxNotifications = Math.min(10, Math.max(1, Math.round(num(value) || 3)));
-  } else if (allowed[key] && allowed[key].includes(value)) {
-    state[key] = value;
-  } else return;
-  update();
-  renderAiBehaviorSettings();
-}
-function setAiNotification(kind, enabled) {
-  const allowed = ['morning','day','evening','debts','overspending','savings'];
-  if (!allowed.includes(kind)) return;
-  const selected = new Set(state.aiNotifications || []);
-  if (enabled) selected.add(kind); else selected.delete(kind);
-  state.aiNotifications = [...selected];
-  update();
-}
-function renderAiBehaviorSettings() {
-  const values = {
-    aiTone: state.aiTone || 'balanced', aiInitiative: state.aiInitiative || 'smart',
-    aiAdviceFrequency: state.aiAdviceFrequency || 'moderate', aiNotifyTime: state.aiNotifyTime || '09:00',
-    aiQuietStart: state.aiQuietStart || '22:00', aiQuietEnd: state.aiQuietEnd || '08:00',
-    aiMaxNotifications: state.aiMaxNotifications || 3
-  };
-  Object.keys(values).forEach(id => { const el = $(id); if (el) el.value = values[id]; });
-  const selected = new Set(state.aiNotifications || []);
-  document.querySelectorAll('#aiBehaviorSettings input[type="checkbox"][value]').forEach(el => { el.checked = selected.has(el.value); });
-}
-function clearAiConversation() {
-  state.aiConversation = [];
-  update();
-  renderAiConversation();
-  if ($('aiAnswer')) { $('aiAnswer').textContent = ''; $('aiAnswer').classList.add('hidden'); }
-  toast('История диалога очищена');
-}
-function renderAiConversation() {
-  const box = $('aiConversation');
-  if (!box) return;
-  const items = state.aiConversation || [];
-  box.innerHTML = items.map(m => '<div class="rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ' + (m.role === 'user' ? 'bg-indigo-500/15 ml-5' : 'bg-slate-800/80 mr-5') + '"><div class="text-[10px] text-slate-400 mb-1">' + (m.role === 'user' ? 'Ты' : 'Советник') + '</div>' + esc(m.text) + '</div>').join('');
-  box.scrollTop = box.scrollHeight;
-}
-function buildAiContext(includeReport) {
+function buildAiContext() {
   const topExp = [];
   try {
     const by = {};
     (state.history || []).forEach(h => {
       if (h.type === 'debt') return;
-      Object.keys(h.expenses || {}).forEach(k => { by[k] = (by[k] || 0) + num(h.expenses[k]); });
+      Object.keys(h.expenses || {}).forEach(k => {
+        by[k] = (by[k] || 0) + num(h.expenses[k]);
+      });
     });
-    Object.keys(by).sort((a, b) => by[b] - by[a]).slice(0, 8).forEach(k => topExp.push({ name: catName(k), amount: Math.round(by[k]) }));
+    Object.keys(by).sort((a, b) => by[b] - by[a]).slice(0, 8).forEach(k => {
+      topExp.push({ name: catName(k), amount: Math.round(by[k]) });
+    });
   } catch (e) {}
   const debts = (state.debts || []).filter(d => !d.archived).map(d => ({
     name: d.name,
     remain: Math.round((R.debtRemain && R.debtRemain[d.id] != null) ? R.debtRemain[d.id] : d.amount),
-    due: d.due || null, overdue: !!(d.due && d.due < todayStr())
+    due: d.due || null,
+    overdue: !!(d.due && d.due < todayStr())
   })).filter(d => d.remain > 0).slice(0, 12);
-  const ctx = {
-    balance: Math.round(R.balance || 0), cash: Math.round(R.cash || 0), cushion: Math.round(R.cush || 0),
-    debtTotal: Math.round(R.debtTotal || 0), debts, topExpenses: topExp,
-    windowDays: state.windowDays || 30, today: todayStr(),
-    personality: [
-      AI_PERSONALITIES[state.aiPersonality || 'choleric'],
-      ({ soft: 'Стиль общения: мягкий и поддерживающий.', balanced: 'Стиль общения: сбалансированный, прямо и уважительно.', strict: 'Стиль общения: строгий и требовательный, но без грубости и унижения.' })[state.aiTone || 'balanced'],
-      ({ on_request: 'Инициативность: отвечай только на прямой запрос.', smart: 'Инициативность: замечай очевидные финансовые риски и полезные возможности, уместно указывай на них.', coach: 'Инициативность: помогай как проактивный финансовый тренер, предлагай конкретный следующий шаг.' })[state.aiInitiative || 'smart'],
-      ({ rare: 'Советы давай редко, только когда они действительно важны.', moderate: 'Давай дополнительные советы умеренно, только когда они уместны.', often: 'Чаще предлагай дополнительные идеи и практические рекомендации, не повторяйся.' })[state.aiAdviceFrequency || 'moderate']
-    ].join(' '),
-    assistantPreferences: {
-      tone: state.aiTone || 'balanced', initiative: state.aiInitiative || 'smart',
-      adviceFrequency: state.aiAdviceFrequency || 'moderate', notifications: state.aiNotifications || [],
-      notifyTime: state.aiNotifyTime || '09:00', quietStart: state.aiQuietStart || '22:00',
-      quietEnd: state.aiQuietEnd || '08:00', maxNotifications: state.aiMaxNotifications || 3
-    },
-    conversation: (state.aiConversation || []).slice(-8).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 700) }))
+
+  return {
+    balance: Math.round(R.balance || 0),
+    cash: Math.round(R.cash || 0),
+    cushion: Math.round(R.cush || 0),
+    debtTotal: Math.round(R.debtTotal || 0),
+    debts,
+    topExpenses: topExp,
+    windowDays: state.windowDays || 30,
+    today: todayStr()
   };
-  if (includeReport) ctx.report = buildReport().replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').slice(0, 18000);
-  return ctx;
 }
-async function askAI(analyzeReport) {
-  const input = $('aiQuestion');
-  const q = (input && input.value || '').trim() || (analyzeReport ? 'Проанализируй мой финансовый отчёт: найди главные проблемы, ошибки, риски и предложи приоритетный план действий.' : 'Проанализируй моё текущее финансовое положение и предложи следующий конкретный шаг.');
+
+async function askAI() {
+  const q = ($('aiQuestion') && $('aiQuestion').value || '').trim();
+  if (!q) { toast('Напиши вопрос', 'warn'); return; }
   const ans = $('aiAnswer');
-  if (ans) { ans.classList.remove('hidden'); ans.innerHTML = '<span class="sub">Анализирую…</span>'; }
-  const messages = (state.aiConversation || []).slice(-8).map(m => ({ role: m.role, text: String(m.text || '').slice(0, 700) })).concat([{ role: 'user', text: q.slice(0, 2000) }]);
+  if (ans) {
+    ans.classList.remove('hidden');
+    ans.innerHTML = '<span class="sub">Думаю…</span>';
+  }
   try {
     const r = await fetch('/api/ai', {
-      method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: q, context: Object.assign(buildAiContext(!!analyzeReport), { conversation: messages }) })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, context: buildAiContext() })
     });
     const data = await r.json();
     if (!r.ok || data.error) {
       if (ans) ans.textContent = 'Ошибка: ' + (data.error || r.status);
-      toast('AI недоступен — проверь Worker и GEMINI_API_KEY', 'warn'); return;
+      toast('AI недоступен — проверь деплой и GEMINI_API_KEY', 'warn');
+      return;
     }
-    const answer = String(data.answer || 'Пустой ответ');
-    state.aiConversation = messages.concat([{ role: 'assistant', text: answer }]).slice(-20);
-    update();
-    renderAiConversation();
-    if (ans) { ans.textContent = answer; ans.classList.remove('hidden'); }
-    if (input) input.value = '';
+    if (ans) ans.textContent = data.answer || 'Пусто';
   } catch (e) {
-    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nОткрой приложение через Cloudflare Worker и проверь /api/ai.';
+    if (ans) ans.textContent = 'Сеть/API: ' + (e.message || e) + '\n\nЛокально без Cloudflare /api/ai не работает. Задеплой Pages.';
   }
 }
 
@@ -3906,13 +3570,9 @@ function renderAnalytics() {
 
   const st = (ok, warn) => ok ? 'ok' : (warn ? 'warn' : 'bad');
   const dot = s => '<span class="inline-block w-2 h-2 rounded-full mr-1" style="background:' + (s === 'ok' ? '#34d399' : s === 'warn' ? '#fbbf24' : '#f87171') + '"></span>';
-  const row = (label, val, status, rule, pct) => {
-    const width = pct == null ? 0 : Math.max(0, Math.min(100, pct));
-    const color = status === 'ok' ? '#34d399' : status === 'warn' ? '#fbbf24' : '#f87171';
-    return '<div class="space-y-1"><div class="flex justify-between items-center text-sm gap-2"><span class="text-slate-300">' + dot(status) + label + '</span><b class="text-right">' + val + '</b></div>' +
-      '<div style="height:5px;border-radius:99px;background:rgba(71,85,105,.35);overflow:hidden"><i style="display:block;height:100%;width:' + width.toFixed(1) + '%;background:' + color + ';border-radius:99px"></i></div>' +
-      '<div class="sub">Ориентир: ' + rule + '</div></div>';
-  };
+  const row = (label, val, status, rule) =>
+    '<div><div class="flex justify-between items-center text-sm"><span class="text-slate-300">' + dot(status) + label + '</span><b>' + val + '</b></div>' +
+    '<div class="sub mt-0.5">Порог: ' + rule + '</div></div>';
 
   const sNeeds = st(needsPct <= H.needsMax, false);
   const sSave = st(savePct >= H.saveMin, savePct >= H.saveMin / 2);
@@ -3920,15 +3580,12 @@ function renderAnalytics() {
   const sDebt = !debtOpen ? 'ok' : (monthsToFree == null ? 'bad' : st(monthsToFree <= H.debtMonths, monthsToFree <= H.debtMonths * 2));
   const sPlus = posDays >= negDays ? 'ok' : 'warn';
 
-  const healthScore = [sNeeds, sSave, sRun, sDebt, sPlus].reduce((n, x) => n + (x === 'ok' ? 2 : x === 'warn' ? 1 : 0), 0);
-  const healthLabel = healthScore >= 8 ? 'Хорошее состояние' : healthScore >= 5 ? 'Есть над чем поработать' : 'Нужен финансовый план';
-  const healthColor = healthScore >= 8 ? 'text-emerald-300' : healthScore >= 5 ? 'text-amber-300' : 'text-red-300';
-  $('anHealth').innerHTML = '<div class="flex items-center justify-between gap-2 rounded-xl bg-slate-900/50 p-3 mb-1"><div><div class="text-xs text-slate-400">Общая оценка</div><div class="font-semibold ' + healthColor + '">' + healthLabel + '</div></div><div class="text-2xl font-bold ' + healthColor + '">' + healthScore + '<span class="text-xs text-slate-400"> / 10</span></div></div>' +
-    row('Обязательные расходы', '<span class="acc">' + Math.round(needsPct) + '%</span> дохода', sNeeds, 'не выше ' + H.needsMax + '%', needsPct) +
-    row('Остаток после трат', '<span class="acc">' + Math.round(savePct) + '%</span> дохода', sSave, 'не ниже ' + H.saveMin + '%', savePct) +
-    row('Запас прочности', (runway != null ? '<span class="acc">' + Math.round(runway) + '</span> дн.' : '—'), sRun, 'не меньше ' + H.runwayMin + ' дн.', runway == null ? null : runway / H.runwayMin * 100) +
-    row('Долги', !debtOpen ? 'нет' : (monthsToFree != null && monthsToFree <= 60 ? 'закроются за <span class="acc">' + Math.ceil(monthsToFree) + '</span> мес.' : 'при потоке не закроются'), sDebt, 'закрыть за ' + H.debtMonths + ' мес.', !debtOpen ? 100 : monthsToFree == null ? 0 : H.debtMonths / Math.max(H.debtMonths, monthsToFree) * 100) +
-    row('Дни в плюсе / минусе', '<span class="text-emerald-300">' + posDays + '</span> / <span class="text-red-300">' + negDays + '</span>', sPlus, 'плюсовых ≥ минусовых', posDays + negDays ? posDays / (posDays + negDays) * 100 : 0);
+  $('anHealth').innerHTML =
+    row('Обязательные расходы', '<span class="acc">' + Math.round(needsPct) + '%</span> дохода', sNeeds, 'не выше ' + H.needsMax + '%') +
+    row('Остаток после трат', '<span class="acc">' + Math.round(savePct) + '%</span> дохода', sSave, 'не ниже ' + H.saveMin + '%') +
+    row('Запас прочности', (runway != null ? '<span class="acc">' + Math.round(runway) + '</span> дн.' : '—'), sRun, 'не меньше ' + H.runwayMin + ' дн.') +
+    row('Долги', !debtOpen ? 'нет' : (monthsToFree != null && monthsToFree <= 60 ? 'закроются за <span class="acc">' + Math.ceil(monthsToFree) + '</span> мес.' : 'при потоке не закроются'), sDebt, 'закрыть за ' + H.debtMonths + ' мес.') +
+    row('Дни в плюсе / минусе', '<span class="text-emerald-300">' + posDays + '</span> / <span class="text-red-300">' + negDays + '</span>', sPlus, 'плюсовых ≥ минусовых');
 
   // Insights
   const ins = [];
@@ -4109,6 +3766,17 @@ function renderHistory() {
   }).join('');
 }
 
+function editEntryNote(id) {
+  const h = state.history.find(x => String(x.id) === String(id));
+  if (!h) return;
+  const value = prompt('Изменить примечание к записи:', h.note || '');
+  if (value === null) return;
+  pushUndo();
+  h.note = String(value).trim().slice(0, 500);
+  update();
+  toast('Примечание обновлено');
+}
+
 function restoreSavFromEntry(h) {
   if (h.type === 'goal_spend' && h.goalSpend) {
     const g = (state.savings || []).find(x => String(x.id) === String(h.goalSpend.id));
@@ -4267,27 +3935,18 @@ function renderReport() {
   const f = $('rpFrame');
   if (f) f.srcdoc = buildReport();
 }
-async function downloadReport() {
+function downloadReport() {
   try {
     const html = buildReport();
-    const filename = 'BitBalance_Отчёт_' + todayStr() + '.html';
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const file = new File([blob], filename, { type: 'text/html' });
-    if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-      await navigator.share({ files: [file], title: 'Финансовый отчёт BitBalance' });
-      toast('Отчёт передан в меню сохранения');
-      return;
-    }
-    const url = URL.createObjectURL(blob);
+    const blob = new Blob([html], { type: 'text/html' });
     const a = document.createElement('a');
-    a.href = url; a.download = filename; a.target = '_blank'; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
-    toast('Если загрузка не началась, открой отчёт в новой вкладке и сохрани его через меню браузера');
-  } catch (err) {
-    if (err && err.name === 'AbortError') return;
-    showError('Отчёт', err);
-  }
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Финансовый_отчёт_' + todayStr() + '.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    toast('Отчёт скачан');
+  } catch (err) { showError('Отчёт', err); }
 }
 
 /* ===================== SETTINGS & INFO ===================== */
@@ -4393,9 +4052,6 @@ function enableReminders() {
 function renderInfo() {
   applyAppearance();
   if ($('toastMode')) $('toastMode').value = state.toastMode;
-  if ($('aiPersonality')) $('aiPersonality').value = state.aiPersonality || 'choleric';
-  if ($('aiPersonalitySettings')) $('aiPersonalitySettings').value = state.aiPersonality || 'choleric';
-  renderAiBehaviorSettings();
   if ($('toastSec')) $('toastSec').value = state.toastSec;
   if ($('toastSticky')) $('toastSticky').checked = !!state.toastSticky;
   if ($('remindDays')) $('remindDays').value = state.remindDays;
@@ -4425,7 +4081,7 @@ function renderInfo() {
 <p><b>График.</b> Свечи считают путь операций внутри дня/периода (макс./мин. по цепочке: доход → траты → долг и т.д.). Нажатие на свечу — открытие, закрытие, максимум, минимум и список операций. День: 14 дней; неделя/месяц: по дням; год: по неделям.</p>
 <p><b>Уведомления.</b> Всплывающее сообщение с затемнением фона (успех / предупреждение). Отмена и удаление показывают, что именно отменено.</p>
 <p><b>↩ на главной</b> — шаг назад по любому действию (не только операции). В истории — отмена последней записи.</p>
-<p><b>Сохранение.</b> Изменения автоматически сохраняются на этом устройстве после каждого изменения.</p>
+<p><b>Сохранение.</b> «💾 Сохранить» скачивает Balance.html с вашими данными. Замените им старый файл, иначе изменения пропадут.</p>
 <p class="text-sky-200 font-semibold mt-3">🆕 Обновления (changelog)</p>
 <p><b>12.11.2026</b> — Экспорт истории с категориями/долгами; импорт воссоздаёт справочники; автодолги из нехватки видны в «Деньги».<br><b>12.11.2026</b> — График перенесён в аналитику + MA 7/25; тепловая карта обязательных; на главной сводный блок «день / копилка / долги».<br><b>12.11.2026</b> — График: вертикальные линии по времени, плотнее свечи, рабочие средние 7/25; подушка под «За день»; «Провести день» снова внизу, сворачивается вручную.<br><b>12.11.2026</b> — «Провести день» сверху и свёрнут; график ближе к Bybit; аналитика = тот же график + MA 7/25; тап по категории/долгу — последние 10 операций; расход из копилки виден в истории; импорт старой истории совместим.<br><b>12.11.2026</b> — Экспорт и импорт истории (JSON). Подписи без программного жаргона («итог за период», «уведомление»).<br><b>12.11.2026</b> — Исправлено: нераспределённый остаток дня снова явно уходит в копилку (и в уведомлении/истории).<br><b>12.11.2026</b> — Долг «получил деньги»: +копилка и +долг, баланс без изменений; галочка в форме; автодолг без зачисления в копилку; предупреждения в уведомлениях.</p>
 <p><b>12.11.2026</b> — График: high/low по цепочке операций; сводка по свече со списком операций; день = 14 дней.</p>
@@ -4453,7 +4109,13 @@ function showTab(name) {
   window.scrollTo(0, 0);
 }
 
+function refreshSaveStrip() {
+  const el = $('saveStrip');
+  if (el) el.classList.toggle('hidden', JSON.stringify(state) === exported);
+}
+
 function renderAll() {
+  safe('сохранение', refreshSaveStrip);
   safe('внешний вид', applyAppearance);
   safe('напоминание', renderReminder);
   safe('главная', renderHome);
@@ -4499,7 +4161,7 @@ function update() {
   safe('пересчёт', recalc);
   safe('spentBase', syncAllSpentBases);
   renderAll();
-  bbScheduleSave();
+  try { localStorage.setItem('balance-tg-state-v1', JSON.stringify(state)); } catch (e) {}
 }
 
 function exportHistory() {
@@ -4694,23 +4356,28 @@ function exportFile() {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    toast('Файл приложения сформирован');
+    exported = JSON.stringify(state);
+    refreshSaveStrip();
+    toast('Файл сохранён. Замените им старый Balance.html');
   } catch (err) { showError('Сохранение', err); }
 }
 
 function init() {
   state = migrate(JSON.parse(JSON.stringify(defaultState)));
+  try {
+    const raw = localStorage.getItem('balance-tg-state-v1');
+    if (raw) state = migrate(JSON.parse(raw));
+  } catch (e) {}
   $('entryDate').value = todayStr();
   if ($('dDate')) $('dDate').value = todayStr();
   update();
   showTab('home');
-  renderAiConversation();
   window.addEventListener('resize', () => safe('график', renderHome));
-  bbStart();
+  exported = JSON.stringify(state);
+  refreshSaveStrip();
 }
 init();
 </script>
 
 
 </body></html>
-<!-- BitBalance part 2: analytics layout, money-health score/bars, heatmap date transparency. -->
