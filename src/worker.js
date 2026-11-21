@@ -999,6 +999,11 @@ export default {
               return diff >= 0 && diff <= remindDays;
             });
 
+            // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
+            const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
+            const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
+            if (!userHours.includes(hour)) return;
+
             let text = "";
             if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";
             else if (hour < 17) text = "Дневная сводка: проверь расходы и копилку.";

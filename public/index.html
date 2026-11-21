@@ -1285,7 +1285,8 @@
     </div>
 
     <div class="card p-4 space-y-3">
-      <div class="font-semibold">🔔 Уведомления (настройки)</div>
+      <div class="font-semibold">🔔 Уведомления</div>
+      <div class="sub text-[11px]">Telegram привязывается автоматически при входе из Mini App.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Время уведомления</span>
         <input id="aiNotifyTime" type="time" onchange="setNotify('aiNotifyTime', this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="09:00">
@@ -1302,17 +1303,28 @@
         <span class="text-sm">Макс. уведомлений в день</span>
         <input id="aiMaxNotifications" type="number" min="0" onchange="setNotify('aiMaxNotifications', this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="3">
       </div>
-      <div class="sub">Напоминания о платежах: за сколько дней (0 — выкл.) — в блоке ниже.</div>
-    </div>
-
-    <div class="card p-4 space-y-3">
-      <div class="font-semibold">⏰ Напоминания</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Напоминать, если не вносили дней</span>
         <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
       </div>
-      <div class="sub">0 — выключить. Напоминание появляется на главной.</div>
-      <button class="btn btn-s w-full py-2" onclick="enableReminders()">🔔 Разрешить системные уведомления</button>
+      <div class="sub text-[11px]">0 — выключить напоминания.</div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="btn btn-s py-2 text-xs" onclick="enableReminders()">🔔 Разрешить</button>
+        <button class="btn btn-s py-2 text-xs" onclick="subscribePush()">Push</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="btn btn-s py-2 text-xs" onclick="testServerPush()">📡 Тест Push</button>
+        <button class="btn btn-s py-2 text-xs" onclick="testTelegramMessage()">📨 Тест TG</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="btn btn-s py-2 text-xs" onclick="testLocalNotification()">🧪 Локальный тест</button>
+      </div>
+      <div class="sub text-[11px]">Время отправки ботом (UTC):</div>
+      <div class="grid grid-cols-3 gap-2">
+        <input id="tgTime1" type="time" onchange="setTgTime(0, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="07:00">
+        <input id="tgTime2" type="time" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12:00">
+        <input id="tgTime3" type="time" onchange="setTgTime(2, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="19:00">
+      </div>
     </div>
 
     <div class="card p-4 space-y-4">
@@ -1427,16 +1439,6 @@
           <option value="violet">Фиолетовый</option>
         </select>
       </div>
-    </div>
-
-    <div class="card p-4 space-y-3">
-      <div class="font-semibold">📲 Push-уведомления</div>
-      <div class="sub text-[11px]">Требуется разрешение браузера и настроенные VAPID-ключи на сервере.</div>
-      <button class="btn btn-s w-full py-2" onclick="subscribePush()">🔔 Включить Push</button>
-      <button class="btn btn-s w-full py-2" onclick="testServerPush()">📡 Тестовый Push с сервера</button>
-      <button class="btn btn-s w-full py-2" onclick="testLocalNotification()">🧪 Тестовое уведомление</button>
-      <button class="btn btn-s w-full py-2" onclick="linkTelegram()">🔗 Привязать Telegram</button>
-      <button class="btn btn-s w-full py-2" onclick="testTelegramMessage()">📨 Тестовое сообщение в Telegram</button>
     </div>
 
     <div class="card p-4 space-y-3">
@@ -1829,7 +1831,8 @@ function migrate(s) {
     aiQuietStart: s.aiQuietStart || '22:00',
     aiQuietEnd: s.aiQuietEnd || '08:00',
     aiMaxNotifications: Math.max(0, Math.round(num(s.aiMaxNotifications) ?? 3)),
-    aiNotifications: Array.isArray(s.aiNotifications) ? s.aiNotifications : []
+    aiNotifications: Array.isArray(s.aiNotifications) ? s.aiNotifications : [],
+    tgNotifyTimes: Array.isArray(s.tgNotifyTimes) && s.tgNotifyTimes.length === 3 ? s.tgNotifyTimes : ['07:00','12:00','19:00']
   };
 }
 
@@ -4829,6 +4832,7 @@ function applyAppearance() {
 }
 function setAiBehavior(v) { if (!state) return; state.aiBehavior = v; update(); }
 function setNotify(k,v) { if(!state) return; state[k]=v; update(); }
+function setTgTime(i,v) { if(!state) return; if(!Array.isArray(state.tgNotifyTimes)) state.tgNotifyTimes=['07:00','12:00','19:00']; state.tgNotifyTimes[i]=v; update(); }
 function setToastMode(v) { state.toastMode = v; update(); }
 function setToastSec(v) { state.toastSec = Math.max(1, Math.round(num(v)) || 6); update(); }
 function setToastSticky(v) { state.toastSticky = !!v; update(); }
@@ -4938,7 +4942,7 @@ function renderAll() {
   safe('сохранение', refreshSaveStrip);
   safe('внешний вид', applyAppearance);
   safe('поведение ИИ', () => { if ($('aiBehaviorSel')) $('aiBehaviorSel').value = state.aiBehavior || 'balanced'; });
-  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; });
+  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; if (Array.isArray(state.tgNotifyTimes)) { state.tgNotifyTimes.forEach((t,i)=>{const el=$('tgTime'+(i+1)); if(el) el.value=t;}); } });
   safe('напоминание', renderReminder);
   safe('главная', renderHome);
   safe('день', renderDayForm);
@@ -5226,6 +5230,11 @@ function bbHideAuth(email) {
   if (gate) gate.classList.add('hidden');
   if (bar) bar.classList.add('hidden'); // вход/выход только в профиле
   if (label) label.textContent = email || '';
+  // Автопривязка Telegram при входе из Mini App
+  try {
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg && tg.initData) { setTimeout(() => { linkTelegram(); }, 300); }
+  } catch (e) {}
   bbAccountEmailValue = email || '';
   bbAccountReady = true;
   bbSetSyncStatus('Данные синхронизированы');
