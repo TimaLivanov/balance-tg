@@ -1436,6 +1436,7 @@
       <button class="btn btn-s w-full py-2" onclick="testServerPush()">📡 Тестовый Push с сервера</button>
       <button class="btn btn-s w-full py-2" onclick="testLocalNotification()">🧪 Тестовое уведомление</button>
       <button class="btn btn-s w-full py-2" onclick="linkTelegram()">🔗 Привязать Telegram</button>
+      <button class="btn btn-s w-full py-2" onclick="testTelegramMessage()">📨 Тестовое сообщение в Telegram</button>
     </div>
 
     <div class="card p-4 space-y-3">
@@ -5477,6 +5478,16 @@ async function testServerPush() {
     if (!r.ok || d.error) throw new Error(d.error || 'Ошибка');
     const ok = (d.results || []).some(x => x.ok);
     toast(ok ? 'Push отправлен с сервера' : 'Push не отправлен (проверьте подписку)');
+  } catch (e) { toast('Ошибка: ' + (e.message || e), 'warn'); }
+}
+
+async function testTelegramMessage() {
+  if (!bbAccountReady) { toast('Войдите в аккаунт', 'warn'); return; }
+  try {
+    const r = await bbApi('/api/telegram/test');
+    const d = await r.json();
+    if (!r.ok || d.error) throw new Error(d.error || 'Ошибка');
+    toast('Тестовое сообщение отправлено в Telegram');
   } catch (e) { toast('Ошибка: ' + (e.message || e), 'warn'); }
 }
 

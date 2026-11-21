@@ -709,6 +709,25 @@ async function verifyTelegramInitData(initData, botToken) {
   try { return JSON.parse(userStr); } catch { return null; }
 }
 
+async function telegramTestHandler(user, db, env) {
+  if (!user) return responseJson({ error: "Требуется вход в аккаунт" }, 401);
+  const row = await db.prepare("SELECT telegram_user_id FROM bb_users WHERE id = ?").bind(user.id).first();
+  if (!row || !row.telegram_user_id) return responseJson({ error: "Telegram не привязан" }, 400);
+  if (!env.TELEGRAM_BOT_TOKEN) return responseJson({ error: "Бот не настроен" }, 500);
+  try {
+    const res = await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: row.telegram_user_id, text: "Тестовое сообщение от BitBalance. Уведомления работают!" })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) return responseJson({ error: data.description || "Ошибка отправки" }, 502);
+    return responseJson({ ok: true });
+  } catch (e) {
+    return responseJson({ error: String(e?.message || e) }, 502);
+  }
+}
+
 async function telegramLinkHandler(request, user, db, env) {
   if (!user) return responseJson({ error: 'Требуется вход в аккаунт' }, 401);
   if (request.method !== 'POST') return responseJson({ error: 'Method not allowed' }, 405);
@@ -922,6 +941,11 @@ export default {
       if (pathname === "/api/push/test") {
         const user = await findAuthenticatedUser(request, env.DB);
         return await pushTestHandler(user, env.DB, env);
+      }
+
+      if (pathname === "/api/telegram/test") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        return await telegramTestHandler(user, env.DB, env);
       }
 
       return responseJson({ error: "API endpoint не найден" }, 404);
