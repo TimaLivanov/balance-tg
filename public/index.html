@@ -1074,6 +1074,7 @@
             </div>
             <div id="apDayBox" class="field hidden"><span class="lbl">Число месяца</span><input type="number" id="apDay" min="1" max="31" value="1"></div>
           </div>
+          <div class="field"><span class="lbl">Время выполнения</span><input type="time" id="apTime" value="07:00"></div>
           <div class="field"><span class="lbl">Категория</span><select id="apCat"><option value="1">Квартира</option><option value="2">Жена</option><option value="3">Авто</option><option value="4">Продукты</option><option value="1794500355271">Родненький</option><option value="1794506458964">Интернет</option></select></div>
           <button class="btn btn-p w-full">Добавить автоплатёж</button>
         </form>
@@ -1319,7 +1320,7 @@
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-s py-2 text-xs" onclick="testLocalNotification()">🧪 Локальный тест</button>
       </div>
-      <div class="sub text-[11px]">Время отправки ботом (UTC):</div>
+      <div class="sub text-[11px]">Время отправки ботом (по вашему времени):</div>
       <div class="grid grid-cols-3 gap-2">
         <input id="tgTime1" type="time" onchange="setTgTime(0, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="07:00">
         <input id="tgTime2" type="time" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12:00">
@@ -1794,6 +1795,7 @@ function migrate(s) {
       amount: num(a.amount),
       mode: a.mode === 'monthly' ? 'monthly' : 'daily',
       day: Math.min(31, Math.max(1, Math.round(num(a.day)) || 1)),
+      time: a.time || '07:00',
       catId: a.catId,
       lastApplied: a.lastApplied || ''
     })) : [],
@@ -3981,7 +3983,7 @@ function addAutopay(e) {
     catId: $('apCat').value,
     lastApplied: ''
   });
-  ['apName', 'apAmt'].forEach(k => $(k).value = '');
+  ['apName', 'apAmt', 'apTime'].forEach(k => { if ($(k)) $(k).value = k === 'apTime' ? '07:00' : ''; });
   update();
   toast('Автоплатёж добавлен');
 }

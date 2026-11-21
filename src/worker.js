@@ -992,6 +992,8 @@ export default {
             // Долги с приближающимся сроком
             const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
             const today = now.toISOString().slice(0,10);
+            const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
+            const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
 
             // Автоплатежи: выполняем раз в день, если ещё не выполнены
             const autopays = (state && Array.isArray(state.autopay)) ? state.autopay : [];
@@ -1005,6 +1007,10 @@ export default {
                 const day = Math.min(31, Math.max(1, Number(ap.day) || 1));
                 if (new Date(today + "T00:00:00").getDate() !== day) return false;
               }
+              // Проверяем время выполнения (по местному времени пользователя)
+              const apTime = ap.time || "07:00";
+              const apHour = parseInt(String(apTime).split(":")[0], 10);
+              if (!isNaN(apHour) && apHour !== localHour) return false;
               return true;
             });
 
@@ -1050,8 +1056,6 @@ export default {
             });
 
             // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
-            const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
-            const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
             const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
             const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
             if (!userHours.includes(localHour)) return;
