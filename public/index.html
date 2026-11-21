@@ -4293,6 +4293,21 @@ function buildAiContext() {
     overdue: !!(d.due && d.due < todayStr())
   })).filter(d => d.remain > 0).slice(0, 12);
 
+  let cushionInfo = null;
+  try {
+    const an = cushionAnalysis((state.history || []).filter(h => h.type !== 'debt'), todayStr());
+    cushionInfo = {
+      goal: Math.round(an.goal),
+      remain: Math.round(an.remain),
+      recPerDay: Math.round(an.rec),
+      months: an.months,
+      periodDays: an.periodDays,
+      current: Math.round(R.cush || 0),
+      baseMode: an.baseMode,
+      done: an.done
+    };
+  } catch (e) {}
+
   return {
     balance: Math.round(R.balance || 0),
     cash: Math.round(R.cash || 0),
@@ -4301,7 +4316,14 @@ function buildAiContext() {
     debts,
     topExpenses: topExp,
     windowDays: state.windowDays || 30,
-    today: todayStr()
+    today: todayStr(),
+    cushion: cushionInfo,
+    health: state.health || null,
+    budget: state.budget || null,
+    savings: (state.savings || []).filter(g => !g.archived).map(g => ({ name: g.name, kind: g.kind, plan: g.plan })),
+    cushionMonths: state.cushionMonths,
+    cushionInclude: state.cushionInclude,
+    cushionBase: state.cushionBase
   };
 }
 
