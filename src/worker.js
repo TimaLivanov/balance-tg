@@ -900,6 +900,93 @@ async function sendWebPush(endpoint, vapidPublicKey, vapidPrivateKey) {
   }
 }
 
+
+function ruDateFull(s) {
+  if (!s || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return s || "";
+  const months = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+  const p = s.split("-").map(Number);
+  return p[2] + " " + months[p[1]-1];
+}
+
+function buildSmartMessage(state, hour, now) {
+  const today = now.toISOString().slice(0,10);
+  const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
+  const history = (state && Array.isArray(state.history)) ? state.history : [];
+  const cats = (state && Array.isArray(state.cats)) ? state.cats : [];
+  const cushion = (state && state.cushionMonths) ? state.cushionMonths : 3;
+
+  const lines = [];
+  if (hour < 11) lines.push("Доброе утро! ☀️");
+  else if (hour < 17) lines.push("Дневная сводка 📊");
+  else lines.push("Вечерняя сводка 🌙");
+
+  // Долги с приближающимся сроком
+  const upcoming = debts.filter(d => {
+    if (d.archived) return false;
+    if (!d.due) return false;
+    const diff = (new Date(d.due) - new Date(today)) / 86400000;
+    return diff >= 0 && diff <= (state?.remindDays ?? 2);
+  });
+  if (upcoming.length) {
+    lines.push("⚠️ Долги со сроком:");
+    upcoming.forEach(d => {
+      const remain = d.amount;
+      lines.push("• " + d.name + " — " + remain + " ₽ до " + ruDateFull(d.due));
+    });
+  }
+
+  // Долги, почти закрытые (>80% погашено)
+  // Считаем остаток по истории
+  const debtRemain = {};
+  debts.forEach(d => { debtRemain[d.id] = d.amount; });
+  history.forEach(h => {
+    if (h.type === "debt" && h.debtId != null) { /* активация */ }
+    if (h.debtPays) Object.keys(h.debtPays).forEach(k => { if (debtRemain[k] != null) debtRemain[k] = Math.max(0, debtRemain[k] - Number(h.debtPays[k])); });
+  });
+  debts.forEach(d => {
+    if (d.archived) return;
+    const remain = Math.max(0, debtRemain[d.id] || 0);
+    const paid = d.amount - remain;
+    if (d.amount > 0 && paid / d.amount >= 0.8 && remain > 0) {
+      lines.push("🔥 Долг «" + d.name + "» почти закрыт! Осталось " + remain + " ₽ — поднажмите!");
+    }
+  });
+
+  // Рост расходов за последние 7 дней vs предыдущие 7
+  const dayMs = 86400000;
+  const nowMs = new Date(today).getTime();
+  const last7Start = new Date(nowMs - 6*dayMs).toISOString().slice(0,10);
+  const prev7Start = new Date(nowMs - 13*dayMs).toISOString().slice(0,10);
+  const sumExp = (from, to) => {
+    let s = 0;
+    history.forEach(h => {
+      if (h.type === "debt" || !h.date || h.date < from || h.date > to) return;
+      Object.values(h.expenses || {}).forEach(v => s += Number(v) || 0);
+    });
+    return s;
+  };
+  const last7 = sumExp(last7Start, today);
+  const prev7 = sumExp(prev7Start, new Date(nowMs - 7*dayMs).toISOString().slice(0,10));
+  if (prev7 > 0 && last7 > prev7 * 1.2) {
+    lines.push("📈 Расходы выросли: " + Math.round(last7) + " ₽ за 7 дней vs " + Math.round(prev7) + " ₽ ранее. Проверьте категории.");
+  }
+
+  // Подушка
+  const cushNow = (state && state.startCushion) ? state.startCushion : 0;
+  // state doesn't store cush computed; skip precise
+
+  // Напоминание записать день
+  const hasToday = history.some(h => h.type !== "debt" && h.date === today);
+  if (!hasToday && hour >= 18) {
+    lines.push("📝 Сегодня ещё не записан день — не забудьте внести данные.");
+  }
+
+  if (lines.length <= 1) lines.push("Всё под контролем ✅");
+  lines.push("");
+  lines.push("Откройте BitBalance, чтобы посмотреть детали.");
+  return lines.join("\n");
+}
+
 export default {
   async fetch(request, env) {
     const diagnostic = { stage: "request_start" };
@@ -1113,14 +1200,23 @@ export default {
             const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
             if (!userHours.includes(localNow.getUTCHours())) return;
 
+            const msgMode = (state && state.tgMessageMode) ? state.tgMessageMode : "smart";
             let text = "";
-            if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";
-            else if (hour < 17) text = "Дневная сводка: проверь расходы и копилку.";
-            else text = "Вечерняя сводка: закрой день в BitBalance.";
-
-            if (upcoming.length) {
-              text += "\nНапоминание о долгах: " + upcoming.map(d => d.name + " (" + d.due + ")").join(", ");
+            if (msgMode === "ai" && env.GEMINI_API_KEY) {
+              try {
+                const ctx = JSON.stringify({ balance: null, debts: debts.map(d=>({name:d.name,amount:d.amount,due:d.due})), historyCount: history.length });
+                const r = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+                  body: JSON.stringify({ model: "gemini-3.7-flash", store: false, system_instruction: "Ты финансовый помощник BitBalance. Напиши короткое уведомление (3-5 строк) на русском с эмодзи. Упомяни долги со сроком, рост расходов, почти закрытые долги. Используй полные даты (10 января). Не используй короткие даты.", input: "Данные: " + ctx + "\nВремя: " + hour + ":00" }),
+                  signal: AbortSignal.timeout(20000)
+                });
+                const data = await r.json();
+                const ans = (data?.steps || []).filter(st => st.type === "model_output").flatMap(st => st.content || []).filter(c => c.type === "text").map(c => c.text).join("\n").trim();
+                if (ans) text = ans;
+              } catch (e) {}
             }
+            if (!text) text = buildSmartMessage(state, hour, now);
             if (firedText) text += firedText;
 
             // Telegram
