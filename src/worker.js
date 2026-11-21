@@ -992,6 +992,56 @@ export default {
             // Долги с приближающимся сроком
             const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
             const today = now.toISOString().slice(0,10);
+
+            // Автоплатежи: выполняем раз в день, если ещё не выполнены
+            const autopays = (state && Array.isArray(state.autopay)) ? state.autopay : [];
+            const todaysEntries = (state && Array.isArray(state.history)) ? state.history.filter(h => h.type === "day" && h.date === today) : [];
+            const doneMk = new Set();
+            todaysEntries.forEach(h => (Array.isArray(h.autoMk) ? h.autoMk : []).forEach(m => doneMk.add(String(m))));
+            const toFire = autopays.filter(ap => {
+              if (!ap || !ap.id) return false;
+              if (doneMk.has(String(ap.id))) return false;
+              if (ap.mode === "monthly") {
+                const day = Math.min(31, Math.max(1, Number(ap.day) || 1));
+                if (new Date(today + "T00:00:00").getDate() !== day) return false;
+              }
+              return true;
+            });
+
+            let firedText = "";
+            if (toFire.length) {
+              const expenses = {};
+              const autoItems = toFire.map(ap => ({ catId: ap.catId, name: ap.name, amount: ap.amount }));
+              const autoMk = toFire.map(ap => ap.id);
+              toFire.forEach(ap => {
+                const k = String(ap.catId);
+                expenses[k] = (expenses[k] || 0) + Number(ap.amount || 0);
+              });
+              const newEntry = {
+                id: "ap_" + today + "_" + Date.now(),
+                type: "day",
+                date: today,
+                income: 0,
+                incomeCat: null,
+                expenses,
+                debtPays: {},
+                savings: {},
+                savSpend: {},
+                cushOut: 0,
+                cushIn: 0,
+                note: "Автоплатежи",
+                autoItems,
+                autoMk
+              };
+              if (!state.history) state.history = [];
+              state.history.push(newEntry);
+              // Сохраняем состояние
+              try {
+                await env.DB.prepare("INSERT INTO bb_user_data (user_id, data_json, version, updated_at) VALUES (?, ?, 1, ?) ON CONFLICT(user_id) DO UPDATE SET data_json = excluded.data_json, version = bb_user_data.version + 1, updated_at = excluded.updated_at")
+                  .bind(u.id, JSON.stringify(state), new Date().toISOString()).run();
+              } catch (e) {}
+              firedText = "\nВыполнены автоплатежи: " + toFire.map(ap => ap.name + " " + ap.amount + " ₽").join(", ");
+            }
             const upcoming = debts.filter(d => {
               if (d.archived) return false;
               if (!d.due) return false;
@@ -1014,6 +1064,7 @@ export default {
             if (upcoming.length) {
               text += "\nНапоминание о долгах: " + upcoming.map(d => d.name + " (" + d.due + ")").join(", ");
             }
+            if (firedText) text += firedText;
 
             // Telegram
             if (u.telegram_user_id && env.TELEGRAM_BOT_TOKEN) {
