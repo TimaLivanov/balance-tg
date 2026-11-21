@@ -1329,12 +1329,19 @@
         </select>
       </div>
       <div class="sub text-[11px]">Время отправки ботом (по вашему времени, с точностью до часа):</div>
-      <div class="grid grid-cols-3 gap-2">
-        <input id="tgTime1" type="number" min="0" max="23" onchange="setTgTime(0, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="7">
-        <input id="tgTime2" type="number" min="0" max="23" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12">
-        <input id="tgTime3" type="number" min="0" max="23" onchange="setTgTime(2, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="19">
+      <div class="grid grid-cols-5 gap-2">
+        <input id="tgTime1" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(0, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="7">
+        <input id="tgTime2" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12">
+        <input id="tgTime3" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(2, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="19">
+        <input id="tgTime4" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(3, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime5" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(4, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime6" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(5, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime7" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(6, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime8" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(7, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime9" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(8, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
+        <input id="tgTime10" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(9, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
       </div>
-      <div class="sub text-[11px]">Укажите час (0-23). Сообщение придёт в начале этого часа.</div>
+      <div class="sub text-[11px]">До 10 часов отправки (0-23). Пустое поле — не отправлять. Сообщение придёт в начале часа.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Часовой пояс (UTC)</span>
         <select id="tzSel" onchange="setTz(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
@@ -1874,7 +1881,7 @@ function migrate(s) {
     aiQuietEnd: s.aiQuietEnd || '08:00',
     aiMaxNotifications: Math.max(0, Math.round(num(s.aiMaxNotifications) ?? 3)),
     aiNotifications: Array.isArray(s.aiNotifications) ? s.aiNotifications : [],
-    tgNotifyTimes: Array.isArray(s.tgNotifyTimes) && s.tgNotifyTimes.length === 3 ? s.tgNotifyTimes : ['07:00','12:00','19:00'],
+    tgNotifyTimes: Array.isArray(s.tgNotifyTimes) ? s.tgNotifyTimes.slice(0,10).concat(Array(Math.max(0,10-s.tgNotifyTimes.length)).fill('')) : ['07:00','12:00','19:00','','','','','','',''],
     tzOffset: (s.tzOffset != null ? num(s.tzOffset) : null),
     tgMessageMode: ['smart','ai'].includes(s.tgMessageMode) ? s.tgMessageMode : 'smart'
   };
@@ -4877,7 +4884,15 @@ function applyAppearance() {
 }
 function setAiBehavior(v) { if (!state) return; state.aiBehavior = v; update(); }
 function setNotify(k,v) { if(!state) return; state[k]=v; update(); }
-function setTgTime(i,v) { if(!state) return; if(!Array.isArray(state.tgNotifyTimes)) state.tgNotifyTimes=['07:00','12:00','19:00']; const h=Math.min(23,Math.max(0,Math.round(Number(v)||0))); state.tgNotifyTimes[i]=String(h).padStart(2,'0')+':00'; update(); }
+function setTgTime(i,v) {
+  if(!state) return;
+  if(!Array.isArray(state.tgNotifyTimes)) state.tgNotifyTimes=['07:00','12:00','19:00','','','','','','',''];
+  const raw = String(v).trim();
+  if (raw === '') { state.tgNotifyTimes[i] = ''; update(); return; }
+  const h=Math.min(23,Math.max(0,Math.round(Number(raw)||0)));
+  state.tgNotifyTimes[i]=String(h).padStart(2,'0')+':00';
+  update();
+}
 function setTgMsgMode(v) { if(!state) return; state.tgMessageMode = v === 'ai' ? 'ai' : 'smart'; update(); }
 function setTz(v) {
   if (!state) return;
@@ -4994,7 +5009,7 @@ function renderAll() {
   safe('сохранение', refreshSaveStrip);
   safe('внешний вид', applyAppearance);
   safe('поведение ИИ', () => { if ($('aiBehaviorSel')) $('aiBehaviorSel').value = state.aiBehavior || 'balanced'; });
-  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; if (Array.isArray(state.tgNotifyTimes)) { state.tgNotifyTimes.forEach((t,i)=>{const el=$('tgTime'+(i+1)); if(el) el.value=parseInt(String(t).split(':')[0],10);}); }
+  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; if (Array.isArray(state.tgNotifyTimes)) { state.tgNotifyTimes.forEach((t,i)=>{const el=$('tgTime'+(i+1)); if(el) el.value = t ? parseInt(String(t).split(':')[0],10) : '';}); }
   const mm=$('tgMsgMode'); if (mm) mm.value = state.tgMessageMode || 'smart'; const tz=$('tzSel'); if (tz) { const v = (state.tzOffset == null ? 'auto' : String(state.tzOffset)); const opt = tz.querySelector('option[value="' + v + '"]'); tz.value = opt ? v : 'auto'; } });
   safe('напоминание', renderReminder);
   safe('главная', renderHome);
