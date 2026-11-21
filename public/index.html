@@ -219,7 +219,7 @@
   html, body { min-height: 100%; }
   body { min-height: var(--tg-viewport-height, 100vh); }
   main.app-shell {
-    padding-top: max(14px, env(safe-area-inset-top, 0px));
+    padding-top: max(28px, env(safe-area-inset-top, 0px));
     position: relative;
     z-index: 1;
     max-width: 30rem;
@@ -277,7 +277,7 @@
 
   /* ---------- top bar ---------- */
   .appbar {
-    margin-top: max(0px, env(safe-area-inset-top, 0px));
+    margin-top: max(8px, env(safe-area-inset-top, 0px));
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1447,8 +1447,6 @@
         </select>
         <button class="btn btn-d flex-1" onclick="deletePeriod()">🗑 Удалить операции</button>
       </div>
-      <button class="btn btn-s w-full" onclick="exportFile()">💾 Сохранить файл приложения</button>
-      <div class="sub">Скачивает Balance.html со всеми данными. Замените им старый файл.</div>
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
         <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile2').click()">⬇️ Импорт истории</button>
@@ -1538,7 +1536,7 @@
 </nav>
 
 <div id="toastBackdrop" class="fixed inset-0 z-[60] bg-black/55 backdrop-blur-[2px] hidden" onclick="hideToast()"></div>
-<div id="toast" onclick="hideToast()" class="fixed top-4 left-3 right-3 z-[70] mx-auto max-w-md text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden">Файл сохранён. Замените им старый Balance.html<div class="text-[11px] text-slate-400 mt-2 text-center">нажмите, чтобы закрыть</div></div>
+<div id="toast" onclick="hideToast()" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] mx-auto max-w-md text-slate-50 text-base leading-relaxed px-4 py-4 rounded-2xl text-left toast-ok toast-pop hidden">Файл сохранён. Замените им старый Balance.html<div class="text-[11px] text-slate-400 mt-2 text-center">нажмите, чтобы закрыть</div></div>
 
 <!-- Диалог нехватки средств -->
 <div id="shortfallModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
@@ -5417,9 +5415,11 @@ async function loadAiHistory() {
 }
 
 async function subscribePush() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) { toast('Push не поддерживается', 'warn'); return; }
+  if (!('serviceWorker' in navigator)) { toast('Service Worker не поддерживается в этом браузере', 'warn'); return; }
+  if (!('PushManager' in window)) { toast('Push не поддерживается в этом браузере (попробуйте Safari/Chrome)', 'warn'); return; }
   if (!bbAccountReady) { toast('Войдите в аккаунт', 'warn'); return; }
   try {
+    if (!navigator.serviceWorker.controller) { await navigator.serviceWorker.register('/sw.js'); }
     const reg = await navigator.serviceWorker.ready;
     const r = await fetch('/api/push/vapid-public');
     const d = await r.json();
