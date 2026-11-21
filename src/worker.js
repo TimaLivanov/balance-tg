@@ -839,11 +839,73 @@ export default {
     }
   },
   async scheduled(event, env, ctx) {
-    // Фоновые проверки для уведомлений (scaffold). Реальная отправка требует VAPID/Telegram токен.
     try {
       if (!env.DB) return;
       await ensureSchema(env.DB);
-      console.log("BitBalance cron tick:", new Date(event.scheduledTime).toISOString());
+      const now = new Date(event.scheduledTime);
+      const hour = now.getUTCHours();
+      const users = await env.DB.prepare("SELECT id, telegram_user_id FROM bb_users").all();
+      for (const u of (users.results || [])) {
+        ctx.waitUntil((async () => {
+          try {
+            let state = null;
+            const row = await env.DB.prepare("SELECT data_json FROM bb_user_data WHERE user_id = ?").bind(u.id).first();
+            if (row && row.data_json) { try { state = JSON.parse(row.data_json); } catch {} }
+            const remindDays = (state && state.remindDays != null) ? state.remindDays : 2;
+            const quietStart = (state && state.aiQuietStart) || "22:00";
+            const quietEnd = (state && state.aiQuietEnd) || "08:00";
+
+            // Проверка тихого режима
+            const hhmm = String(now.getUTCHours()).padStart(2,'0') + ":" + String(now.getUTCMinutes()).padStart(2,'0');
+            // упрощённо: если час в тихом диапазоне — пропускаем
+            // (сравнение строк работает для HH:MM)
+            if (quietStart > quietEnd) {
+              if (hhmm >= quietStart || hhmm < quietEnd) return;
+            } else {
+              if (hhmm >= quietStart && hhmm < quietEnd) return;
+            }
+
+            // Долги с приближающимся сроком
+            const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
+            const today = now.toISOString().slice(0,10);
+            const upcoming = debts.filter(d => {
+              if (d.archived) return false;
+              if (!d.due) return false;
+              const diff = (new Date(d.due) - new Date(today)) / 86400000;
+              return diff >= 0 && diff <= remindDays;
+            });
+
+            let text = "";
+            if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";
+            else if (hour < 17) text = "Дневная сводка: проверь расходы и копилку.";
+            else text = "Вечерняя сводка: закрой день в BitBalance.";
+
+            if (upcoming.length) {
+              text += "\nНапоминание о долгах: " + upcoming.map(d => d.name + " (" + d.due + ")").join(", ");
+            }
+
+            // Telegram
+            if (u.telegram_user_id && env.TELEGRAM_BOT_TOKEN) {
+              await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: u.telegram_user_id, text })
+              });
+            }
+
+            // Push (пустой, без payload)
+            const subs = await env.DB.prepare("SELECT endpoint, keys_json FROM bb_push_subscriptions WHERE user_id = ?").bind(u.id).all();
+            for (const sub of (subs.results || [])) {
+              try {
+                await fetch(sub.endpoint, { method: "POST" });
+              } catch {}
+            }
+          } catch (e) {
+            console.error("BitBalance notify error:", String(e?.message || e));
+          }
+        })());
+      }
+      console.log("BitBalance cron tick:", now.toISOString());
     } catch (e) {
       console.error("BitBalance cron error:", String(e?.message || e));
     }

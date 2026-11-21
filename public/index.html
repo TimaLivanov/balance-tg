@@ -219,6 +219,7 @@
   html, body { min-height: 100%; }
   body { min-height: var(--tg-viewport-height, 100vh); }
   main.app-shell {
+    padding-top: max(14px, env(safe-area-inset-top, 0px));
     position: relative;
     z-index: 1;
     max-width: 30rem;
@@ -276,6 +277,7 @@
 
   /* ---------- top bar ---------- */
   .appbar {
+    margin-top: max(0px, env(safe-area-inset-top, 0px));
     display: flex;
     align-items: center;
     justify-content: space-between;
