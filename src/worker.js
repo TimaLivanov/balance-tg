@@ -1000,9 +1000,11 @@ export default {
             });
 
             // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
+            const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
+            const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
             const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
             const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
-            if (!userHours.includes(hour)) return;
+            if (!userHours.includes(localHour)) return;
 
             let text = "";
             if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";

@@ -1832,7 +1832,8 @@ function migrate(s) {
     aiQuietEnd: s.aiQuietEnd || '08:00',
     aiMaxNotifications: Math.max(0, Math.round(num(s.aiMaxNotifications) ?? 3)),
     aiNotifications: Array.isArray(s.aiNotifications) ? s.aiNotifications : [],
-    tgNotifyTimes: Array.isArray(s.tgNotifyTimes) && s.tgNotifyTimes.length === 3 ? s.tgNotifyTimes : ['07:00','12:00','19:00']
+    tgNotifyTimes: Array.isArray(s.tgNotifyTimes) && s.tgNotifyTimes.length === 3 ? s.tgNotifyTimes : ['07:00','12:00','19:00'],
+    tzOffset: (s.tzOffset != null ? num(s.tzOffset) : null)
   };
 }
 
@@ -5234,7 +5235,7 @@ function bbHideAuth(email) {
   // Автопривязка Telegram при входе из Mini App
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
-    if (tg && tg.initData) { setTimeout(() => { linkTelegram(); }, 300); }
+    if (tg && tg.initData) { setTimeout(() => { linkTelegram(true); }, 300); }
   } catch (e) {}
   bbAccountEmailValue = email || '';
   bbAccountReady = true;
@@ -5252,9 +5253,11 @@ async function bbLoadAccountData() {
   if (!response.ok || result.error) throw new Error(result.error || 'Не удалось загрузить данные аккаунта');
   if (result.exists && result.data && typeof result.data === 'object') {
     state = migrate(result.data);
-    bbLastSaved = JSON.stringify(state);
+    if (state.tzOffset == null) { state.tzOffset = -new Date().getTimezoneOffset(); bbLastSaved = ''; }
+    bbLastSaved = bbLastSaved || JSON.stringify(state);
   } else {
     state = migrate(JSON.parse(JSON.stringify(defaultState)));
+    if (state.tzOffset == null) state.tzOffset = -new Date().getTimezoneOffset();
     bbLastSaved = '';
   }
   update();
@@ -5339,6 +5342,7 @@ function bbGuestMode() {
   const gate = $('bbAuthGate');
   if (gate) gate.classList.add('hidden');
   state = migrate(JSON.parse(JSON.stringify(defaultState)));
+  if (state.tzOffset == null) state.tzOffset = -new Date().getTimezoneOffset();
   try {
     const raw = localStorage.getItem('balance-tg-state-v1');
     if (raw) state = migrate(JSON.parse(raw));
@@ -5456,8 +5460,8 @@ function urlBase64ToUint8Array(base64String) {
   for (let i = 0; i < raw.length; ++i) out[i] = raw.charCodeAt(i);
   return out;
 }
-async function linkTelegram() {
-  if (!bbAccountReady) { toast('Войдите в аккаунт', 'warn'); return; }
+async function linkTelegram(silent) {
+  if (!bbAccountReady) { if (!silent) toast('Войдите в аккаунт', 'warn'); return; }
   const tg = window.Telegram && window.Telegram.WebApp;
   const initData = tg ? tg.initData : '';
   if (!initData) { toast('Откройте приложение в Telegram', 'warn'); return; }
@@ -5465,8 +5469,8 @@ async function linkTelegram() {
     const r = await bbApi('/api/telegram/link', { method: 'POST', body: JSON.stringify({ initData }) });
     const d = await r.json();
     if (!r.ok || d.error) throw new Error(d.error || 'Ошибка');
-    toast('Telegram привязан');
-  } catch (e) { toast('Не удалось привязать Telegram: ' + (e.message || e), 'warn'); }
+    if (!silent) toast('Telegram привязан');
+  } catch (e) { if (!silent) toast('Не удалось привязать Telegram: ' + (e.message || e), 'warn'); }
 }
 
 function testLocalNotification() {
