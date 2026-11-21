@@ -740,6 +740,32 @@ async function pushSubscribeHandler(request, user, db) {
   return responseJson({ error: 'Method not allowed' }, 405);
 }
 
+
+async function telegramWebhookHandler(request, env) {
+  if (request.method !== "POST") return responseJson({ ok: true });
+  const body = await parseJson(request);
+  if (!body) return responseJson({ ok: true });
+  const message = body.message;
+  if (message && message.text && message.text.startsWith("/start")) {
+    const chatId = message.chat.id;
+    const appUrl = "https://balance-tg.geniy-2012.workers.dev";
+    try {
+      await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: "BitBalance — ваш личный финансовый пульт. Нажмите кнопку ниже, чтобы открыть приложение.",
+          reply_markup: {
+            inline_keyboard: [[{ text: "Открыть BitBalance", web_app: { url: appUrl } }]]
+          }
+        })
+      });
+    } catch (e) {}
+  }
+  return responseJson({ ok: true });
+}
+
 export default {
   async fetch(request, env) {
     const diagnostic = { stage: "request_start" };
@@ -822,6 +848,10 @@ export default {
 
       if (pathname === "/api/push/vapid-public" && request.method === "GET") {
         return responseJson({ publicKey: env.VAPID_PUBLIC_KEY || "" });
+      }
+
+      if (pathname === "/api/telegram/webhook") {
+        return await telegramWebhookHandler(request, env);
       }
 
       return responseJson({ error: "API endpoint не найден" }, 404);
