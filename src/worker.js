@@ -709,6 +709,56 @@ async function verifyTelegramInitData(initData, botToken) {
   try { return JSON.parse(userStr); } catch { return null; }
 }
 
+async function notifyDebugHandler(user, db, env) {
+  if (!user) return responseJson({ error: "Требуется вход в аккаунт" }, 401);
+  const row = await db.prepare("SELECT telegram_user_id, data_json FROM bb_users u LEFT JOIN bb_user_data d ON d.user_id = u.id WHERE u.id = ?").bind(user.id).first();
+  let state = null;
+  try { if (row && row.data_json) state = JSON.parse(row.data_json); } catch {}
+  const now = new Date();
+  const hour = now.getUTCHours();
+  const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
+  const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
+  const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
+  const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
+  const timeMatch = userHours.includes(localHour);
+  const quietStart = (state && state.aiQuietStart) || "22:00";
+  const quietEnd = (state && state.aiQuietEnd) || "08:00";
+  const hhmm = String(now.getUTCHours()).padStart(2,'0') + ":" + String(now.getUTCMinutes()).padStart(2,'0');
+  let quiet = false;
+  if (quietStart > quietEnd) { if (hhmm >= quietStart || hhmm < quietEnd) quiet = true; }
+  else { if (hhmm >= quietStart && hhmm < quietEnd) quiet = true; }
+
+  let sent = false;
+  let sendError = null;
+  if (row && row.telegram_user_id && env.TELEGRAM_BOT_TOKEN) {
+    try {
+      const res = await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: row.telegram_user_id, text: "Отладка BitBalance: UTC " + hour + ":00, локально " + localHour + ":00. Времена: " + userTimes.join(", ") })
+      });
+      const data = await res.json();
+      sent = !!(res.ok && data.ok);
+      if (!sent) sendError = data.description || ("HTTP " + res.status);
+    } catch (e) { sendError = String(e?.message || e); }
+  } else {
+    sendError = !row?.telegram_user_id ? "Telegram не привязан" : "Бот не настроен";
+  }
+
+  return responseJson({
+    utcHour: hour,
+    tzOffset,
+    localHour,
+    userTimes,
+    userHours,
+    timeMatch,
+    quiet,
+    telegramLinked: Boolean(row && row.telegram_user_id),
+    sent,
+    sendError
+  });
+}
+
 async function telegramTestHandler(user, db, env) {
   if (!user) return responseJson({ error: "Требуется вход в аккаунт" }, 401);
   const row = await db.prepare("SELECT telegram_user_id FROM bb_users WHERE id = ?").bind(user.id).first();
@@ -946,6 +996,11 @@ export default {
       if (pathname === "/api/telegram/test") {
         const user = await findAuthenticatedUser(request, env.DB);
         return await telegramTestHandler(user, env.DB, env);
+      }
+
+      if (pathname === "/api/notify/debug") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        return await notifyDebugHandler(user, env.DB, env);
       }
 
       return responseJson({ error: "API endpoint не найден" }, 404);
