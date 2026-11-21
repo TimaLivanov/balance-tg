@@ -9,6 +9,9 @@
       "database_id": "b2e0ad30-ed6e-4b32-88fa-99fb16d96fe4"
     }
   ],
+  "triggers": {
+    "crons": ["0 7 * * *", "0 12 * * *", "0 19 * * *"]
+  },
   "observability": {
     "enabled": true,
     "logs": {

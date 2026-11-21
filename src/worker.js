@@ -163,6 +163,17 @@ async function ensureSchema(db) {
     updated_at TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES bb_users(id) ON DELETE CASCADE
   )`).run();
+
+  await db.prepare(`CREATE TABLE IF NOT EXISTS bb_push_subscriptions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    endpoint TEXT NOT NULL,
+    keys_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES bb_users(id) ON DELETE CASCADE
+  )`).run();
+  await db.prepare("CREATE INDEX IF NOT EXISTS bb_push_subscriptions_user_idx ON bb_push_subscriptions(user_id)").run();
+  try { await db.prepare("ALTER TABLE bb_users ADD COLUMN telegram_user_id TEXT").run(); } catch (e) {}
 }
 
 function originAllowed(request, url) {
@@ -563,6 +574,7 @@ async function aiHandler(request, env, user) {
   const question = String(body.question || body.message || "").trim();
   const appContext = body.context && typeof body.context === "object" ? body.context : {};
   const contextText = JSON.stringify(appContext);
+  const behavior = String(body.behavior || "balanced");
 
   if (!question) return responseJson({ error: "Пустой вопрос" }, 400);
 
@@ -572,8 +584,15 @@ async function aiHandler(request, env, user) {
 
   const personal = user ? await loadPersonalContext(env.DB, user.id) : null;
 
+  const behaviorHint = behavior === "strict"
+    ? "Режим: строгий. Отвечай только фактами, без мотивации и предположений. "
+    : behavior === "coach"
+    ? "Режим: коуч. Поддерживай, мотивируй, предлагай конкретные шаги. "
+    : behavior === "analyst"
+    ? "Режим: аналитик. Давай подробный разбор с цифрами и сценариями. "
+    : "Режим: сбалансированный. ";
   const input =
-    "ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ИЗ ПРИЛОЖЕНИЯ:\n" + contextText +
+    behaviorHint + "ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ИЗ ПРИЛОЖЕНИЯ:\n" + contextText +
     (personal ? "\n\nДОЛГОВРЕМЕННАЯ ПАМЯТЬ ЭТОГО АККАУНТА:\n" + personal.memory : "") +
     (personal ? "\n\nНЕДАВНЯЯ ИСТОРИЯ ЭТОГО АККАУНТА:\n" + JSON.stringify(personal.recent_history) : "") +
     "\n\nВОПРОС:\n" + question;
@@ -659,6 +678,66 @@ async function aiHandler(request, env, user) {
   }, 502);
 }
 
+
+async function verifyTelegramInitData(initData, botToken) {
+  if (!initData || !botToken) return null;
+  const params = new URLSearchParams(initData);
+  const hash = params.get('hash');
+  if (!hash) return null;
+  params.delete('hash');
+  const pairs = [];
+  for (const [k, v] of params.entries()) pairs.push(k + '=' + v);
+  pairs.sort();
+  const dataCheckString = pairs.join('\n');
+  const secretKey = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode('WebAppData'),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  // secret key is HMAC(bot_token, "WebAppData") per Telegram spec: secret = HMAC_SHA256(bot_token, "WebAppData")
+  const secretBuf = await crypto.subtle.sign('HMAC', secretKey, new TextEncoder().encode(botToken));
+  const hmacKey = await crypto.subtle.importKey('raw', secretBuf, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sigBuf = await crypto.subtle.sign('HMAC', hmacKey, new TextEncoder().encode(dataCheckString));
+  const sigHex = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  if (!timingSafeEqual(sigHex, hash)) return null;
+  const userStr = params.get('user');
+  if (!userStr) return null;
+  try { return JSON.parse(userStr); } catch { return null; }
+}
+
+async function telegramLinkHandler(request, user, db, env) {
+  if (!user) return responseJson({ error: 'Требуется вход в аккаунт' }, 401);
+  if (request.method !== 'POST') return responseJson({ error: 'Method not allowed' }, 405);
+  const body = await parseJson(request);
+  if (!body || !body.initData) return responseJson({ error: 'Передай initData' }, 400);
+  const tgUser = await verifyTelegramInitData(body.initData, env.TELEGRAM_BOT_TOKEN || '');
+  if (!tgUser || !tgUser.id) return responseJson({ error: 'Недействительные данные Telegram' }, 403);
+  await db.prepare('UPDATE bb_users SET telegram_user_id = ? WHERE id = ?').bind(String(tgUser.id), user.id).run();
+  return responseJson({ ok: true, telegram_user_id: tgUser.id });
+}
+
+async function pushSubscribeHandler(request, user, db) {
+  if (!user) return responseJson({ error: 'Требуется вход в аккаунт' }, 401);
+  if (request.method === 'POST') {
+    const body = await parseJson(request);
+    if (!body || !body.endpoint || !body.keys) return responseJson({ error: 'Некорректная подписка' }, 400);
+    const id = randomToken(12);
+    await db.prepare('INSERT OR REPLACE INTO bb_push_subscriptions (id, user_id, endpoint, keys_json, created_at) VALUES (?, ?, ?, ?, ?)')
+      .bind(id, user.id, body.endpoint, JSON.stringify(body.keys), new Date().toISOString()).run();
+    return responseJson({ ok: true });
+  }
+  if (request.method === 'DELETE') {
+    const body = await parseJson(request);
+    if (body && body.endpoint) {
+      await db.prepare('DELETE FROM bb_push_subscriptions WHERE user_id = ? AND endpoint = ?').bind(user.id, body.endpoint).run();
+    }
+    return responseJson({ ok: true });
+  }
+  return responseJson({ error: 'Method not allowed' }, 405);
+}
+
 export default {
   async fetch(request, env) {
     const diagnostic = { stage: "request_start" };
@@ -728,6 +807,21 @@ export default {
         return await memoryHandler(request, user, env.DB);
       }
 
+
+      if (pathname === "/api/telegram/link") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        return await telegramLinkHandler(request, user, env.DB, env);
+      }
+
+      if (pathname === "/api/push/subscribe") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        return await pushSubscribeHandler(request, user, env.DB);
+      }
+
+      if (pathname === "/api/push/vapid-public" && request.method === "GET") {
+        return responseJson({ publicKey: env.VAPID_PUBLIC_KEY || "" });
+      }
+
       return responseJson({ error: "API endpoint не найден" }, 404);
     } catch (error) {
       console.error("BitBalance Worker error:", {
@@ -740,6 +834,16 @@ export default {
         stage: diagnostic.stage,
         details: String(error?.message || error)
       }, 500);
+    }
+  },
+  async scheduled(event, env, ctx) {
+    // Фоновые проверки для уведомлений (scaffold). Реальная отправка требует VAPID/Telegram токен.
+    try {
+      if (!env.DB) return;
+      await ensureSchema(env.DB);
+      console.log("BitBalance cron tick:", new Date(event.scheduledTime).toISOString());
+    } catch (e) {
+      console.error("BitBalance cron error:", String(e?.message || e));
     }
   }
 };
