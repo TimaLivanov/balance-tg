@@ -1034,10 +1034,11 @@ export default {
             const quietStart = (state && state.aiQuietStart) || "22:00";
             const quietEnd = (state && state.aiQuietEnd) || "08:00";
 
+            const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
+            const localNow = new Date(now.getTime() + tzOffset * 60000);
+            const hhmm = String(localNow.getUTCHours()).padStart(2,'0') + ":" + String(localNow.getUTCMinutes()).padStart(2,'0');
+            const localHour = localNow.getUTCHours();
             // Проверка тихого режима
-            const hhmm = String(now.getUTCHours()).padStart(2,'0') + ":" + String(now.getUTCMinutes()).padStart(2,'0');
-            // упрощённо: если час в тихом диапазоне — пропускаем
-            // (сравнение строк работает для HH:MM)
             if (quietStart > quietEnd) {
               if (hhmm >= quietStart || hhmm < quietEnd) return;
             } else {
@@ -1047,9 +1048,6 @@ export default {
             // Долги с приближающимся сроком
             const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
             const today = now.toISOString().slice(0,10);
-            const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
-            const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
-
             // Автоплатежи: выполняем раз в день, если ещё не выполнены
             const autopays = (state && Array.isArray(state.autopay)) ? state.autopay : [];
             const todaysEntries = (state && Array.isArray(state.history)) ? state.history.filter(h => h.type === "day" && h.date === today) : [];
@@ -1064,8 +1062,9 @@ export default {
               }
               // Проверяем время выполнения (по местному времени пользователя)
               const apTime = ap.time || "07:00";
-              const apHour = parseInt(String(apTime).split(":")[0], 10);
-              if (!isNaN(apHour) && apHour !== localHour) return false;
+              const [apH, apM] = String(apTime).split(":").map(n => parseInt(n,10));
+              if (!isNaN(apH) && apH !== localNow.getUTCHours()) return false;
+              if (!isNaN(apM) && apM !== localNow.getUTCMinutes()) return false;
               return true;
             });
 
@@ -1112,8 +1111,7 @@ export default {
 
             // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
             const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
-            const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
-            if (!userHours.includes(localHour)) return;
+            if (!userTimes.includes(hhmm)) return;
 
             let text = "";
             if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";

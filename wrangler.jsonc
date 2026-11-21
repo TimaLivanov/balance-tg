@@ -10,7 +10,7 @@
     }
   ],
   "triggers": {
-    "crons": ["0 * * * *"]
+    "crons": ["* * * * *"]
   },
   "observability": {
     "enabled": true,

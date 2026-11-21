@@ -1327,6 +1327,37 @@
         <input id="tgTime2" type="time" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12:00">
         <input id="tgTime3" type="time" onchange="setTgTime(2, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="19:00">
       </div>
+      <div class="flex items-center justify-between gap-3">
+        <span class="text-sm">Часовой пояс (UTC)</span>
+        <select id="tzSel" onchange="setTz(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
+          <option value="auto">Авто</option>
+          <option value="-720">UTC-12</option>
+          <option value="-660">UTC-11</option>
+          <option value="-600">UTC-10</option>
+          <option value="-540">UTC-9</option>
+          <option value="-480">UTC-8</option>
+          <option value="-420">UTC-7</option>
+          <option value="-360">UTC-6</option>
+          <option value="-300">UTC-5</option>
+          <option value="-240">UTC-4</option>
+          <option value="-180">UTC-3</option>
+          <option value="-120">UTC-2</option>
+          <option value="-60">UTC-1</option>
+          <option value="0">UTC+0</option>
+          <option value="60">UTC+1</option>
+          <option value="120">UTC+2</option>
+          <option value="180">UTC+3 (Москва)</option>
+          <option value="240">UTC+4</option>
+          <option value="300">UTC+5</option>
+          <option value="360">UTC+6</option>
+          <option value="420">UTC+7</option>
+          <option value="480">UTC+8</option>
+          <option value="540">UTC+9</option>
+          <option value="600">UTC+10</option>
+          <option value="660">UTC+11</option>
+          <option value="720">UTC+12</option>
+        </select>
+      </div>
     </div>
 
     <div class="card p-4 space-y-4">
@@ -4838,6 +4869,12 @@ function applyAppearance() {
 function setAiBehavior(v) { if (!state) return; state.aiBehavior = v; update(); }
 function setNotify(k,v) { if(!state) return; state[k]=v; update(); }
 function setTgTime(i,v) { if(!state) return; if(!Array.isArray(state.tgNotifyTimes)) state.tgNotifyTimes=['07:00','12:00','19:00']; state.tgNotifyTimes[i]=v; update(); }
+function setTz(v) {
+  if (!state) return;
+  if (v === 'auto') state.tzOffset = -new Date().getTimezoneOffset();
+  else state.tzOffset = Number(v);
+  update();
+}
 function setToastMode(v) { state.toastMode = v; update(); }
 function setToastSec(v) { state.toastSec = Math.max(1, Math.round(num(v)) || 6); update(); }
 function setToastSticky(v) { state.toastSticky = !!v; update(); }
@@ -4947,7 +4984,7 @@ function renderAll() {
   safe('сохранение', refreshSaveStrip);
   safe('внешний вид', applyAppearance);
   safe('поведение ИИ', () => { if ($('aiBehaviorSel')) $('aiBehaviorSel').value = state.aiBehavior || 'balanced'; });
-  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; if (Array.isArray(state.tgNotifyTimes)) { state.tgNotifyTimes.forEach((t,i)=>{const el=$('tgTime'+(i+1)); if(el) el.value=t;}); } });
+  safe('уведомления', () => { ['aiNotifyTime','aiQuietStart','aiQuietEnd'].forEach(k=>{const e=$(k); if(e && state[k]) e.value=state[k];}); const e=$('aiMaxNotifications'); if(e && state.aiMaxNotifications!=null) e.value=state.aiMaxNotifications; if (Array.isArray(state.tgNotifyTimes)) { state.tgNotifyTimes.forEach((t,i)=>{const el=$('tgTime'+(i+1)); if(el) el.value=t;}); } const tz=$('tzSel'); if (tz) { const v = (state.tzOffset == null ? 'auto' : String(state.tzOffset)); const opt = tz.querySelector('option[value="' + v + '"]'); tz.value = opt ? v : 'auto'; } });
   safe('напоминание', renderReminder);
   safe('главная', renderHome);
   safe('день', renderDayForm);
