@@ -746,8 +746,11 @@ async function telegramWebhookHandler(request, env) {
   const body = await parseJson(request);
   if (!body) return responseJson({ ok: true });
   const message = body.message;
-  if (message && message.text && message.text.startsWith("/start")) {
+  if (message && message.chat && message.chat.id) {
     const chatId = message.chat.id;
+    const text = message.text || "";
+    // Отвечаем на /start и на любое сообщение, чтобы кнопка всегда была доступна
+    if (text.startsWith("/start") || text === "" || true) {
     const appUrl = "https://balance-tg.geniy-2012.workers.dev";
     try {
       await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
@@ -762,6 +765,7 @@ async function telegramWebhookHandler(request, env) {
         })
       });
     } catch (e) {}
+    }
   }
   return responseJson({ ok: true });
 }
