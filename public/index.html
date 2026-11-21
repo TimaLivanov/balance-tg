@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru" __gcrremoteframetoken="fcf6740d949bcf2175bd4104e9a4d376" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<html lang="ru" style="font-size: 16px; --acc: #6366f1; --acc2: #4f46e5; --acc-text: #a5b4fc; --tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
-<meta name="theme-color" content="#0b1020">
-<meta name="description" content="BitBalance — учёт личных финансов, долгов и накоплений">
+<meta name="theme-color" content="#05080f">
+<meta name="description" content="BitBalance — личные финансы, долги и накопления под контролем">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Баланс</title>
+<title>BitBalance · Баланс</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
@@ -140,45 +140,598 @@
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.col-span-4{grid-column:span 4 / span 4}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mr-1{margin-right:0.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.h-2{height:0.5rem}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-20{width:5rem}.w-2{width:0.5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-l{border-left-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-700\/40{background-color:rgb(51 65 85 / 0.4)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-2\.5{padding:0.625rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[11px\]{font-size:11px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.text-\[10px\]{font-size:10px}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-semibold{font-weight:600}.font-medium{font-weight:500}.font-normal{font-weight:400}.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:0.5rem}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-2{width:0.5rem}.w-full{width:100%}.w-20{width:5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-b{border-bottom-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-red-400\/40{border-color:rgb(248 113 113 / 0.4)}.border-red-400\/50{border-color:rgb(248 113 113 / 0.5)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-amber-500\/20{background-color:rgb(245 158 11 / 0.2)}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.bg-red-500\/20{background-color:rgb(239 68 68 / 0.2)}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.pb-2{padding-bottom:0.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-normal{font-weight:400}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.opacity-60{opacity:0.6}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style></head>
-<body class="text-slate-100 min-h-screen" style="background: radial-gradient(1200px 600px at 10% -10%, #1e1b4b 0%, #0b1020 55%) fixed;">
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.col-span-4{grid-column:span 4 / span 4}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mr-1{margin-right:0.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.h-2{height:0.5rem}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-20{width:5rem}.w-2{width:0.5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-l{border-left-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-700\/40{background-color:rgb(51 65 85 / 0.4)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-2\.5{padding:0.625rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[11px\]{font-size:11px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.text-\[10px\]{font-size:10px}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-semibold{font-weight:600}.font-medium{font-weight:500}.font-normal{font-weight:400}.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.right-0{right:0px}.right-2{right:0.5rem}.top-0{top:0px}.top-2{top:0.5rem}.bottom-0{bottom:0px}.left-3{left:0.75rem}.right-3{right:0.75rem}.top-4{top:1rem}.z-10{z-index:10}.z-50{z-index:50}.z-40{z-index:40}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.col-span-2{grid-column:span 2 / span 2}.col-span-3{grid-column:span 3 / span 3}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:0.5rem}.h-56{height:14rem}.h-72{height:18rem}.h-full{height:100%}.max-h-40{max-height:10rem}.min-h-screen{min-height:100vh}.w-2{width:0.5rem}.w-full{width:100%}.w-20{width:5rem}.min-w-0{min-width:0px}.max-w-\[72\%\]{max-width:72%}.max-w-\[78\%\]{max-width:78%}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-x-3{column-gap:0.75rem}.gap-y-1{row-gap:0.25rem}.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.125rem * var(--tw-space-y-reverse))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-b{border-bottom-width:1px}.border-amber-500\/40{border-color:rgb(245 158 11 / 0.4)}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-700\/50{border-color:rgb(51 65 85 / 0.5)}.border-slate-700\/60{border-color:rgb(51 65 85 / 0.6)}.border-sky-500\/20{border-color:rgb(14 165 233 / 0.2)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-red-400\/40{border-color:rgb(248 113 113 / 0.4)}.border-red-400\/50{border-color:rgb(248 113 113 / 0.5)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/15{background-color:rgb(16 185 129 / 0.15)}.bg-red-400{--tw-bg-opacity:1;background-color:rgb(248 113 113 / var(--tw-bg-opacity, 1))}.bg-red-600\/95{background-color:rgb(220 38 38 / 0.95)}.bg-sky-400{--tw-bg-opacity:1;background-color:rgb(56 189 248 / var(--tw-bg-opacity, 1))}.bg-sky-500\/15{background-color:rgb(14 165 233 / 0.15)}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-slate-900\/70{background-color:rgb(15 23 42 / 0.7)}.bg-slate-950\/50{background-color:rgb(2 6 23 / 0.5)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-black\/55{background-color:rgb(0 0 0 / 0.55)}.bg-black\/60{background-color:rgb(0 0 0 / 0.6)}.bg-slate-900\/30{background-color:rgb(15 23 42 / 0.3)}.bg-slate-950\/85{background-color:rgb(2 6 23 / 0.85)}.bg-amber-500\/20{background-color:rgb(245 158 11 / 0.2)}.bg-red-500\/15{background-color:rgb(239 68 68 / 0.15)}.bg-red-500\/20{background-color:rgb(239 68 68 / 0.2)}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-28{padding-bottom:7rem}.pt-2{padding-top:0.5rem}.pt-4{padding-top:1rem}.pb-\[env\(safe-area-inset-bottom\)\]{padding-bottom:env(safe-area-inset-bottom)}.pb-2{padding-bottom:0.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-normal{font-weight:400}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252 / var(--tw-text-opacity, 1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165 / var(--tw-text-opacity, 1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253 / var(--tw-text-opacity, 1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-50{--tw-text-opacity:1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.opacity-60{opacity:0.6}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-indigo-900\/40{--tw-shadow-color:rgb(49 46 129 / 0.4);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-\[2px\]{--tw-backdrop-blur:blur(2px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}@media (min-width: 640px){.sm\:items-center{align-items:center}}</style>
+<style id="ui-refresh">
+  /* ============================================================
+     BitBalance · refreshed visual system
+     Меняет только оформление: логика, id и обработчики сохранены.
+     ============================================================ */
+  :root {
+    --ink-0: #05080f;
+    --ink-1: #080d18;
+    --ink-2: #0d1424;
+    --surface-1: rgba(19, 27, 46, .82);
+    --surface-2: rgba(9, 14, 26, .72);
+    --line-1: rgba(148, 163, 184, .13);
+    --line-2: rgba(148, 163, 184, .075);
+    --text-1: #f3f6ff;
+    --text-2: #c4cfe4;
+    --text-3: #8494b2;
+    --ok: #34d399;
+    --bad: #fb7185;
+    --warn: #fbbf24;
+    --r-xl: 26px;
+    --r-lg: 20px;
+    --r-md: 16px;
+    --r-sm: 13px;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body.app-body {
+    position: relative;
+    background-color: var(--ink-0);
+    color: var(--text-1);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -.012em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+  }
+  body.app-body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(180% 130% at 4% -16%, rgba(99, 102, 241, .20), rgba(99, 102, 241, .07) 36%, rgba(99, 102, 241, 0) 66%),
+      radial-gradient(140% 110% at 104% -4%, rgba(56, 189, 248, .10), rgba(56, 189, 248, .035) 38%, rgba(56, 189, 248, 0) 68%),
+      radial-gradient(150% 120% at 50% 120%, rgba(16, 185, 129, .08), rgba(16, 185, 129, .028) 40%, rgba(16, 185, 129, 0) 70%);
+  }
+
+  ::selection { background: rgba(129, 140, 248, .35); }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, .22); border-radius: 99px; }
+  button, input, select, textarea { font-family: inherit; }
+
+  main.app-shell {
+    position: relative;
+    z-index: 1;
+    max-width: 30rem;
+    padding-top: 14px;
+    padding-bottom: 8rem;
+  }
+
+  .app-hint {
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    color: rgba(165, 180, 252, .55);
+    padding: 2px 0 4px;
+  }
+
+  /* ---------- top bar ---------- */
+  .appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 2px 4px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.04em;
+    color: #fff;
+    background: linear-gradient(140deg, var(--acc), var(--acc2));
+    box-shadow: 0 10px 26px -10px rgba(79, 70, 229, .75), inset 0 1px 0 rgba(255, 255, 255, .3);
+  }
+  .brand-name { font-size: 15px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .brand-sub { font-size: 10.5px; color: var(--text-3); margin-top: 2px; letter-spacing: .01em; }
+  .appbar-actions { display: flex; gap: 6px; flex: 0 0 auto; }
+
+  /* ---------- hero ---------- */
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 18px 16px;
+    border-radius: 28px;
+    border: 1px solid rgba(148, 163, 184, .16);
+    background:
+      radial-gradient(130% 150% at 0% 0%, rgba(99, 102, 241, .30), transparent 58%),
+      linear-gradient(160deg, rgba(30, 41, 69, .94), rgba(8, 13, 24, .97));
+    box-shadow: 0 34px 70px -45px #000, inset 0 1px 0 rgba(255, 255, 255, .07);
+  }
+  .hero-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .09), transparent 38%);
+  }
+  .hero-top { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .hero-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(196, 207, 228, .7);
+  }
+  .hero-balance {
+    position: relative;
+    margin: 9px 0 4px;
+    font-size: clamp(1.85rem, 8.6vw, 2.15rem);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -.045em;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-meta { position: relative; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; min-height: 18px; }
+  .hero-stats {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 16px;
+  }
+  .hero-stat {
+    padding: 9px 10px 10px;
+    border-radius: 15px;
+    background: rgba(3, 7, 15, .45);
+    border: 1px solid rgba(148, 163, 184, .10);
+    min-width: 0;
+  }
+  .hero-stat > span {
+    display: block;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    white-space: nowrap;
+  }
+  .hero-stat > b {
+    display: block;
+    margin-top: 3px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hero-stat > b > div { font-size: 9.5px; margin-top: 2px; }
+  .hero-cushion {
+    position: relative;
+    margin-top: 10px;
+    padding: 11px 12px;
+    border-radius: 15px;
+    background: rgba(3, 7, 15, .34);
+    border: 1px solid rgba(148, 163, 184, .08);
+  }
+  .hero-cushion .cushion-head { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; }
+  .hero-cushion .cushion-head > span { font-size: 10px; color: var(--text-3); }
+  .hero-cushion .cushion-head > b { font-size: 10.5px; color: var(--text-2); font-variant-numeric: tabular-nums; text-align: right; }
+  .hero-cushion .rec { display: block; margin-top: 7px; font-size: 10.5px; line-height: 1.45; color: var(--text-3); }
+  .hero-cushion .rec b { color: var(--acc-text); }
+
+  /* ---------- generic surfaces ---------- */
+  .card {
+    position: relative;
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-lg);
+    background: linear-gradient(168deg, rgba(23, 32, 54, .86), rgba(10, 16, 29, .92));
+    box-shadow: 0 22px 55px -40px #000, inset 0 1px 0 rgba(255, 255, 255, .045);
+  }
+  .card .card {
+    border-radius: var(--r-md);
+    border-color: var(--line-2);
+    background: rgba(5, 10, 20, .42);
+    box-shadow: none;
+  }
+  .card .card .card { background: rgba(5, 10, 20, .35); }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-title { font-size: 13.5px; font-weight: 700; letter-spacing: -.02em; }
+  .card-sub { font-size: 10.5px; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+
+  .save-strip {
+    border-color: rgba(251, 191, 36, .38);
+    background: linear-gradient(150deg, rgba(120, 83, 20, .32), rgba(16, 22, 38, .9));
+  }
+  .remind-card {
+    border-color: rgba(251, 191, 36, .30);
+    background: linear-gradient(150deg, rgba(120, 83, 20, .24), rgba(16, 22, 38, .9));
+  }
+
+  .sub { color: var(--text-3); font-size: 11.5px; line-height: 1.45; }
+
+  .screen-head { padding: 8px 2px 0; }
+  .screen-eyebrow {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .20em;
+    text-transform: uppercase;
+    color: var(--acc-text);
+    opacity: .85;
+  }
+  .screen-title { margin-top: 4px; font-size: 22px; font-weight: 800; letter-spacing: -.035em; line-height: 1.15; }
+  .screen-sub { margin-top: 3px; font-size: 11.5px; color: var(--text-3); }
+
+  /* ---------- controls ---------- */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0;
+    border: 1px solid rgba(148, 163, 184, .14);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .seg, .tfbtn, .modebtn {
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: rgba(148, 163, 184, .08);
+    border: 1px solid rgba(148, 163, 184, .09);
+    transition: color .18s ease, background .18s ease, border-color .18s ease, transform .12s ease;
+  }
+  .seg:active, .tfbtn:active, .modebtn:active { transform: scale(.97); }
+  .seg.on, .tfbtn.on, .modebtn.on {
+    color: #fff;
+    background: linear-gradient(135deg, var(--acc), var(--acc2));
+    border-color: rgba(255, 255, 255, .18);
+    box-shadow: 0 8px 20px -12px rgba(79, 70, 229, .9), inset 0 1px 0 rgba(255, 255, 255, .22);
+  }
+
+  .btn {
+    border-radius: 15px;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    transition: transform .12s ease, filter .18s ease, opacity .18s ease;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn-p {
+    color: #fff;
+    background: linear-gradient(135deg, var(--acc), var(--acc2));
+    box-shadow: 0 12px 26px -14px rgba(79, 70, 229, .85), inset 0 1px 0 rgba(255, 255, 255, .22);
+  }
+  .btn-p:hover { filter: brightness(1.06); }
+  .btn-s {
+    color: var(--text-2);
+    background: rgba(148, 163, 184, .10);
+    border: 1px solid rgba(148, 163, 184, .13);
+  }
+  .btn-g {
+    color: #7ff0c4;
+    background: rgba(16, 185, 129, .14);
+    border: 1px solid rgba(52, 211, 153, .22);
+  }
+  .btn-d {
+    color: #ffb1c0;
+    background: rgba(239, 68, 68, .13);
+    border: 1px solid rgba(251, 113, 133, .22);
+  }
+
+  .ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(148, 163, 184, .09);
+    border: 1px solid rgba(148, 163, 184, .12);
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1;
+    transition: background .18s ease, transform .12s ease;
+  }
+  .ico:active { transform: scale(.94); background: rgba(148, 163, 184, .16); }
+  .ico svg { width: 18px; height: 18px; }
+
+  .bar {
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, .10);
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--acc), var(--acc2));
+    transition: width .35s cubic-bezier(.2, .7, .2, 1);
+  }
+
+  .field { position: relative; }
+  .field > span.lbl {
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    pointer-events: none;
+  }
+  .field > input, .field > select {
+    width: 100%;
+    min-height: 50px;
+    padding: 19px 14px 8px;
+    border-radius: var(--r-md);
+    background: rgba(2, 6, 14, .55);
+    border: 1px solid rgba(148, 163, 184, .15);
+    color: var(--text-1);
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    outline: none;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .field > input:focus, .field > select:focus, textarea:focus {
+    border-color: rgba(129, 140, 248, .7);
+    background: rgba(2, 6, 14, .75);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .14);
+  }
+  .field > input::placeholder { color: rgba(132, 148, 178, .55); }
+  .field > input:first-child { padding-top: 14px; padding-bottom: 14px; }
+  .field > input.hasrec { padding-right: 150px; }
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    border-radius: 6px;
+    border: 1px solid rgba(148, 163, 184, .30);
+    background: rgba(2, 6, 14, .60);
+    display: inline-grid;
+    place-content: center;
+    transition: background .15s ease, border-color .15s ease, transform .12s ease;
+  }
+  input[type="checkbox"]:active { transform: scale(.92); }
+  input[type="checkbox"]::before {
+    content: "";
+    width: 8px;
+    height: 4px;
+    margin-top: -2px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform .12s ease;
+  }
+  input[type="checkbox"]:checked {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--acc), var(--acc2));
+  }
+  input[type="checkbox"]:checked::before { transform: rotate(-45deg) scale(1); }
+  .field > .recov-box button.recov {
+    border-radius: 999px;
+    font-size: 10.5px;
+    padding: 5px 9px;
+    background: rgba(99, 102, 241, .14);
+    border: 1px solid rgba(129, 140, 248, .22);
+    color: var(--text-3);
+  }
+  .field > .recov-box button.recov b { color: var(--acc-text); }
+  .field > .recov-box button.recov.min {
+    background: rgba(14, 165, 233, .12);
+    border-color: rgba(56, 189, 248, .25);
+  }
+  .field > .recov-box button.recov.min b { color: #7dd3fc; }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238494b2' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+  }
+  .field > select { padding-right: 32px; }
+  input[type="date"] { color-scheme: dark; }
+  textarea {
+    border-radius: var(--r-md) !important;
+    background: rgba(2, 6, 14, .55) !important;
+    border: 1px solid rgba(148, 163, 184, .15) !important;
+    color: var(--text-1) !important;
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] > summary { margin-bottom: 2px; }
+
+  #ohlc > div { background: rgba(5, 10, 20, .46); border-color: rgba(148, 163, 184, .08); padding: 8px 3px; }
+  #ohlc .font-semibold { font-size: 10.5px !important; letter-spacing: -.02em; white-space: nowrap; }
+  #ohlc .sub { font-size: 9.5px; }
+  #anSummary { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #anSummary > div:last-child { grid-column: span 2; }
+  #histList .flex.justify-between > b { white-space: nowrap; }
+  #histList .flex.justify-between > span { min-width: 0; }
+  #catList .ico, #debtList .ico, #savList .ico, #histList .ico, #archiveList .ico {
+    width: 32px; height: 32px; border-radius: 11px; font-size: 12px;
+  }
+  #catList > .card > .flex > .flex.gap-1, #savList > .card > .flex > .flex.gap-1 {
+    display: grid;
+    grid-template-columns: repeat(2, 32px);
+    gap: 4px;
+  }
+  #catList > .card, #debtList > .card, #savList > .card, #histList > .card, #archiveList > .card {
+    border-color: rgba(148, 163, 184, .10);
+    background: linear-gradient(165deg, rgba(21, 30, 51, .72), rgba(8, 13, 24, .78));
+  }
+
+  .ops-sheet .panel {
+    background: linear-gradient(180deg, #16203a, #080d18);
+    border-color: rgba(148, 163, 184, .16);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -30px 70px -30px #000;
+  }
+
+  /* ---------- bottom dock ---------- */
+  nav.app-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgba(5, 8, 15, 0), rgba(5, 8, 15, .78) 38%, rgba(5, 8, 15, .98));
+    border: 0;
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 5px;
+    border-radius: 24px;
+    background: rgba(17, 24, 41, .88);
+    border: 1px solid rgba(148, 163, 184, .14);
+    box-shadow: 0 26px 60px -22px #000, inset 0 1px 0 rgba(255, 255, 255, .05);
+  }
+  .navbtn {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 7px 1px 6px;
+    border-radius: 18px;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    color: var(--text-3);
+    transition: color .18s ease, background .18s ease;
+  }
+  .navbtn .ni {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    font-size: 0;
+  }
+  .navbtn .ni svg { width: 19px; height: 19px; }
+  .navbtn.on { color: #fff; background: linear-gradient(180deg, rgba(99, 102, 241, .26), rgba(99, 102, 241, .10)); box-shadow: inset 0 0 0 1px rgba(129, 140, 248, .26); }
+  .navbtn.on .ni { color: var(--acc-text); }
+
+  /* ---------- toast / modal ---------- */
+  #toast {
+    background: linear-gradient(180deg, rgba(30, 41, 59, .98), rgba(8, 13, 24, .99));
+    border: 1px solid rgba(129, 140, 248, .45);
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, .16), 0 24px 60px -20px #000, 0 0 40px -10px rgba(99, 102, 241, .35);
+  }
+  #shortfallModal > .card, #toast { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+
+  @media (max-width: 360px) {
+    .hero-balance { font-size: 1.9rem; }
+    .navbtn { font-size: 8px; }
+    .hero-stat > b { font-size: 11.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body class="app-body text-slate-100 min-h-screen">
 
 <div id="errBanner" onclick="this.classList.add('hidden')" class="hidden fixed top-0 left-0 right-0 z-50 bg-red-600/95 text-white text-xs p-3 cursor-pointer"></div>
 
-<main class="max-w-md mx-auto px-4 pt-4 pb-28 space-y-4">
-<div id="guestModeHint" class="sub text-center py-1">Гостевой режим · данные хранятся на этом устройстве</div>
+<main class="app-shell mx-auto px-4 space-y-4">
+<div id="guestModeHint" class="app-hint">BITBALANCE · ЛИЧНЫЙ КАБИНЕТ</div>
 
 
   <!-- ГЛАВНАЯ -->
   <section id="tab-home" class="space-y-4 fade-in">
-    <div id="remind" class="card p-4 border border-amber-500/40"><div class="text-sm text-amber-200 mb-1">🔔 Не вносили данные 4 дн. Последняя запись — 13 ноября 2026.</div></div>
-    <div id="saveStrip" class="card p-3 border border-amber-500/50 flex items-center justify-between gap-2 hidden">
+    <header class="appbar">
+      <div class="brand">
+        <div class="brand-mark">B</div>
+        <div>
+          <div class="brand-name">BitBalance</div>
+          <div class="brand-sub">Финансовый пульт</div>
+        </div>
+      </div>
+      <div class="appbar-actions">
+        <button onclick="stepBack()" class="ico" title="Шаг назад, отменить последнее действие"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5"/><path d="M4 12h9a6 6 0 0 1 6 6v1"/></svg></button>
+        <button onclick="exportFile()" class="ico" title="Сохранить файл"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4"/><path d="M8 20v-6h8v6"/></svg></button>
+        <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+    </header>
+
+    <div class="hero-card">
+      <div class="hero-top">
+        <span class="hero-label">Текущий баланс</span>
+        <span id="hChg" class="pill bg-emerald-500/15 text-emerald-300">▲ +4&nbsp;720 ₽ (+0.64%)</span>
+      </div>
+      <div id="hBal" class="hero-balance">−736&nbsp;780 ₽</div>
+      <div class="hero-meta">
+        <span id="hChgLbl" class="sub">За день</span>
+        <span id="hSub" class="hidden sub">Баланс = копилка (свободные + накопления) + подушка − долги</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span>Копилка</span><b id="hCash">220 ₽</b></div>
+        <div class="hero-stat"><span>Долги</span><b id="hDebt" class="text-red-300">737&nbsp;000 ₽</b></div>
+        <div class="hero-stat"><span>Подушка</span><b id="hCush">0 ₽</b></div>
+      </div>
+      <div class="hero-cushion">
+        <div class="cushion-head">
+          <span>Подушка безопасности</span>
+          <b><span id="hCushGoal">цель 683&nbsp;600 ₽ · 3 мес.</span> · <span id="hCushPct">0%</span></b>
+        </div>
+        <div class="bar mt-2"><i id="hCushBar" style="width:0%"></i></div>
+        <div id="hCushRec" class="rec">Рек. 7&nbsp;600 ₽ в день · до цели ещё 683&nbsp;571 ₽</div>
+        <div id="hCushNote" class="sub text-[10px] mt-1"></div>
+      </div>
+      <span id="anCash" class="hidden">220 ₽</span>
+      <span id="hTodayInc" class="hidden">+0 ₽</span>
+      <span id="hTodayExp" class="hidden">0 ₽</span>
+    </div>
+
+    <div id="saveStrip" class="save-strip card p-3 flex items-center justify-between gap-2 hidden">
       <span class="text-sm text-amber-200">● Есть несохранённые изменения</span>
       <button class="btn btn-p py-1.5 px-3 text-sm" onclick="exportFile()">💾 Сохранить</button>
     </div>
-
-    <div class="flex items-center justify-between">
-      <div>
-        <div class="sub">Баланс</div>
-        <div class="flex items-baseline gap-2 flex-wrap">
-          <span id="hBal" class="text-3xl font-extrabold tracking-tight">−736&nbsp;780 ₽</span>
-          <span id="hChg" class="pill bg-emerald-500/15 text-emerald-300">▲ +4&nbsp;720 ₽ (+0.64%)</span>
-          <span id="hChgLbl" class="sub">За день</span>
-        </div>
-        <div id="hSub" class="hidden sub mt-1">Баланс = копилка (свободные + накопления) + подушка − долги</div>
-      </div>
-      <div class="flex gap-1.5">
-        <button onclick="stepBack()" class="ico" title="Шаг назад — отменить последнее действие">↩</button>
-        <button onclick="exportFile()" class="ico" title="Сохранить файл">💾</button>
-        <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn">👁</button>
-      </div>
-    </div>
+    <div id="remind" class="remind-card card p-4"><div class="text-sm text-amber-200 mb-1">🔔 Не вносили данные 4 дн. Последняя запись — 13 ноября 2026.</div></div>
 
 
 
     
     <!-- График сразу под балансом -->
 <div class="card p-3">
+      <div class="card-head mb-3">
+        <div>
+          <div class="card-title">Динамика баланса</div>
+          <div class="card-sub">Свечи, линия и скользящие средние</div>
+        </div>
+        <span class="pill bg-sky-500/15 text-sky-300">График</span>
+      </div>
       <div class="flex items-center gap-1 mb-2 flex-nowrap overflow-x-auto" id="tfRow" style="scrollbar-width:none">
         <button class="tfbtn on shrink-0" data-tf="day" onclick="setTf('day')">День</button>
         <button class="tfbtn shrink-0" data-tf="week" onclick="setTf('week')">Нед</button>
@@ -201,12 +754,12 @@
 
     <!-- Быстрая запись: доход и расход рядом -->
     <div class="card p-3 space-y-3" id="quickHome">
-      <div class="flex items-center justify-between gap-2">
-        <div class="font-semibold text-sm">⚡ Быстрая запись</div>
-        <div class="text-right">
-          <div class="sub text-[10px]">Копилка</div>
-          <div id="hCash" class="font-bold text-emerald-300 text-sm">220 ₽</div>
+      <div class="card-head">
+        <div>
+          <div class="card-title">Быстрая запись</div>
+          <div class="card-sub">Доход или расход одним касанием</div>
         </div>
+        <span class="pill bg-slate-700/40 text-slate-300">⚡ 10 сек</span>
       </div>
       <div class="flex gap-2">
         <button type="button" id="qhDayToday" class="seg on flex-1 text-xs" onclick="setQhDay(0)">Сегодня</button>
@@ -217,22 +770,22 @@
         <div>
           <div class="field">
             <span class="lbl">Доход, ₽</span>
-            <input type="number" step="any" inputmode="decimal" id="qhIncAmt" placeholder="0" class="" oninput="syncQhRec()" __gcruniqueid="40">
+            <input type="number" step="any" inputmode="decimal" id="qhIncAmt" placeholder="0" class="" oninput="syncQhRec()">
             <div class="recov-box" id="qhIncRecBox"></div>
           </div>
-          <select id="qhIncSrc" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs" __gcruniqueid="41"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select>
+          <select id="qhIncSrc" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select>
         </div>
         <div>
           <div class="field">
             <span class="lbl">Расход, ₽</span>
-            <input type="number" step="any" inputmode="decimal" id="qhExpAmt" placeholder="0" class="" oninput="syncQhRec()" __gcruniqueid="42">
+            <input type="number" step="any" inputmode="decimal" id="qhExpAmt" placeholder="0" class="" oninput="syncQhRec()">
             <div class="recov-box" id="qhExpRecBox"></div>
           </div>
-          <select id="qhExpCat" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs" __gcruniqueid="43"><optgroup label="Категории"><option value="c:1">Квартира · обяз.</option><option value="c:2">Жена · обяз.</option><option value="c:3">Авто</option><option value="c:4">Продукты · обяз.</option><option value="c:1794500355271">Родненький · обяз.</option><option value="c:1794506458964">Интернет · обяз.</option></optgroup><optgroup label="Подушка"><option value="cush">🛟 Пополнить подушку</option></optgroup><optgroup label="Долги"><option value="d:1">→ Мурад Квен</option><option value="d:2">→ Кемыч</option><option value="d:3">→ Аресты</option><option value="d:1794049419537">→ Марат учеридитель</option><option value="d:1794049419539">→ Марат повар</option><option value="d:1794049419541">→ Штраф Авто</option><option value="d:1794049419543">→ Штраф Мусор</option><option value="d:1794500355277">→ Жинка</option></optgroup></select>
+          <select id="qhExpCat" onchange="syncQhRec()" class="mt-1 w-full bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1.5 text-xs"><optgroup label="Категории"><option value="c:1">Квартира · обяз.</option><option value="c:2">Жена · обяз.</option><option value="c:3">Авто</option><option value="c:4">Продукты · обяз.</option><option value="c:1794500355271">Родненький · обяз.</option><option value="c:1794506458964">Интернет · обяз.</option></optgroup><optgroup label="Подушка"><option value="cush">🛟 Пополнить подушку</option></optgroup><optgroup label="Долги"><option value="d:1">→ Мурад Квен</option><option value="d:2">→ Кемыч</option><option value="d:3">→ Аресты</option><option value="d:1794049419537">→ Марат учеридитель</option><option value="d:1794049419539">→ Марат повар</option><option value="d:1794049419541">→ Штраф Авто</option><option value="d:1794049419543">→ Штраф Мусор</option><option value="d:1794500355277">→ Жинка</option></optgroup></select>
         </div>
       </div>
       <div class="field">
-        <input type="text" id="qhNote" placeholder="примечание" class="w-full" autocomplete="off" __gcruniqueid="44">
+        <input type="text" id="qhNote" placeholder="примечание" class="w-full" autocomplete="off">
       </div>
       <div class="flex gap-2">
         <button type="button" class="btn btn-g flex-1 py-2 text-sm" onclick="quickHomeDo('inc')">+ Доход</button>
@@ -266,7 +819,7 @@
 
     <div id="debtConfirm" class="hidden card p-4 border border-amber-500/50 space-y-3">
       <div id="dcText" class="text-sm text-amber-200"></div>
-      <div class="field"><span class="lbl">Название долга</span><input type="text" id="dcName" __gcruniqueid="45"></div>
+      <div class="field"><span class="lbl">Название долга</span><input type="text" id="dcName"></div>
       <div class="field"><span class="lbl">Срок погашения (необязательно)</span><input type="date" id="dcDue"></div>
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-p" onclick="confirmDebt()">Создать долг и провести</button>
@@ -274,12 +827,12 @@
       </div>
     </div>
 
-    <form id="dayForm" onsubmit="submitDay(event)" class="space-y-4" __gcruniqueid="1">
+    <form id="dayForm" onsubmit="submitDay(event)" class="space-y-4">
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Доход</div>
         <div class="grid grid-cols-5 gap-2">
-          <div class="field col-span-3"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="income" placeholder="0" oninput="syncUndist()" onfocus="expandDayEntry()" __gcruniqueid="2"></div>
-          <div class="field col-span-2"><span class="lbl">Категория</span><select id="incomeCat" __gcruniqueid="3"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select></div>
+          <div class="field col-span-3"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="income" placeholder="0" oninput="syncUndist()" onfocus="expandDayEntry()"></div>
+          <div class="field col-span-2"><span class="lbl">Категория</span><select id="incomeCat"><option value="1">Работа</option><option value="1794049419536">Подработка</option></select></div>
         </div>
         <div id="undistBox" class="text-sm mt-1 flex justify-between items-center px-1">
           <span class="sub">Не распределено</span>
@@ -288,23 +841,23 @@
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Траты</div>
-        <div id="expInputs" class="space-y-2"><div class="field opacity-60"><span class="lbl">Квартира · обяз. · 🔒 план закрыт</span><input type="number" step="any" inputmode="decimal" data-exp="1" placeholder="0" class="" oninput="syncUndist()" disabled="" title="План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана." __gcruniqueid="4"><div class="sub text-[10px] text-amber-300 mt-0.5">План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана.</div></div><div class="field"><span class="lbl">Жена · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="2" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="5"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1500)"><b>рек.</b> 1&nbsp;500 ₽</button></div></div><div class="field"><span class="lbl">Авто</span><input type="number" step="any" inputmode="decimal" data-exp="3" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="6"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1126.6666666666667)"><b>рек.</b> 1&nbsp;200 ₽</button></div></div><div class="field"><span class="lbl">Продукты · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="4" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="7"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1266.6666666666667)"><b>рек.</b> 1&nbsp;300 ₽</button></div></div><div class="field"><span class="lbl">Родненький · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794500355271" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="8"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,300)"><b>рек.</b> 300 ₽</button></div></div><div class="field"><span class="lbl">Интернет · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794506458964" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="9"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,100)"><b>рек.</b> 100 ₽</button><button type="button" class="recov min" onclick="fillRec(this,107.6923076923077)"><b>мин.</b> 200 ₽</button></div></div></div>
+        <div id="expInputs" class="space-y-2"><div class="field opacity-60"><span class="lbl">Квартира · обяз. · 🔒 план закрыт</span><input type="number" step="any" inputmode="decimal" data-exp="1" placeholder="0" class="" oninput="syncUndist()" disabled="" title="План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана."><div class="sub text-[10px] text-amber-300 mt-0.5">План «Квартира» выполнен (собрано 31&nbsp;000 ₽ из 30&nbsp;000 ₽). Сбросьте «отдано» (↺) или измените сумму плана.</div></div><div class="field"><span class="lbl">Жена · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="2" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1500)"><b>рек.</b> 1&nbsp;500 ₽</button></div></div><div class="field"><span class="lbl">Авто</span><input type="number" step="any" inputmode="decimal" data-exp="3" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1126.6666666666667)"><b>рек.</b> 1&nbsp;200 ₽</button></div></div><div class="field"><span class="lbl">Продукты · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="4" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1266.6666666666667)"><b>рек.</b> 1&nbsp;300 ₽</button></div></div><div class="field"><span class="lbl">Родненький · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794500355271" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,300)"><b>рек.</b> 300 ₽</button></div></div><div class="field"><span class="lbl">Интернет · обяз.</span><input type="number" step="any" inputmode="decimal" data-exp="1794506458964" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,100)"><b>рек.</b> 100 ₽</button><button type="button" class="recov min" onclick="fillRec(this,107.6923076923077)"><b>мин.</b> 200 ₽</button></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">Погашение долгов</div>
-        <div id="debtInputs" class="space-y-2"><div class="field"><span class="lbl">Мурад Квен · остаток 80&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="10"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1818.1818181818182)"><b>рек.</b> 1&nbsp;900 ₽</button></div></div><div class="field"><span class="lbl">Кемыч · остаток 160&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="2" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="11"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,3636.3636363636365)"><b>рек.</b> 3&nbsp;700 ₽</button></div></div><div class="field"><span class="lbl">Аресты · остаток 440&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="3" placeholder="0" class="" oninput="syncUndist()" __gcruniqueid="12"></div><div class="field"><span class="lbl">Марат учеридитель · остаток 37&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419537" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="13"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,840.9090909090909)"><b>рек.</b> 900 ₽</button></div></div><div class="field"><span class="lbl">Марат повар · остаток 3&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419539" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="14"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,68.18181818181819)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Штраф Авто · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419541" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="15"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,170.45454545454547)"><b>рек.</b> 200 ₽</button></div></div><div class="field"><span class="lbl">Штраф Мусор · остаток 2&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419543" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="16"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,45.45454545454545)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Жинка · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794500355277" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="17"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,7500)"><b>рек.</b> 7&nbsp;500 ₽</button></div></div></div>
+        <div id="debtInputs" class="space-y-2"><div class="field"><span class="lbl">Мурад Квен · остаток 80&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,1818.1818181818182)"><b>рек.</b> 1&nbsp;900 ₽</button></div></div><div class="field"><span class="lbl">Кемыч · остаток 160&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="2" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,3636.3636363636365)"><b>рек.</b> 3&nbsp;700 ₽</button></div></div><div class="field"><span class="lbl">Аресты · остаток 440&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="3" placeholder="0" class="" oninput="syncUndist()"></div><div class="field"><span class="lbl">Марат учеридитель · остаток 37&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419537" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,840.9090909090909)"><b>рек.</b> 900 ₽</button></div></div><div class="field"><span class="lbl">Марат повар · остаток 3&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419539" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,68.18181818181819)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Штраф Авто · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419541" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,170.45454545454547)"><b>рек.</b> 200 ₽</button></div></div><div class="field"><span class="lbl">Штраф Мусор · остаток 2&nbsp;000 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794049419543" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,45.45454545454545)"><b>рек.</b> 100 ₽</button></div></div><div class="field"><span class="lbl">Жинка · остаток 7&nbsp;500 ₽</span><input type="number" step="any" inputmode="decimal" data-debt="1794500355277" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,7500)"><b>рек.</b> 7&nbsp;500 ₽</button></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">📈 Накопления и инвестиции</div>
-        <div id="savInputs" class="space-y-2"><div class="space-y-2 p-2 rounded-xl bg-slate-900/40"><div class="flex items-center justify-between gap-2"><div class="text-sm font-medium min-w-0">Копилка Ястреб <span class="sub">· цель · 0 ₽</span></div><button type="button" class="btn btn-d text-xs px-3 py-1.5 shrink-0" onclick="spendGoal(9001)">Потратить</button></div><div class="field"><span class="lbl">Пополнить, ₽</span><input type="number" step="any" inputmode="decimal" data-sav="9001" placeholder="0" class="" oninput="syncUndist()" __gcruniqueid="18"></div></div></div>
+        <div id="savInputs" class="space-y-2"><div class="space-y-2 p-2 rounded-xl bg-slate-900/40"><div class="flex items-center justify-between gap-2"><div class="text-sm font-medium min-w-0">Копилка Ястреб <span class="sub">· цель · 0 ₽</span></div><button type="button" class="btn btn-d text-xs px-3 py-1.5 shrink-0" onclick="spendGoal(9001)">Потратить</button></div><div class="field"><span class="lbl">Пополнить, ₽</span><input type="number" step="any" inputmode="decimal" data-sav="9001" placeholder="0" class="" oninput="syncUndist()"></div></div></div>
       </div>
       <div class="card p-4 space-y-3">
         <div class="font-semibold">🛟 Подушка</div>
-        <div id="cushField"><div class="field"><span class="lbl">Пополнить подушку, ₽</span><input type="number" step="any" inputmode="decimal" id="cushIn" placeholder="0" class="hasrec" oninput="syncUndist()" __gcruniqueid="19"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,98738.09523809522)"><b>рек.</b> 98&nbsp;800 ₽</button></div></div></div>
-        <div class="field"><span class="lbl">Снять из подушки, ₽</span><input type="number" step="any" inputmode="decimal" id="cushOut" placeholder="0" oninput="syncUndist()" __gcruniqueid="20"></div>
+        <div id="cushField"><div class="field"><span class="lbl">Пополнить подушку, ₽</span><input type="number" step="any" inputmode="decimal" id="cushIn" placeholder="0" class="hasrec" oninput="syncUndist()"><div class="recov-box"><button type="button" class="recov" onclick="fillRec(this,98738.09523809522)"><b>рек.</b> 98&nbsp;800 ₽</button></div></div></div>
+        <div class="field"><span class="lbl">Снять из подушки, ₽</span><input type="number" step="any" inputmode="decimal" id="cushOut" placeholder="0" oninput="syncUndist()"></div>
       </div>
       <div class="card p-4">
-        <div class="field"><span class="lbl">Заметка</span><input type="text" id="note" placeholder="например: смена" __gcruniqueid="21"></div>
+        <div class="field"><span class="lbl">Заметка</span><input type="text" id="note" placeholder="например: смена"></div>
       </div>
       <button type="submit" id="submitBtn" class="btn btn-p w-full shadow-lg shadow-indigo-900/40">Провести день</button>
     </form>
@@ -315,6 +868,11 @@
 
   <!-- ДЕНЬГИ -->
   <section id="tab-money" class="space-y-4 hidden">
+    <div class="screen-head">
+      <div class="screen-eyebrow">Деньги</div>
+      <div class="screen-title">Категории и обязательства</div>
+      <div class="screen-sub">Расходы, долги, накопления и подушка</div>
+    </div>
     <div class="card p-4 space-y-3">
       <div class="flex items-center justify-between">
         <div class="font-semibold">🧾 Категории расходов</div>
@@ -325,9 +883,9 @@
       <div id="catTotals" class="space-y-1 pt-2 border-t border-slate-700/50"></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-sky-300">＋ Новая категория</summary>
-        <form onsubmit="addCat(event)" class="space-y-2 mt-3" __gcruniqueid="22">
-          <div class="field"><span class="lbl">Название</span><input type="text" id="cName" required="" __gcruniqueid="23"></div>
-          <div class="field"><span class="lbl">Плановая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="cPlanAmt" __gcruniqueid="24"></div>
+        <form onsubmit="addCat(event)" class="space-y-2 mt-3">
+          <div class="field"><span class="lbl">Название</span><input type="text" id="cName" required=""></div>
+          <div class="field"><span class="lbl">Плановая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="cPlanAmt"></div>
           <div class="field"><span class="lbl">Срок плана (необязательно)</span><input type="date" id="cPlanDate"></div>
           <div class="flex gap-2 text-xs sub">
             <label class="flex items-center gap-2"><input type="checkbox" id="cNeed"> обязательная (в подушку)</label>
@@ -350,9 +908,9 @@
       <div id="debtTotals" class="space-y-1 pt-2 border-t border-slate-700/50"></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-indigo-300">＋ Новый долг</summary>
-        <form onsubmit="addDebt(event)" class="space-y-2 mt-3" __gcruniqueid="25">
-          <div class="field"><span class="lbl">Название (у кого / за что)</span><input type="text" id="dName" required="" __gcruniqueid="26"></div>
-          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="dAmt" required="" __gcruniqueid="27"></div>
+        <form onsubmit="addDebt(event)" class="space-y-2 mt-3">
+          <div class="field"><span class="lbl">Название (у кого / за что)</span><input type="text" id="dName" required=""></div>
+          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="dAmt" required=""></div>
           <div class="grid grid-cols-2 gap-2"><div class="field"><span class="lbl">Дата возникновения долга</span><input type="date" id="dDate"></div><div class="field"><span class="lbl">Срок погашения</span><input type="date" id="dDue"></div></div>
           <label class="flex items-start gap-2 text-sm text-slate-300 px-1">
             <input type="checkbox" id="dCredit" checked="" class="mt-1">
@@ -373,15 +931,15 @@
       <div id="savList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">Копилка Ястреб <span class="pill bg-emerald-500/15 text-emerald-300 text-[10px]">цель</span></div><div class="sub mt-0.5">вложено 0 ₽ из 100&nbsp;000 ₽</div></div><div class="flex gap-1"><button class="ico" onclick="spendGoal(9001)" title="Потратить">💸</button><button class="ico" onclick="editSav(9001)" title="Изменить">✏️</button><button class="ico" onclick="delSaving(9001)" title="Удалить">🗑</button></div></div><div class="bar mt-2"><i class="bg-emerald-400" style="width:0%"></i></div></div></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-emerald-300">＋ Новая цель / инвестиция</summary>
-        <form onsubmit="addSaving(event)" class="space-y-2 mt-3" __gcruniqueid="28">
+        <form onsubmit="addSaving(event)" class="space-y-2 mt-3">
           <div class="field"><span class="lbl">Тип</span>
-            <select id="sKind" __gcruniqueid="29">
+            <select id="sKind">
               <option value="goal">Цель (можно потратить целиком)</option>
               <option value="invest">Инвестиция (закрыть с возвратом)</option>
             </select>
           </div>
-          <div class="field"><span class="lbl">Название</span><input type="text" id="sName" required="" __gcruniqueid="30"></div>
-          <div class="field"><span class="lbl">Целевая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="sAmt" __gcruniqueid="31"></div>
+          <div class="field"><span class="lbl">Название</span><input type="text" id="sName" required=""></div>
+          <div class="field"><span class="lbl">Целевая сумма, ₽ (необязательно)</span><input type="number" step="any" inputmode="decimal" id="sAmt"></div>
           <div class="field"><span class="lbl">Срок (необязательно)</span><input type="date" id="sDate"></div>
           <button class="btn btn-p w-full">Добавить</button>
         </form>
@@ -402,8 +960,8 @@
     <div class="card p-4 space-y-3">
       <div class="font-semibold">💼 Доходные категории</div>
       <div id="incList" class="space-y-2"><div class="flex justify-between items-center card p-2.5"><span>Работа</span></div><div class="flex justify-between items-center card p-2.5"><span>Подработка</span><button class="ico" style="width:28px;height:28px;font-size:12px" onclick="delIncomeCat(1794049419536)">🗑</button></div></div>
-      <form onsubmit="addIncomeCat(event)" class="flex gap-2" __gcruniqueid="32">
-        <div class="field flex-1"><span class="lbl">Новая категория дохода</span><input type="text" id="icName" required="" __gcruniqueid="33"></div>
+      <form onsubmit="addIncomeCat(event)" class="flex gap-2">
+        <div class="field flex-1"><span class="lbl">Новая категория дохода</span><input type="text" id="icName" required=""></div>
         <button class="btn btn-s">＋</button>
       </form>
     </div>
@@ -413,20 +971,20 @@
       <div id="apList" class="space-y-2"><div class="sub text-center py-2">Нет автоплатежей</div></div>
       <details class="rounded-xl bg-slate-900/40 p-3">
         <summary class="text-sm font-semibold text-violet-300">＋ Новый автоплатёж</summary>
-        <form onsubmit="addAutopay(event)" class="space-y-2 mt-3" __gcruniqueid="34">
-          <div class="field"><span class="lbl">Название</span><input type="text" id="apName" required="" __gcruniqueid="35"></div>
-          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="apAmt" required="" __gcruniqueid="36"></div>
+        <form onsubmit="addAutopay(event)" class="space-y-2 mt-3">
+          <div class="field"><span class="lbl">Название</span><input type="text" id="apName" required=""></div>
+          <div class="field"><span class="lbl">Сумма, ₽</span><input type="number" step="any" inputmode="decimal" id="apAmt" required=""></div>
           <div class="grid grid-cols-2 gap-2">
             <div class="field">
               <span class="lbl">Периодичность</span>
-              <select id="apMode" onchange="document.getElementById('apDayBox').classList.toggle('hidden', this.value!=='monthly')" __gcruniqueid="37">
+              <select id="apMode" onchange="document.getElementById('apDayBox').classList.toggle('hidden', this.value!=='monthly')">
                 <option value="daily">Каждый день</option>
                 <option value="monthly">Каждый месяц</option>
               </select>
             </div>
-            <div id="apDayBox" class="field hidden"><span class="lbl">Число месяца</span><input type="number" id="apDay" min="1" max="31" value="1" __gcruniqueid="38"></div>
+            <div id="apDayBox" class="field hidden"><span class="lbl">Число месяца</span><input type="number" id="apDay" min="1" max="31" value="1"></div>
           </div>
-          <div class="field"><span class="lbl">Категория</span><select id="apCat" __gcruniqueid="39"><option value="1">Квартира</option><option value="2">Жена</option><option value="3">Авто</option><option value="4">Продукты</option><option value="1794500355271">Родненький</option><option value="1794506458964">Интернет</option></select></div>
+          <div class="field"><span class="lbl">Категория</span><select id="apCat"><option value="1">Квартира</option><option value="2">Жена</option><option value="3">Авто</option><option value="4">Продукты</option><option value="1794500355271">Родненький</option><option value="1794506458964">Интернет</option></select></div>
           <button class="btn btn-p w-full">Добавить автоплатёж</button>
         </form>
       </details>
@@ -435,10 +993,15 @@
 
   <!-- АНАЛИТИКА -->
   <section id="tab-analytics" class="hidden space-y-4">
+    <div class="screen-head">
+      <div class="screen-eyebrow">Аналитика</div>
+      <div class="screen-title">Цифры и тренды</div>
+      <div class="screen-sub">Здоровье денег, графики и прогнозы</div>
+    </div>
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
         <div class="font-semibold">📊 Аналитика</div>
-        <select id="anPeriod" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="46">
+        <select id="anPeriod" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="7">7 дней</option>
           <option value="30" selected="">30 дней</option>
           <option value="90">90 дней</option>
@@ -446,7 +1009,7 @@
           <option value="all">Всё время</option>
         </select>
       </div>
-      <div class="grid grid-cols-3 gap-2 text-sm">
+      <div id="anSummary" class="grid grid-cols-3 gap-2 text-sm">
         <div class="card p-3"><div class="sub">Доход</div><div id="anInc" class="font-bold text-emerald-300 mt-1">51&nbsp;000 ₽</div><div id="anIncD" class="text-[11px] mt-1"><span class="sub">нет данных</span></div></div>
         <div class="card p-3"><div class="sub">Траты</div><div id="anExp" class="font-bold text-sky-300 mt-1">46&nbsp;280 ₽</div><div id="anExpD" class="text-[11px] mt-1"><span class="sub">нет данных</span></div></div>
         <div class="card p-3"><div class="sub">Итог за период</div><div id="anNet" class="font-bold mt-1 text-red-300">−9&nbsp;780 ₽</div><div id="anDebt" class="text-[11px] mt-1 sub">на долги ушло 14&nbsp;500 ₽</div></div>
@@ -488,12 +1051,6 @@
 
 
     
-    <!-- скрытые слоты для совместимости с renderHome -->
-    <div class="hidden">
-      <span id="hTodayInc">+0 ₽</span><span id="hTodayExp">0 ₽</span>
-      <span id="anCash">220 ₽</span><span id="hDebt">737&nbsp;000 ₽</span>
-      <span id="hCush">0 ₽</span><span id="hCushRec"><span class="rec">Рек. <b class="acc">7&nbsp;600 ₽</b> в день · до цели ещё <b class="acc">683&nbsp;571,43 ₽</b> · к добору ~98&nbsp;800 ₽</span></span><i id="hCushBar" style="width: 0%;"></i>
-    </div>
 <div class="card p-4">
       <div class="font-semibold mb-3">Главное</div>
       <div id="anInsights" class="space-y-2"><div class="card p-2 mb-2 grid grid-cols-2 gap-2 text-center text-xs"><div><div class="sub">Долги</div><b class="text-red-300 text-sm">737&nbsp;000 ₽</b></div><div><div class="sub">Копилка</div><b class="text-emerald-300 text-sm">220 ₽</b></div></div><div class="text-sm text-slate-200">Баланс сейчас <b class="acc">−736&nbsp;780 ₽</b>: копилка <b class="acc">220 ₽</b> + подушка <b class="acc">0 ₽</b> − долги <b class="acc">737&nbsp;000 ₽</b>.</div><div class="text-sm text-slate-200">Доход в день <b class="acc">6&nbsp;375 ₽</b>, траты <b class="acc">5&nbsp;785 ₽</b>, остаётся <b class="acc">590 ₽</b> до долгов.</div><div class="text-sm text-slate-200">При текущем потоке долги закроются примерно через <b class="acc">1250</b> дн. (≈ 42 мес.).</div><div class="text-sm text-slate-200">Больше всего уходит на «Квартира»: <b class="acc">31&nbsp;000 ₽</b> (67% трат).</div><div class="text-sm text-slate-200">Прогноз баланса через 30 дней: <b class="acc">−719&nbsp;080 ₽</b>.</div></div>
@@ -506,7 +1063,7 @@
     <div class="card p-4" id="aiCard">
       <div class="font-semibold mb-2">🤖 AI-советник</div>
       <div class="sub text-[11px] mb-2">Советы по твоим цифрам (Gemini, бесплатно). Нужен деплой с /api/ai.</div>
-      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?" __gcruniqueid="47"></textarea>
+      <textarea id="aiQuestion" rows="2" class="w-full bg-slate-900/70 border border-slate-700 rounded-xl px-3 py-2 text-sm" placeholder="Например: что урезать в первую очередь?"></textarea>
       <button type="button" class="btn btn-p w-full mt-2 py-2" onclick="askAI()">Спросить</button>
       <div id="aiAnswer" class="mt-3 text-sm text-slate-200 whitespace-pre-wrap hidden"></div>
     </div>
@@ -532,7 +1089,7 @@
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
         <div class="font-semibold">Расходы по категориям <span id="anExpTotal" class="text-sky-300 font-bold text-sm">46&nbsp;280 ₽</span></div>
-        <select id="anMode" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-xs" __gcruniqueid="48">
+        <select id="anMode" onchange="renderAnalytics()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-xs">
           <option value="total">доля от трат</option>
           <option value="income">доля от дохода</option>
         </select>
@@ -547,10 +1104,15 @@
 
   <!-- ОТЧЁТ -->
   <section id="tab-report" class="hidden space-y-4">
+    <div class="screen-head">
+      <div class="screen-eyebrow">Отчёт</div>
+      <div class="screen-title">Выгрузка для консультанта</div>
+      <div class="screen-sub">Только факты: баланс, долги, доходы и траты</div>
+    </div>
     <div class="card p-4 space-y-3">
       <div class="flex items-center justify-between">
         <div class="font-semibold">📄 Отчёт для консультанта</div>
-        <select id="rpPeriod" onchange="renderReport()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="49">
+        <select id="rpPeriod" onchange="renderReport()" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="7">7 дней</option>
           <option value="30" selected="">30 дней</option>
           <option value="90">90 дней</option>
@@ -568,8 +1130,13 @@
 
   <!-- ИСТОРИЯ -->
   <section id="tab-history" class="space-y-4 hidden">
+    <div class="screen-head">
+      <div class="screen-eyebrow">История</div>
+      <div class="screen-title">Все операции</div>
+      <div class="screen-sub">Записи по дням, экспорт и отмена действий</div>
+    </div>
     <div class="card p-4 space-y-3">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-2 flex-wrap">
         <div class="font-semibold">🧾 История</div>
         <button class="btn btn-s py-1 text-xs" onclick="undoLast()">↩ Отменить последнюю</button>
       </div>
@@ -577,7 +1144,7 @@
         <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
         <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile').click()">⬇️ Импорт истории</button>
       </div>
-      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)" __gcruniqueid="65">
+      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
       <div class="sub">Экспорт — только операции (JSON). Импорт добавит записи без дублей по id.</div>
     </div>
     <div id="histList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Жинка</span><b class="text-red-300">−2&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319089)">✏️</button><button class="ico" onclick="delEntry(1794568319089)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−950 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+2&nbsp;600 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;720 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319088)">✏️</button><button class="ico" onclick="delEntry(1794568319088)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319087)">✏️</button><button class="ico" onclick="delEntry(1794568319087)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Интернет</span><b class="text-red-300">−100 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794506458967)">✏️</button><button class="ico" onclick="delEntry(1794506458967)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−6&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;280 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−600 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−8&nbsp;380 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355279)">✏️</button><button class="ico" onclick="delEntry(1794500355279)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026 <span class="sub font-normal">· Жинка</span></div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">долг «Жинка»</span><b class="text-red-300">+10&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">в копилку (из долга)</span><b class="text-emerald-300">+10&nbsp;000 ₽</b></div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="delEntry(1794500355278)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355276)">✏️</button><button class="ico" onclick="delEntry(1794500355276)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">11 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−850 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355275)">✏️</button><button class="ico" onclick="delEntry(1794500355275)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+12&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Марат учеридитель</span><b class="text-red-300">−12&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355274)">✏️</button><button class="ico" onclick="delEntry(1794500355274)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355273)">✏️</button><button class="ico" onclick="delEntry(1794500355273)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">9 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355272)">✏️</button><button class="ico" onclick="delEntry(1794500355272)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">7 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 900 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355270)">✏️</button><button class="ico" onclick="delEntry(1794500355270)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">6 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;400 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355269)">✏️</button><button class="ico" onclick="delEntry(1794500355269)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">5 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;800 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 500 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355268)">✏️</button><button class="ico" onclick="delEntry(1794500355268)">🗑</button></div></div></div></div>
@@ -585,11 +1152,16 @@
 
   <!-- НАСТРОЙКИ -->
   <section id="tab-settings" class="hidden space-y-4">
+    <div class="screen-head">
+      <div class="screen-eyebrow">Настройки</div>
+      <div class="screen-title">Правила и оформление</div>
+      <div class="screen-sub">Нормы, напоминания, тема и данные</div>
+    </div>
     <div class="card p-4 space-y-4">
       <div class="font-semibold">🔔 Уведомления</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Время показа</span>
-        <select id="toastMode" onchange="setToastMode(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="50">
+        <select id="toastMode" onchange="setToastMode(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="auto">Авто</option>
           <option value="short">Короткое, 4 с</option>
           <option value="normal">Обычное, 8 с</option>
@@ -600,7 +1172,7 @@
       <div class="sub">Авто: чем длиннее текст, тем дольше сообщение.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Своё время, секунд</span>
-        <input id="toastSec" type="number" min="1" onchange="setToastSec(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="51">
+        <input id="toastSec" type="number" min="1" onchange="setToastSec(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
       </div>
       <label class="flex items-center justify-between gap-3 text-sm">
         <span>Не исчезать, пока не нажму</span>
@@ -612,7 +1184,7 @@
       <div class="font-semibold">⏰ Напоминания</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Напоминать, если не вносили дней</span>
-        <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="52">
+        <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
       </div>
       <div class="sub">0 — выключить. Напоминание появляется на главной.</div>
       <button class="btn btn-s w-full py-2" onclick="enableReminders()">🔔 Разрешить системные уведомления</button>
@@ -622,19 +1194,19 @@
       <div class="font-semibold">⚙️ Правило распределения</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Пресет нормы</span>
-        <select id="preset" onchange="setPreset(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="53">
+        <select id="preset" onchange="setPreset(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="50/30/20">50 / 30 / 20</option>
           <option value="70/20/10">70 / 20 / 10</option>
           <option value="custom">Своё</option>
         </select>
       </div>
-      <div class="field"><span class="lbl">Норма обязательных, %</span><input type="number" id="nNeeds" onchange="setNormVal('needs', this.value)" __gcruniqueid="54"></div>
-      <div class="field"><span class="lbl">Норма прочих, %</span><input type="number" id="nWants" onchange="setNormVal('wants', this.value)" __gcruniqueid="55"></div>
+      <div class="field"><span class="lbl">Норма обязательных, %</span><input type="number" id="nNeeds" onchange="setNormVal('needs', this.value)"></div>
+      <div class="field"><span class="lbl">Норма прочих, %</span><input type="number" id="nWants" onchange="setNormVal('wants', this.value)"></div>
       <div class="card p-3 space-y-3 border border-sky-500/20 bg-slate-900/30">
         <div class="font-semibold text-sky-200">🛟 Настройки подушки</div>
         <div class="field">
           <span class="lbl">На сколько месяцев запасов</span>
-          <select id="cmSelect" onchange="setCushionMonths(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="56">
+          <select id="cmSelect" onchange="setCushionMonths(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
             <option value="1">1 мес</option>
             <option value="2">2 мес</option>
             <option value="3">3 мес</option>
@@ -646,7 +1218,7 @@
         </div>
         <div class="field">
           <span class="lbl">Что учитывать в цели подушки</span>
-          <select id="cushInclude" onchange="setCushionInclude(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="57">
+          <select id="cushInclude" onchange="setCushionInclude(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
             <option value="need">Только обязательные</option>
             <option value="need_rare">Обязательные + редкие</option>
             <option value="all">Все категории расходов</option>
@@ -654,7 +1226,7 @@
         </div>
         <div class="field">
           <span class="lbl">От чего считать месячную сумму</span>
-          <select id="cushBase" onchange="setCushionBase(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="58">
+          <select id="cushBase" onchange="setCushionBase(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
             <option value="avg">Факт: среднее по твоим тратам</option>
             <option value="rec">Рекомендуемые платежи (рек.)</option>
             <option value="min">Минимальные платежи (мин./план), иначе рек.</option>
@@ -662,10 +1234,10 @@
         </div>
         <div class="sub">Цель = выбранная база × месяцы. Рек. пополнения = сколько ещё не хватает до цели, размазанное по дням. Если подушка ≥ цели — «цель набрана», рек. = 0.</div>
       </div>
-      <div class="field"><span class="lbl">Окно для среднего, дней</span><input type="number" id="winDays" min="1" onchange="setWindow(this.value)" __gcruniqueid="59"></div>
+      <div class="field"><span class="lbl">Окно для среднего, дней</span><input type="number" id="winDays" min="1" onchange="setWindow(this.value)"></div>
       <div class="field">
         <span class="lbl">Порядок погашения долгов</span>
-        <select id="strategy" onchange="setStrategy(this.value)" __gcruniqueid="60">
+        <select id="strategy" onchange="setStrategy(this.value)">
           <option value="snow">Снежок: мелкие сначала</option>
           <option value="aval">Лавина: крупные сначала</option>
           <option value="order">По порядку добавления</option>
@@ -673,7 +1245,7 @@
       </div>
       <div class="field">
         <span class="lbl">Порог заметности статьи</span>
-        <select id="cutLevel" onchange="setCutLevel(this.value)" __gcruniqueid="61">
+        <select id="cutLevel" onchange="setCutLevel(this.value)">
           <option value="econ">Экономичный (от 5%)</option>
           <option value="eff">Эффективный (от 10%)</option>
           <option value="fast">Быстрый (от 20%)</option>
@@ -683,17 +1255,17 @@
 
     <div class="card p-4 space-y-3">
       <div class="font-semibold">❤️ Здоровье денег: пороги</div>
-      <div class="field"><span class="lbl">Обязательные не выше, %</span><input type="number" id="hNeeds" onchange="setHealth('needsMax', this.value)" __gcruniqueid="62"></div>
-      <div class="field"><span class="lbl">Остаток не ниже, %</span><input type="number" id="hSave" onchange="setHealth('saveMin', this.value)" __gcruniqueid="63"></div>
-      <div class="field"><span class="lbl">Запас не меньше, дней</span><input type="number" id="hRunway" onchange="setHealth('runwayMin', this.value)" __gcruniqueid="64"></div>
-      <div class="field"><span class="lbl">Долги закрыть за, мес.</span><input type="number" id="hDebtM" onchange="setHealth('debtMonths', this.value)" __gcruniqueid="65"></div>
+      <div class="field"><span class="lbl">Обязательные не выше, %</span><input type="number" id="hNeeds" onchange="setHealth('needsMax', this.value)"></div>
+      <div class="field"><span class="lbl">Остаток не ниже, %</span><input type="number" id="hSave" onchange="setHealth('saveMin', this.value)"></div>
+      <div class="field"><span class="lbl">Запас не меньше, дней</span><input type="number" id="hRunway" onchange="setHealth('runwayMin', this.value)"></div>
+      <div class="field"><span class="lbl">Долги закрыть за, мес.</span><input type="number" id="hDebtM" onchange="setHealth('debtMonths', this.value)"></div>
     </div>
 
     <div class="card p-4 space-y-3">
       <div class="font-semibold">🎨 Внешний вид</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Размер шрифта</span>
-        <select id="fontSizeSel" onchange="setFontSize(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="66">
+        <select id="fontSizeSel" onchange="setFontSize(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="s">Мелкий</option>
           <option value="m" selected="">Обычный</option>
           <option value="l">Крупный</option>
@@ -701,7 +1273,7 @@
       </div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Цвет акцента</span>
-        <select id="accentSel" onchange="setAccent(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" __gcruniqueid="67">
+        <select id="accentSel" onchange="setAccent(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
           <option value="indigo">Индиго</option>
           <option value="emerald">Изумрудный</option>
           <option value="sky">Голубой</option>
@@ -713,7 +1285,7 @@
     <div class="card p-4 space-y-3">
       <div class="font-semibold">💾 Данные</div>
       <div class="flex gap-2">
-        <select id="delPeriod" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm" __gcruniqueid="68">
+        <select id="delPeriod" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
           <option value="7">за 7 дней</option>
           <option value="30">за 30 дней</option>
           <option value="90">за 90 дней</option>
@@ -759,14 +1331,26 @@
   </section>
 </main>
 
-<nav class="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-xl bg-slate-950/85 border-t border-slate-800 pb-[env(safe-area-inset-bottom)]">
-  <div class="max-w-md mx-auto flex">
-    <button class="navbtn on" data-nav="home" onclick="showTab('home')"><span class="ni">📈</span>Главная</button>
-    <button class="navbtn" data-nav="money" onclick="showTab('money')"><span class="ni">💼</span>Деньги</button>
-    <button class="navbtn" data-nav="analytics" onclick="showTab('analytics')"><span class="ni">📊</span>Аналитика</button>
-    <button class="navbtn" data-nav="history" onclick="showTab('history')"><span class="ni">🧾</span>История</button>
-    <button class="navbtn" data-nav="report" onclick="showTab('report')"><span class="ni">📄</span>Отчёт</button>
-    <button class="navbtn" data-nav="settings" onclick="showTab('settings')"><span class="ni">⚙️</span>Настройки</button>
+<nav class="app-nav">
+  <div class="nav-inner">
+    <button class="navbtn on" data-nav="home" onclick="showTab('home')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10.5 9-7.5 9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg></span>Главная
+    </button>
+    <button class="navbtn" data-nav="money" onclick="showTab('money')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 9.5h18"/><path d="M16.5 14h1.5"/></svg></span>Деньги
+    </button>
+    <button class="navbtn" data-nav="analytics" onclick="showTab('analytics')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V5"/><path d="M4 20h16"/><path d="m7.5 15 4-4.5 3 3 4.5-6"/></svg></span>Аналитика
+    </button>
+    <button class="navbtn" data-nav="history" onclick="showTab('history')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg></span>История
+    </button>
+    <button class="navbtn" data-nav="report" onclick="showTab('report')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7.5L18 8v12.5H6z"/><path d="M13.5 3.5V8H18"/><path d="M9 12.5h6M9 16h6"/></svg></span>Отчёт
+    </button>
+    <button class="navbtn" data-nav="settings" onclick="showTab('settings')">
+      <span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9"/><path d="M18.5 7H21"/><path d="M4 17h2.5"/><path d="M12 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg></span>Настройки
+    </button>
   </div>
 </nav>
 
@@ -779,7 +1363,7 @@
     <div class="font-semibold text-amber-200">Не хватает денег</div>
     <div id="sfText" class="text-sm text-slate-300"></div>
     <div id="sfDebtForm" class="hidden space-y-2">
-      <div class="field"><span class="lbl">Название нового долга</span><input type="text" id="sfDebtName" placeholder="Долг из трат" __gcruniqueid="69"></div>
+      <div class="field"><span class="lbl">Название нового долга</span><input type="text" id="sfDebtName" placeholder="Долг из трат"></div>
       <div class="field"><span class="lbl">Срок (необязательно)</span><input type="date" id="sfDebtDue"></div>
       <div class="grid grid-cols-2 gap-2">
         <button class="btn btn-p" onclick="sfConfirmDebt()">Создать долг и провести</button>
@@ -1891,7 +2475,9 @@ function renderHome() {
   if ($('hSub')) $('hSub').innerText = R.entriesSorted.length
     ? 'Баланс = копилка (свободные + накопления) + подушка − долги'
     : 'Пока нет записей. Проведите первый день.';
-  $('hideBtn').innerText = state.hideBal ? '🙈' : '👁';
+  $('hideBtn').innerHTML = state.hideBal
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path d="m4 4 16 16"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
 
   document.querySelectorAll('[data-tf]').forEach(b => b.classList.toggle('on', b.dataset.tf === state.tf));
   document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('on', b.dataset.mode === state.chartMode));
@@ -1933,7 +2519,7 @@ function renderHome() {
   const an = cushionAnalysis(R.entriesSorted.filter(h => h.type !== 'debt'), today);
   const pct = an.goal > 0 ? Math.min(100, R.cush / an.goal * 100) : 0;
   if ($('hCush')) $('hCush').innerText = shown(R.cush);
-  if ($('hCushGoal')) $('hCushGoal').innerText = an.goal > 0 ? 'цель ' + shown(an.goal) + ' · ' + state.cushionMonths + ' мес.' : 'цель не задана';
+  if ($('hCushGoal')) $('hCushGoal').innerText = an.goal > 0 ? 'цель ' + (state.hideBal ? '•••' : recRub(an.goal)) + ' · ' + state.cushionMonths + ' мес.' : 'цель не задана';
   if ($('hCushPct')) $('hCushPct').innerText = an.goal > 0 ? Math.round(pct) + '%' : '—';
   if ($('hCushBar')) $('hCushBar').style.width = pct + '%';
   const pend = cushionPending();
@@ -1941,9 +2527,9 @@ function renderHome() {
     if ($('hCushRec')) $('hCushRec').innerHTML = '<span class="rec text-emerald-300">✓ Цель набрана · в подушке ' + (state.hideBal ? '•••' : shown(an.cushNow)) + ' из ' + (state.hideBal ? '•••' : shown(an.goal)) + '</span>';
     if ($('hCushNote')) if ($('hCushNote')) $('hCushNote').innerText = 'Рек. = 0. Запас покрывает выбранный горизонт.';
   } else if (an.goal > 0) {
-    $('hCushRec').innerHTML = '<span class="rec">Рек. <b class="acc">' + (state.hideBal ? '•••' : recRub(an.rec)) + '</b> в день · до цели ещё <b class="acc">' + (state.hideBal ? '•••' : shown(an.remain)) + '</b>' +
+    $('hCushRec').innerHTML = '<span class="rec">Рек. <b class="acc">' + (state.hideBal ? '•••' : recRub(an.rec)) + '</b> в день · до цели ещё <b class="acc">' + (state.hideBal ? '•••' : recRub(an.remain)) + '</b>' +
       (pend.amount > 0.004 ? ' · к добору ~' + (state.hideBal ? '•••' : recRub(pend.amount)) : '') + '</span>';
-    if ($('hCushNote')) $('hCushNote').innerText = 'Цель ' + shown(an.goal) + ' / ' + an.months + ' мес. Остаток размазан на ' + an.periodDays + ' дн. Настройка — во вкладке «Настройки».';
+    if ($('hCushNote')) $('hCushNote').innerText = 'Цель ' + recRub(an.goal) + ' / ' + an.months + ' мес. Остаток размазан на ' + an.periodDays + ' дн. Настройка — во вкладке «Настройки».';
   } else {
     $('hCushRec').innerHTML = '<span class="rec">' + (an.hasNeeds === false ? 'Выберите категории в настройках подушки или отметьте обязательные' : 'Нет базы для расчёта цели') + '</span>';
     if ($('hCushNote')) $('hCushNote').innerText = '';
