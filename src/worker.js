@@ -720,6 +720,17 @@ async function telegramLinkHandler(request, user, db, env) {
   return responseJson({ ok: true, telegram_user_id: tgUser.id });
 }
 
+async function pushTestHandler(user, db, env) {
+  if (!user) return responseJson({ error: "Требуется вход в аккаунт" }, 401);
+  const subs = await db.prepare("SELECT endpoint, keys_json FROM bb_push_subscriptions WHERE user_id = ?").bind(user.id).all();
+  const results = [];
+  for (const sub of (subs.results || [])) {
+    const ok = await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "");
+    results.push({ endpoint: sub.endpoint, ok });
+  }
+  return responseJson({ ok: true, results });
+}
+
 async function pushSubscribeHandler(request, user, db) {
   if (!user) return responseJson({ error: 'Требуется вход в аккаунт' }, 401);
   if (request.method === 'POST') {
@@ -906,6 +917,11 @@ export default {
 
       if (pathname === "/api/telegram/webhook") {
         return await telegramWebhookHandler(request, env);
+      }
+
+      if (pathname === "/api/push/test") {
+        const user = await findAuthenticatedUser(request, env.DB);
+        return await pushTestHandler(user, env.DB, env);
       }
 
       return responseJson({ error: "API endpoint не найден" }, 404);

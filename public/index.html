@@ -1433,6 +1433,7 @@
       <div class="font-semibold">📲 Push-уведомления</div>
       <div class="sub text-[11px]">Требуется разрешение браузера и настроенные VAPID-ключи на сервере.</div>
       <button class="btn btn-s w-full py-2" onclick="subscribePush()">🔔 Включить Push</button>
+      <button class="btn btn-s w-full py-2" onclick="testServerPush()">📡 Тестовый Push с сервера</button>
       <button class="btn btn-s w-full py-2" onclick="testLocalNotification()">🧪 Тестовое уведомление</button>
       <button class="btn btn-s w-full py-2" onclick="linkTelegram()">🔗 Привязать Telegram</button>
     </div>
@@ -5466,6 +5467,17 @@ function testLocalNotification() {
       toast('Тестовое уведомление отправлено');
     } catch (e) { toast('Ошибка: ' + (e.message || e), 'warn'); }
   });
+}
+
+async function testServerPush() {
+  if (!bbAccountReady) { toast('Войдите в аккаунт', 'warn'); return; }
+  try {
+    const r = await bbApi('/api/push/test');
+    const d = await r.json();
+    if (!r.ok || d.error) throw new Error(d.error || 'Ошибка');
+    const ok = (d.results || []).some(x => x.ok);
+    toast(ok ? 'Push отправлен с сервера' : 'Push не отправлен (проверьте подписку)');
+  } catch (e) { toast('Ошибка: ' + (e.message || e), 'warn'); }
 }
 
 function init() {
