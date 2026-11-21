@@ -5415,8 +5415,14 @@ async function loadAiHistory() {
 }
 
 async function subscribePush() {
-  if (!('serviceWorker' in navigator)) { toast('Service Worker не поддерживается в этом браузере', 'warn'); return; }
-  if (!('PushManager' in window)) { toast('Push не поддерживается в этом браузере (попробуйте Safari/Chrome)', 'warn'); return; }
+  if (!('serviceWorker' in navigator)) {
+    toast('Push недоступен в этом браузере. Если вы в Telegram — используйте привязку Telegram для уведомлений.', 'warn');
+    return;
+  }
+  if (!('PushManager' in window)) {
+    toast('Push не поддерживается. Попробуйте открыть сайт в Chrome или Safari напрямую.', 'warn');
+    return;
+  }
   if (!bbAccountReady) { toast('Войдите в аккаунт', 'warn'); return; }
   try {
     if (!navigator.serviceWorker.controller) { await navigator.serviceWorker.register('/sw.js'); }
