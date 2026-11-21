@@ -1062,9 +1062,8 @@ export default {
               }
               // Проверяем время выполнения (по местному времени пользователя)
               const apTime = ap.time || "07:00";
-              const [apH, apM] = String(apTime).split(":").map(n => parseInt(n,10));
-              if (!isNaN(apH) && apH !== localNow.getUTCHours()) return false;
-              if (!isNaN(apM) && apM !== localNow.getUTCMinutes()) return false;
+              const apHour = parseInt(String(apTime).split(":")[0], 10);
+              if (!isNaN(apHour) && apHour !== localNow.getUTCHours()) return false;
               return true;
             });
 
@@ -1111,7 +1110,8 @@ export default {
 
             // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
             const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
-            if (!userTimes.includes(hhmm)) return;
+            const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
+            if (!userHours.includes(localNow.getUTCHours())) return;
 
             let text = "";
             if (hour < 11) text = "Доброе утро! Открой BitBalance и запиши день.";
