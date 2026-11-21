@@ -4572,6 +4572,7 @@ function renderHistory() {
       (h.note ? ' <span class="sub font-normal">· ' + esc(h.note) + '</span>' : '') + '</div>' +
       '<div class="mt-1 space-y-0.5">' + (rows || '<div class="sub">без сумм</div>') + '</div></div>' +
       '<div class="flex gap-1 shrink-0">' +
+      '<button class="ico" onclick="editEntryNote(' + h.id + ')" title="Изменить примечание">📝</button>' +
       (canEdit ? '<button class="ico" onclick="startEdit(' + h.id + ')">✏️</button>' : '') +
       '<button class="ico" onclick="delEntry(' + h.id + ')">🗑</button></div></div></div>';
   }).join('');
