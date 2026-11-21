@@ -770,6 +770,56 @@ async function telegramWebhookHandler(request, env) {
   return responseJson({ ok: true });
 }
 
+
+function base64UrlToBytes(b64u) {
+  const pad = "=".repeat((4 - (b64u.length % 4)) % 4);
+  const b64 = (b64u + pad).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(b64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+async function sendWebPush(endpoint, vapidPublicKey, vapidPrivateKey) {
+  if (!vapidPublicKey || !vapidPrivateKey) return false;
+  try {
+    const pubBytes = base64UrlToBytes(vapidPublicKey);
+    // pubBytes: 04 || x (32) || y (32)
+    const x = pubBytes.slice(1, 33);
+    const y = pubBytes.slice(33, 65);
+    const privBytes = base64UrlToBytes(vapidPrivateKey);
+    const jwk = {
+      kty: "EC",
+      crv: "P-256",
+      d: vapidPrivateKey,
+      x: btoa(String.fromCharCode(...x)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""),
+      y: btoa(String.fromCharCode(...y)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+    };
+    const privateKey = await crypto.subtle.importKey("jwk", jwk, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
+    const origin = new URL(endpoint).origin;
+    const header = { typ: "JWT", alg: "ES256" };
+    const payload = { aud: origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: "mailto:bitbalance@example.com" };
+    const enc = (obj) => btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    const unsigned = enc(header) + "." + enc(payload);
+    const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, privateKey, new TextEncoder().encode(unsigned));
+    // convert DER to raw r||s (Web Crypto returns raw for ECDSA? Actually subtle.sign returns raw r||s for ECDSA in Web Crypto)
+    const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    const jwt = unsigned + "." + sigB64;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Authorization": "vapid t=" + jwt + ", k=" + vapidPublicKey,
+        "TTL": "86400"
+      }
+    });
+    return res.ok || res.status === 201;
+  } catch (e) {
+    console.error("webpush error:", String(e?.message || e));
+    return false;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const diagnostic = { stage: "request_start" };
@@ -927,11 +977,11 @@ export default {
               });
             }
 
-            // Push (пустой, без payload)
+            // Push с VAPID-авторизацией
             const subs = await env.DB.prepare("SELECT endpoint, keys_json FROM bb_push_subscriptions WHERE user_id = ?").bind(u.id).all();
             for (const sub of (subs.results || [])) {
               try {
-                await fetch(sub.endpoint, { method: "POST" });
+                await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "");
               } catch {}
             }
           } catch (e) {
