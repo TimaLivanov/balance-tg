@@ -2180,6 +2180,7 @@ function buildBars(tf) {
     w.ops = w.ops.concat(b.ops || []);
   });
   return order.map(k => weeks[k]);
+}
 
 function axisLabel(b, i, bars, tf) {
   if (!b.key) return b.label || '';
