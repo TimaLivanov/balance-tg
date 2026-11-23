@@ -774,7 +774,6 @@
       </div>
       <div class="appbar-actions">
         <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
         <button onclick="openProfile()" class="ico" title="Профиль" id="profileBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-3.5 4.5-5 7.5-5s6 1.5 7.5 5"/></svg></button>
       </div>
     </header>
@@ -2268,14 +2267,16 @@ function buildBars(tf) {
 
   return [];
 }
-  return order.map(k => weeks[k]);
-}
 
 function axisLabel(b, i, bars, tf) {
   if (!b.key) return b.label || '';
   if (tf === 'day') return String(Number(b.key.slice(8, 10)));
   if (tf === 'week') return Number(b.key.slice(8, 10)) + '.' + b.key.slice(5, 7);
-  if (tf === 'month') return String(Number(b.key.slice(8, 10)));
+  if (tf === 'month') {
+    const m = Number(b.key.slice(5, 7));
+    const pm = i > 0 ? Number(bars[i - 1].key.slice(5, 7)) : -1;
+    return m !== pm ? MON_SHORT[m - 1] : '';
+  }
   const m = Number(b.key.slice(5, 7));
   const pm = i > 0 ? Number(bars[i - 1].key.slice(5, 7)) : -1;
   return m !== pm ? MON_SHORT[m - 1] : '';
