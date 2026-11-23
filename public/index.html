@@ -18,7 +18,7 @@
   html, body { background: #0b1020; }
   body {
     -webkit-tap-highlight-color: transparent;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   .card {
     background: linear-gradient(180deg, rgba(30,41,59,.75), rgba(15,23,42,.78));
@@ -773,8 +773,7 @@
         </div>
       </div>
       <div class="appbar-actions">
-        <button onclick="stepBack()" class="ico" title="Шаг назад, отменить последнее действие"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5"/><path d="M4 12h9a6 6 0 0 1 6 6v1"/></svg></button>
-        <button onclick="exportFile()" class="ico" title="Сохранить файл"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4"/><path d="M8 20v-6h8v6"/></svg></button>
+        <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
         <button onclick="toggleHideBal()" class="ico" title="Скрыть суммы" id="hideBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
         <button onclick="openProfile()" class="ico" title="Профиль" id="profileBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-3.5 4.5-5 7.5-5s6 1.5 7.5 5"/></svg></button>
       </div>
@@ -791,9 +790,9 @@
         <span id="hSub" class="hidden sub">Баланс = копилка (свободные + накопления) + подушка − долги</span>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><span>Копилка</span><b id="hCash">220 ₽</b></div>
+        <div class="hero-stat"><span>Копилка</span><b id="hCash" class="text-emerald-300">220 ₽</b></div>
         <div class="hero-stat"><span>Долги</span><b id="hDebt" class="text-red-300">737&nbsp;000 ₽</b></div>
-        <div class="hero-stat"><span>Подушка</span><b id="hCush">0 ₽</b></div>
+        <div class="hero-stat"><span>Подушка</span><b id="hCush" class="text-sky-300">0 ₽</b></div>
       </div>
       <div class="hero-cushion">
         <div class="cushion-head">
@@ -1240,18 +1239,6 @@
       <div class="screen-title">Все операции</div>
       <div class="screen-sub">Записи по дням, экспорт и отмена действий</div>
     </div>
-    <div class="card p-4 space-y-3">
-      <div class="flex items-center justify-between gap-2 flex-wrap">
-        <div class="font-semibold">🧾 История</div>
-        <button class="btn btn-s py-1 text-xs" onclick="undoLast()">↩ Отменить последнюю</button>
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
-        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile').click()">⬇️ Импорт истории</button>
-      </div>
-      <input type="file" id="importHistFile" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
-      <div class="sub">Экспорт — только операции (JSON). Импорт добавит записи без дублей по id.</div>
-    </div>
     <div id="histList" class="space-y-2"><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Жинка</span><b class="text-red-300">−2&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319089)">✏️</button><button class="ico" onclick="delEntry(1794568319089)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−950 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+2&nbsp;600 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;720 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319088)">✏️</button><button class="ico" onclick="delEntry(1794568319088)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">13 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−2&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794568319087)">✏️</button><button class="ico" onclick="delEntry(1794568319087)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Интернет</span><b class="text-red-300">−100 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;120 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794506458967)">✏️</button><button class="ico" onclick="delEntry(1794506458967)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−6&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;280 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−600 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−8&nbsp;380 ₽</b></div><div class="sub text-[11px]">свободно после записи: 2&nbsp;220 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355279)">✏️</button><button class="ico" onclick="delEntry(1794500355279)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026 <span class="sub font-normal">· Жинка</span></div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-red-300">долг «Жинка»</span><b class="text-red-300">+10&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">в копилку (из долга)</span><b class="text-emerald-300">+10&nbsp;000 ₽</b></div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="delEntry(1794500355278)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">12 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355276)">✏️</button><button class="ico" onclick="delEntry(1794500355276)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">11 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−850 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−150 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355275)">✏️</button><button class="ico" onclick="delEntry(1794500355275)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+12&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">→ долг Марат учеридитель</span><b class="text-red-300">−12&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355274)">✏️</button><button class="ico" onclick="delEntry(1794500355274)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">10 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−5&nbsp;000 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355273)">✏️</button><button class="ico" onclick="delEntry(1794500355273)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">9 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−2&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Родненький</span><b class="text-red-300">−300 ₽</b></div><div class="flex justify-between text-sm"><span class="text-amber-300">из копилки (на покрытие)</span><b class="text-amber-300">−300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355272)">✏️</button><button class="ico" onclick="delEntry(1794500355272)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">7 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+300 ₽</b></div><div class="sub text-[11px]">свободно после записи: 900 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355270)">✏️</button><button class="ico" onclick="delEntry(1794500355270)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">6 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+5&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Квартира</span><b class="text-red-300">−3&nbsp;500 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−1&nbsp;400 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+100 ₽</b></div><div class="sub text-[11px]">свободно после записи: 600 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355269)">✏️</button><button class="ico" onclick="delEntry(1794500355269)">🗑</button></div></div></div><div class="card p-3"><div class="flex justify-between items-start gap-2"><div class="min-w-0"><div class="font-semibold">5 ноября 2026</div><div class="mt-1 space-y-0.5"><div class="flex justify-between text-sm"><span class="text-emerald-300">Доход</span><b class="text-emerald-300">+4&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Жена</span><b class="text-red-300">−1&nbsp;000 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Авто</span><b class="text-red-300">−1&nbsp;800 ₽</b></div><div class="flex justify-between text-sm"><span class="text-red-300">Продукты</span><b class="text-red-300">−700 ₽</b></div><div class="flex justify-between text-sm"><span class="text-emerald-300">остаток записи → копилка</span><b class="text-emerald-300">+500 ₽</b></div><div class="sub text-[11px]">свободно после записи: 500 ₽</div></div></div><div class="flex gap-1 shrink-0"><button class="ico" onclick="startEdit(1794500355268)">✏️</button><button class="ico" onclick="delEntry(1794500355268)">🗑</button></div></div></div></div>
   </section>
 
@@ -1286,7 +1273,7 @@
     </div>
 
     <div class="card p-4 space-y-3">
-      <div class="font-semibold">🔔 Уведомления</div>
+      <div class="font-semibold">🔔 Уведомления бота</div>
       <div class="sub text-[11px]">Telegram привязывается автоматически при входе из Mini App.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Время уведомления</span>
@@ -1301,47 +1288,14 @@
         <input id="aiQuietEnd" type="time" onchange="setNotify('aiQuietEnd', this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="08:00">
       </div>
       <div class="flex items-center justify-between gap-3">
-        <span class="text-sm">Макс. уведомлений в день</span>
-        <input id="aiMaxNotifications" type="number" min="0" onchange="setNotify('aiMaxNotifications', this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="3">
-      </div>
-      <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Напоминать, если не вносили дней</span>
         <input id="remindDays" type="number" min="0" onchange="setRemindDays(this.value)" class="w-20 bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
       </div>
-      <div class="sub text-[11px]">0 — выключить напоминания.</div>
+      <div class="sub text-[11px]">0 — выключить напоминания. Бот пришлёт сообщение, если не было записей в течение дня.</div>
       <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="enableReminders()">🔔 Разрешить</button>
+        <button class="btn btn-s py-2 text-xs" onclick="enableReminders()">🔔 Разрешить уведомления</button>
         <button class="btn btn-s py-2 text-xs" onclick="subscribePush()">Push</button>
       </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="testServerPush()">📡 Тест Push</button>
-        <button class="btn btn-s py-2 text-xs" onclick="testTelegramMessage()">📨 Тест TG</button>
-        <button class="btn btn-s py-2 text-xs" onclick="debugNotify()">🔍 Проверить отправку</button>
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="testLocalNotification()">🧪 Локальный тест</button>
-      </div>
-      <div class="flex items-center justify-between gap-3">
-        <span class="text-sm">Стиль сообщений</span>
-        <select id="tgMsgMode" onchange="setTgMsgMode(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
-          <option value="smart">Умные (без ИИ, бесплатно)</option>
-          <option value="ai">С ИИ (персональные, расходует токены)</option>
-        </select>
-      </div>
-      <div class="sub text-[11px]">Время отправки ботом (по вашему времени, с точностью до часа):</div>
-      <div class="grid grid-cols-5 gap-2">
-        <input id="tgTime1" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(0, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="7">
-        <input id="tgTime2" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(1, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="12">
-        <input id="tgTime3" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(2, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="19">
-        <input id="tgTime4" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(3, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime5" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(4, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime6" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(5, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime7" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(6, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime8" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(7, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime9" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(8, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-        <input id="tgTime10" type="number" min="0" max="23" placeholder="—" onchange="setTgTime(9, this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm" value="">
-      </div>
-      <div class="sub text-[11px]">До 10 часов отправки (0-23). Пустое поле — не отправлять. Сообщение придёт в начале часа.</div>
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm">Часовой пояс (UTC)</span>
         <select id="tzSel" onchange="setTz(this.value)" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-1 text-sm">
@@ -1489,44 +1443,21 @@
       </div>
     </div>
 
-    <div class="card p-4 space-y-3">
-      <div class="font-semibold">💾 Данные</div>
-      <div class="flex gap-2">
-        <select id="delPeriod" class="bg-slate-900/70 border border-slate-700 rounded-xl px-2 py-2 text-sm">
-          <option value="7">за 7 дней</option>
-          <option value="30">за 30 дней</option>
-          <option value="90">за 90 дней</option>
-          <option value="all">всё время</option>
-        </select>
-        <button class="btn btn-d flex-1" onclick="deletePeriod()">🗑 Удалить операции</button>
+    <details class="card p-4 space-y-3 text-[13px] leading-relaxed text-slate-300">
+      <summary class="text-sm font-semibold text-slate-100 cursor-pointer select-none">ℹ️ Справка</summary>
+      <div id="infoBox" class="space-y-3 mt-3">
+<p class="text-sky-200 font-semibold">📖 Как пользоваться BitBalance</p>
+<p><b>Главная.</b> Текущий баланс, копилка, долги и подушка безопасности. Баланс = копилка + подушка − долги. Здесь можно провести день: внести доход, расходы, погасить долги или пополнить подушку.</p>
+<p><b>Деньги.</b> Управление категориями, долгами и накоплениями. Создавайте категории расходов, настраивайте долги со сроками и цели накоплений.</p>
+<p><b>Аналитика.</b> График баланса за выбранный период (день, неделя, месяц, год). Показывает открытие, максимум, минимум и закрытие баланса за период.</p>
+<p><b>История.</b> Все проведенные дни с детализацией по доходам, расходам, долгам и накоплениям. Каждая запись показывает время и свободный остаток.</p>
+<p><b>Настройки.</b> Настройте уведомления бота, время тихого режима, часовой пояс и внешний вид приложения.</p>
+<p class="text-sky-200 font-semibold mt-2">🔔 Уведомления</p>
+<p>Бот присылает обычные уведомления: утреннюю сводку и напоминание, если вы не вносили данные за день. Настройте время отправки в настройках.</p>
+<p class="text-sky-200 font-semibold mt-2">👤 Гость против аккаунта</p>
+<p>В гостевом режиме данные хранятся только на этом устройстве. При входе в аккаунт данные синхронизируются с сервером и доступны с любого телефона.</p>
       </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button class="btn btn-s py-2 text-xs" onclick="exportHistory()">⬆️ Экспорт истории</button>
-        <button class="btn btn-s py-2 text-xs" onclick="document.getElementById('importHistFile2').click()">⬇️ Импорт истории</button>
-      </div>
-      <input type="file" id="importHistFile2" accept="application/json,.json" class="hidden" onchange="importHistory(event)">
-      <div class="sub">История операций в JSON. Импорт не затирает текущие записи с тем же id.</div>
-      <button class="btn btn-d w-full" onclick="deleteAll()">🗑 Удалить всё</button>
-      <div class="sub">Опасная зона: удалит операции, категории, долги и автоплатежи.</div>
-    </div>
-
-    <div class="card p-4 space-y-3 text-[13px] leading-relaxed text-slate-300">
-      <div class="text-sm font-semibold text-slate-100">ℹ️ Справка</div>
-      <div id="infoBox" class="space-y-3">
-<p class="text-sky-200 font-semibold">📖 Как пользоваться</p>
-<p><b>Баланс</b> = копилка (свободные + накопления) + подушка − долги.</p>
-<p><b>День.</b> Внесите доход, траты по категориям, погашение долгов, пополнение целей и подушки. «Не распределено» — остаток дохода. Если денег не хватает — выберите: не проводить, взять из копилки или создать долг.</p>
-<p><b>Копилка.</b> Свободные деньги и суммы целей/инвестиций.</p>
-<p><b>Подушка.</b> Цель = база × число месяцев. Рекомендация пополнения = остаток до цели ÷ дни периода. Если подушка ≥ цели — цель набрана.</p>
-<p><b>Долги.</b> Галочка «Деньги уже получил» зачисляет сумму в копилку (баланс не меняется). Дату создания можно менять в истории.</p>
-<p><b>Накопления.</b> «Потратить» — сумма становится расходом. «Закрыть» (инвестиция) — возврат; меньше вложенного = убыток.</p>
-<p><b>Категории.</b> «Отдано» — сколько ушло. Рекомендация = среднее за окно дней. Сброс не влияет на баланс.</p>
-<p><b>График.</b> Свечи показывают путь баланса. Нажмите на свечу для деталей. Зум: +/−.</p>
-<p><b>AI-помощник.</b> Вопрос по финансам — разбор ваших цифр. Память сохраняется в аккаунте.</p>
-<p><b>Профиль.</b> Данные синхронизируются между устройствами при входе.</p>
-<p><b>Сохранение.</b> Аккаунт — данные на сервере. Гость — только на устройстве. Экспорт JSON в настройках.</p>
-</div>
-    </div>
+    </details>
   </section>
 </main>
 
@@ -2207,48 +2138,136 @@ function buildBars(tf) {
   });
 
   const first = R.entriesSorted[0].date;
-  const n = tf === 'day' ? 14 : tf === 'week' ? 7 : tf === 'month' ? 30 : 365;
-  const from = addDays(today, -(n - 1));
-  const start = from > first ? from : first;
 
-  const days = [];
-  let prevClose = null;
-  for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
-    if (byDay[d]) {
-      prevClose = byDay[d].close;
-      days.push(Object.assign({}, byDay[d]));
-    } else if (prevClose !== null) {
-      days.push({
-        key: d, open: prevClose, close: prevClose, high: prevClose, low: prevClose,
-        empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
-      });
+  // ---------- ДЕНЬ: 14 дневных свечей ----------
+  if (tf === 'day') {
+    const n = 14;
+    const from = addDays(today, -(n - 1));
+    const start = from > first ? from : first;
+    const days = [];
+    let prevClose = null;
+    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
+      if (byDay[d]) {
+        prevClose = byDay[d].close;
+        days.push(Object.assign({}, byDay[d]));
+      } else if (prevClose !== null) {
+        days.push({
+          key: d, open: prevClose, close: prevClose, high: prevClose, low: prevClose,
+          empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
+        });
+      }
     }
+    return days;
   }
 
-  if (tf === 'day' || tf === 'week' || tf === 'month') return days;
-
-  // year → недели
-  const weeks = {}, order = [];
-  days.forEach(b => {
-    const k = weekStart(b.key);
-    if (!weeks[k]) {
-      weeks[k] = {
-        key: k, open: b.open, close: b.close, high: b.high, low: b.low,
-        empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
-      };
-      order.push(k);
+  // ---------- НЕДЕЛЯ: 8-12 недельных свечей ----------
+  if (tf === 'week') {
+    const nWeeks = 10;
+    const from = addDays(today, -(nWeeks * 7 - 1));
+    const start = from > first ? from : first;
+    const weeks = {}, order = [];
+    let prevClose = null;
+    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
+      const wk = weekStart(d);
+      if (!weeks[wk]) {
+        weeks[wk] = { key: wk, open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
+        order.push(wk);
+      }
+      const w = weeks[wk];
+      if (byDay[d]) {
+        if (w.open === null) w.open = byDay[d].open;
+        w.close = byDay[d].close;
+        w.high = w.high != null ? Math.max(w.high, byDay[d].high) : byDay[d].high;
+        w.low = w.low != null ? Math.min(w.low, byDay[d].low) : byDay[d].low;
+        w.empty = false;
+        w.n += byDay[d].n;
+        w.inc += byDay[d].inc;
+        w.exp += byDay[d].exp;
+        w.entryIds = w.entryIds.concat(byDay[d].entryIds || []);
+        w.ops = w.ops.concat(byDay[d].ops || []);
+        prevClose = byDay[d].close;
+      } else if (prevClose !== null && !w.empty) {
+        // заполняем пустые дни внутри недели предыдущим закрытием
+      }
     }
-    const w = weeks[k];
-    w.close = b.close;
-    w.high = Math.max(w.high, b.high);
-    w.low = Math.min(w.low, b.low);
-    if (!b.empty) w.empty = false;
-    w.n += b.n;
-    w.inc += b.inc;
-    w.exp += b.exp;
-    w.entryIds = w.entryIds.concat(b.entryIds || []);
-    w.ops = w.ops.concat(b.ops || []);
-  });
+    // Заполняем пропущенные недели
+    const result = order.map(k => {
+      const w = weeks[k];
+      if (w.open === null) {
+        w.open = prevClose != null ? prevClose : 0;
+        w.close = prevClose != null ? prevClose : 0;
+        w.high = prevClose != null ? prevClose : 0;
+        w.low = prevClose != null ? prevClose : 0;
+      }
+      return w;
+    });
+    return result.slice(-nWeeks);
+  }
+
+  // ---------- МЕСЯЦ: 12 месячных свечей ----------
+  if (tf === 'month') {
+    const nMonths = 12;
+    const from = addDays(today, -(nMonths * 30 - 1));
+    const start = from > first ? from : first;
+    const months = {}, order = [];
+    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
+      const mk = d.slice(0, 7); // YYYY-MM
+      if (!months[mk]) {
+        months[mk] = { key: mk + '-01', open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
+        order.push(mk);
+      }
+      const m = months[mk];
+      if (byDay[d]) {
+        if (m.open === null) m.open = byDay[d].open;
+        m.close = byDay[d].close;
+        m.high = m.high != null ? Math.max(m.high, byDay[d].high) : byDay[d].high;
+        m.low = m.low != null ? Math.min(m.low, byDay[d].low) : byDay[d].low;
+        m.empty = false;
+        m.n += byDay[d].n;
+        m.inc += byDay[d].inc;
+        m.exp += byDay[d].exp;
+        m.entryIds = m.entryIds.concat(byDay[d].entryIds || []);
+        m.ops = m.ops.concat(byDay[d].ops || []);
+      }
+    }
+    const result = order.map(k => {
+      const m = months[k];
+      return m;
+    });
+    return result.slice(-nMonths);
+  }
+
+  // ---------- ГОД: 52 недельных свечи ----------
+  if (tf === 'year') {
+    const nWeeks = 52;
+    const from = addDays(today, -(nWeeks * 7 - 1));
+    const start = from > first ? from : first;
+    const weeks = {}, order = [];
+    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
+      const wk = weekStart(d);
+      if (!weeks[wk]) {
+        weeks[wk] = { key: wk, open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
+        order.push(wk);
+      }
+      const w = weeks[wk];
+      if (byDay[d]) {
+        if (w.open === null) w.open = byDay[d].open;
+        w.close = byDay[d].close;
+        w.high = w.high != null ? Math.max(w.high, byDay[d].high) : byDay[d].high;
+        w.low = w.low != null ? Math.min(w.low, byDay[d].low) : byDay[d].low;
+        w.empty = false;
+        w.n += byDay[d].n;
+        w.inc += byDay[d].inc;
+        w.exp += byDay[d].exp;
+        w.entryIds = w.entryIds.concat(byDay[d].entryIds || []);
+        w.ops = w.ops.concat(byDay[d].ops || []);
+      }
+    }
+    return order.map(k => weeks[k]).slice(-nWeeks);
+  }
+
+  return [];
+}
   return order.map(k => weeks[k]);
 }
 
@@ -2746,8 +2765,11 @@ function renderHome() {
   safe('быстрая', renderQuickHome);
 
 
-  const ohlc = last ? [
-    ['Откр.', last.open], ['Макс.', last.high], ['Мин.', last.low], ['Закр.', last.close]
+  const ohlc = bars && bars.length ? [
+    ['Откр.', bars[0].open],
+    ['Макс.', Math.max(...bars.map(b => b.high))],
+    ['Мин.', Math.min(...bars.map(b => b.low))],
+    ['Закр.', bars[bars.length - 1].close]
   ].map(([l, v]) => '<div class="card p-2"><div class="sub">' + l + '</div><div class="font-semibold text-xs mt-0.5">' + shown(v) + '</div></div>').join('') : '';
   if ($('ohlc')) $('ohlc').innerHTML = ohlc || '<div class="col-span-4 sub">Нет данных для свечей</div>';
 
@@ -4641,7 +4663,7 @@ function renderHistory() {
     const canEdit = h.type === 'day';
     return '<div class="card p-3">' +
       '<div class="flex justify-between items-start gap-2">' +
-      '<div class="min-w-0"><div class="font-semibold">' + fmtDateRu(h.date) +
+      '<div class="min-w-0"><div class="font-semibold">' + fmtDateRu(h.date) + ' <span class="sub text-[10px]">' + (h.id ? new Date(Number(h.id)).toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'}) : '') + '</span>' +
       (h.note ? ' <span class="sub font-normal">· ' + esc(h.note) + '</span>' : '') + '</div>' +
       '<div class="mt-1 space-y-0.5">' + (rows || '<div class="sub">без сумм</div>') + '</div></div>' +
       '<div class="flex gap-1 shrink-0">' +
@@ -5431,10 +5453,7 @@ function bbGuestMode() {
   if (gate) gate.classList.add('hidden');
   state = migrate(JSON.parse(JSON.stringify(defaultState)));
   if (state.tzOffset == null) state.tzOffset = -new Date().getTimezoneOffset();
-  try {
-    const raw = localStorage.getItem('balance-tg-state-v1');
-    if (raw) state = migrate(JSON.parse(raw));
-  } catch (e) {}
+  try { localStorage.removeItem('balance-tg-state-v1'); } catch (e) {}
   update();
   showTab('home');
 }

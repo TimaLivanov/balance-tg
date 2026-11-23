@@ -915,13 +915,15 @@ function buildSmartMessage(state, hour, now) {
   const today = now.toISOString().slice(0,10);
   const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
   const history = (state && Array.isArray(state.history)) ? state.history : [];
-  const cats = (state && Array.isArray(state.cats)) ? state.cats : [];
-  const cushion = (state && state.cushionMonths) ? state.cushionMonths : 3;
+  const debtTotal = debts.reduce((s, d) => d.archived ? s : s + (Number(d.amount) || 0), 0);
 
   const lines = [];
   if (hour < 11) lines.push("Доброе утро! ☀️");
   else if (hour < 17) lines.push("Дневная сводка 📊");
   else lines.push("Вечерняя сводка 🌙");
+
+  // Статус по умолчанию
+  let hasData = false;
 
   // Долги с приближающимся сроком
   const upcoming = debts.filter(d => {
@@ -931,60 +933,21 @@ function buildSmartMessage(state, hour, now) {
     return diff >= 0 && diff <= (state?.remindDays ?? 2);
   });
   if (upcoming.length) {
+    hasData = true;
     lines.push("⚠️ Долги со сроком:");
     upcoming.forEach(d => {
-      const remain = d.amount;
-      lines.push("• " + d.name + " — " + remain + " ₽ до " + ruDateFull(d.due));
+      lines.push("• " + d.name + " — " + d.amount + " ₽ до " + ruDateFull(d.due));
     });
   }
-
-  // Долги, почти закрытые (>80% погашено)
-  // Считаем остаток по истории
-  const debtRemain = {};
-  debts.forEach(d => { debtRemain[d.id] = d.amount; });
-  history.forEach(h => {
-    if (h.type === "debt" && h.debtId != null) { /* активация */ }
-    if (h.debtPays) Object.keys(h.debtPays).forEach(k => { if (debtRemain[k] != null) debtRemain[k] = Math.max(0, debtRemain[k] - Number(h.debtPays[k])); });
-  });
-  debts.forEach(d => {
-    if (d.archived) return;
-    const remain = Math.max(0, debtRemain[d.id] || 0);
-    const paid = d.amount - remain;
-    if (d.amount > 0 && paid / d.amount >= 0.8 && remain > 0) {
-      lines.push("🔥 Долг «" + d.name + "» почти закрыт! Осталось " + remain + " ₽ — поднажмите!");
-    }
-  });
-
-  // Рост расходов за последние 7 дней vs предыдущие 7
-  const dayMs = 86400000;
-  const nowMs = new Date(today).getTime();
-  const last7Start = new Date(nowMs - 6*dayMs).toISOString().slice(0,10);
-  const prev7Start = new Date(nowMs - 13*dayMs).toISOString().slice(0,10);
-  const sumExp = (from, to) => {
-    let s = 0;
-    history.forEach(h => {
-      if (h.type === "debt" || !h.date || h.date < from || h.date > to) return;
-      Object.values(h.expenses || {}).forEach(v => s += Number(v) || 0);
-    });
-    return s;
-  };
-  const last7 = sumExp(last7Start, today);
-  const prev7 = sumExp(prev7Start, new Date(nowMs - 7*dayMs).toISOString().slice(0,10));
-  if (prev7 > 0 && last7 > prev7 * 1.2) {
-    lines.push("📈 Расходы выросли: " + Math.round(last7) + " ₽ за 7 дней vs " + Math.round(prev7) + " ₽ ранее. Проверьте категории.");
-  }
-
-  // Подушка
-  const cushNow = (state && state.startCushion) ? state.startCushion : 0;
-  // state doesn't store cush computed; skip precise
 
   // Напоминание записать день
   const hasToday = history.some(h => h.type !== "debt" && h.date === today);
   if (!hasToday && hour >= 18) {
+    hasData = true;
     lines.push("📝 Сегодня ещё не записан день — не забудьте внести данные.");
   }
 
-  if (lines.length <= 1) lines.push("Всё под контролем ✅");
+  if (!hasData) lines.push("Всё под контролем ✅");
   lines.push("");
   lines.push("Откройте BitBalance, чтобы посмотреть детали.");
   return lines.join("\n");
