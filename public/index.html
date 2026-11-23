@@ -2137,143 +2137,49 @@ function buildBars(tf) {
   });
 
   const first = R.entriesSorted[0].date;
+  const n = tf === 'day' ? 14 : tf === 'week' ? 7 : tf === 'month' ? 30 : 365;
+  const from = addDays(today, -(n - 1));
+  const start = from > first ? from : first;
 
-  // ---------- ДЕНЬ: 14 дневных свечей ----------
-  if (tf === 'day') {
-    const n = 14;
-    const from = addDays(today, -(n - 1));
-    const start = from > first ? from : first;
-    const days = [];
-    let prevClose = null;
-    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
-      if (byDay[d]) {
-        prevClose = byDay[d].close;
-        days.push(Object.assign({}, byDay[d]));
-      } else if (prevClose !== null) {
-        days.push({
-          key: d, open: prevClose, close: prevClose, high: prevClose, low: prevClose,
-          empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
-        });
-      }
+  const days = [];
+  let prevClose = null;
+  for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
+    if (byDay[d]) {
+      prevClose = byDay[d].close;
+      days.push(Object.assign({}, byDay[d]));
+    } else if (prevClose !== null) {
+      days.push({
+        key: d, open: prevClose, close: prevClose, high: prevClose, low: prevClose,
+        empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
+      });
     }
-    return days;
   }
 
-  // ---------- НЕДЕЛЯ: 10 недельных свечей ----------
-  if (tf === 'week') {
-    const nWeeks = 10;
-    const from = addDays(today, -(nWeeks * 7 - 1));
-    const start = from > first ? from : first;
-    const weeks = {}, order = [];
-    let prevClose = null;
-    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
-      const wk = weekStart(d);
-      if (!weeks[wk]) {
-        weeks[wk] = { key: wk, open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
-        order.push(wk);
-      }
-      const w = weeks[wk];
-      if (byDay[d]) {
-        if (w.open === null) w.open = byDay[d].open;
-        w.close = byDay[d].close;
-        w.high = w.high != null ? Math.max(w.high, byDay[d].high) : byDay[d].high;
-        w.low = w.low != null ? Math.min(w.low, byDay[d].low) : byDay[d].low;
-        w.empty = false;
-        w.n += byDay[d].n;
-        w.inc += byDay[d].inc;
-        w.exp += byDay[d].exp;
-        w.entryIds = w.entryIds.concat(byDay[d].entryIds || []);
-        w.ops = w.ops.concat(byDay[d].ops || []);
-        prevClose = byDay[d].close;
-      }
-    }
-    // Заполняем пропущенные недели предыдущим закрытием
-    const result = order.map(k => {
-      const w = weeks[k];
-      if (w.open === null) {
-        w.open = prevClose != null ? prevClose : 0;
-        w.close = prevClose != null ? prevClose : 0;
-        w.high = prevClose != null ? prevClose : 0;
-        w.low = prevClose != null ? prevClose : 0;
-      }
-      return w;
-    });
-    return result.slice(-nWeeks);
-  }
+  if (tf === 'day' || tf === 'week' || tf === 'month') return days;
 
-  // ---------- МЕСЯЦ: 12 месячных свечей ----------
-  if (tf === 'month') {
-    const nMonths = 12;
-    const from = addDays(today, -(nMonths * 30 - 1));
-    const start = from > first ? from : first;
-    const months = {}, order = [];
-    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
-      const mk = d.slice(0, 7); // YYYY-MM
-      if (!months[mk]) {
-        months[mk] = { key: mk + '-01', open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
-        order.push(mk);
-      }
-      const m = months[mk];
-      if (byDay[d]) {
-        if (m.open === null) m.open = byDay[d].open;
-        m.close = byDay[d].close;
-        m.high = m.high != null ? Math.max(m.high, byDay[d].high) : byDay[d].high;
-        m.low = m.low != null ? Math.min(m.low, byDay[d].low) : byDay[d].low;
-        m.empty = false;
-        m.n += byDay[d].n;
-        m.inc += byDay[d].inc;
-        m.exp += byDay[d].exp;
-        m.entryIds = m.entryIds.concat(byDay[d].entryIds || []);
-        m.ops = m.ops.concat(byDay[d].ops || []);
-      }
+  // year → недели
+  const weeks = {}, order = [];
+  days.forEach(b => {
+    const k = weekStart(b.key);
+    if (!weeks[k]) {
+      weeks[k] = {
+        key: k, open: b.open, close: b.close, high: b.high, low: b.low,
+        empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: []
+      };
+      order.push(k);
     }
-    const result = order.map(k => {
-      const m = months[k];
-      if (m.open === null) {
-        m.open = 0; m.close = 0; m.high = 0; m.low = 0;
-      }
-      return m;
-    });
-    return result.slice(-nMonths);
-  }
-
-  // ---------- ГОД: 52 недельных свечи ----------
-  if (tf === 'year') {
-    const nWeeks = 52;
-    const from = addDays(today, -(nWeeks * 7 - 1));
-    const start = from > first ? from : first;
-    const weeks = {}, order = [];
-    for (let d = start, guard = 0; d <= today && guard < 400; d = addDays(d, 1), guard++) {
-      const wk = weekStart(d);
-      if (!weeks[wk]) {
-        weeks[wk] = { key: wk, open: null, close: null, high: null, low: null, empty: true, n: 0, inc: 0, exp: 0, entryIds: [], ops: [] };
-        order.push(wk);
-      }
-      const w = weeks[wk];
-      if (byDay[d]) {
-        if (w.open === null) w.open = byDay[d].open;
-        w.close = byDay[d].close;
-        w.high = w.high != null ? Math.max(w.high, byDay[d].high) : byDay[d].high;
-        w.low = w.low != null ? Math.min(w.low, byDay[d].low) : byDay[d].low;
-        w.empty = false;
-        w.n += byDay[d].n;
-        w.inc += byDay[d].inc;
-        w.exp += byDay[d].exp;
-        w.entryIds = w.entryIds.concat(byDay[d].entryIds || []);
-        w.ops = w.ops.concat(byDay[d].ops || []);
-      }
-    }
-    return order.map(k => {
-      const w = weeks[k];
-      if (w.open === null) {
-        w.open = 0; w.close = 0; w.high = 0; w.low = 0;
-      }
-      return w;
-    }).slice(-nWeeks);
-  }
-
-  return [];
-}
+    const w = weeks[k];
+    w.close = b.close;
+    w.high = Math.max(w.high, b.high);
+    w.low = Math.min(w.low, b.low);
+    if (!b.empty) w.empty = false;
+    w.n += b.n;
+    w.inc += b.inc;
+    w.exp += b.exp;
+    w.entryIds = w.entryIds.concat(b.entryIds || []);
+    w.ops = w.ops.concat(b.ops || []);
+  });
+  return order.map(k => weeks[k]);
 
 function axisLabel(b, i, bars, tf) {
   if (!b.key) return b.label || '';
