@@ -2159,7 +2159,7 @@ function buildBars(tf) {
     return days;
   }
 
-  // ---------- НЕДЕЛЯ: 8-12 недельных свечей ----------
+  // ---------- НЕДЕЛЯ: 10 недельных свечей ----------
   if (tf === 'week') {
     const nWeeks = 10;
     const from = addDays(today, -(nWeeks * 7 - 1));
@@ -2185,11 +2185,9 @@ function buildBars(tf) {
         w.entryIds = w.entryIds.concat(byDay[d].entryIds || []);
         w.ops = w.ops.concat(byDay[d].ops || []);
         prevClose = byDay[d].close;
-      } else if (prevClose !== null && !w.empty) {
-        // заполняем пустые дни внутри недели предыдущим закрытием
       }
     }
-    // Заполняем пропущенные недели
+    // Заполняем пропущенные недели предыдущим закрытием
     const result = order.map(k => {
       const w = weeks[k];
       if (w.open === null) {
@@ -2231,6 +2229,9 @@ function buildBars(tf) {
     }
     const result = order.map(k => {
       const m = months[k];
+      if (m.open === null) {
+        m.open = 0; m.close = 0; m.high = 0; m.low = 0;
+      }
       return m;
     });
     return result.slice(-nMonths);
@@ -2262,7 +2263,13 @@ function buildBars(tf) {
         w.ops = w.ops.concat(byDay[d].ops || []);
       }
     }
-    return order.map(k => weeks[k]).slice(-nWeeks);
+    return order.map(k => {
+      const w = weeks[k];
+      if (w.open === null) {
+        w.open = 0; w.close = 0; w.high = 0; w.low = 0;
+      }
+      return w;
+    }).slice(-nWeeks);
   }
 
   return [];
