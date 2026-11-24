@@ -1170,11 +1170,17 @@ export default {
             let text = "";
             if (msgMode === "ai" && env.GEMINI_API_KEY) {
               try {
-                const ctx = JSON.stringify({ balance: null, debts: debts.map(d=>({name:d.name,amount:d.amount,due:d.due})), historyCount: history.length });
+                const debtRemain = {};
+                debts.forEach(d => { debtRemain[d.id] = d.amount; });
+                history.forEach(h => {
+                  if (h.debtPays) Object.keys(h.debtPays).forEach(k => { if (debtRemain[k] != null) debtRemain[k] = Math.max(0, debtRemain[k] - Number(h.debtPays[k])); });
+                });
+                const recentHistory = history.slice(-5).map(h => ({ date: h.date, income: h.income, expenses: h.expenses, debtPays: h.debtPays }));
+                const ctx = JSON.stringify({ debts: debts.map(d=>({name:d.name, amount:d.amount, remain: Math.max(0, debtRemain[d.id] || 0), due:d.due})), historyCount: history.length, recentHistory });
                 const r = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
                   method: "POST",
                   headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
-                  body: JSON.stringify({ model: "gemini-3.7-flash", store: false, system_instruction: "Ты финансовый помощник BitBalance. Напиши короткое уведомление (3-5 строк) на русском с эмодзи. Упомяни долги со сроком, рост расходов, почти закрытые долги. Используй полные даты (10 января). Не используй короткие даты.", input: "Данные: " + ctx + "\nВремя: " + hour + ":00" }),
+                  body: JSON.stringify({ model: "gemini-3.7-flash", store: false, system_instruction: "Ты финансовый помощник BitBalance. Напиши короткое уведомление (3-5 строк) на русском с эмодзи. Упомяни долги со сроком, рост расходов, почти закрытые долги, темпы погашения. Анализируй историю операций: сколько дней прошло, сколько потрачено на долги. Используй полные даты (10 января). Не используй короткие даты.", input: "Данные: " + ctx + "\nВремя: " + hour + ":00" }),
                   signal: AbortSignal.timeout(20000)
                 });
                 const data = await r.json();

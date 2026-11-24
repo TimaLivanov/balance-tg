@@ -1851,7 +1851,7 @@ function allDebts() { return state.debts.concat(R.autoDebts || []); }
 
 /* ===================== RECALC (core) ===================== */
 function recalc() {
-  const entries = state.history.slice().sort((a, b) => a.date === b.date ? a.id - b.id : (a.date < b.date ? -1 : 1));
+  const entries = state.history.slice().sort((a, b) => a.date === b.date ? Number(a.id) - Number(b.id) : (a.date < b.date ? -1 : 1));
   const bal = {};
   state.debts.forEach(d => { bal[d.id] = d.amount; });
   const autoDebts = [];
@@ -2839,7 +2839,7 @@ function renderDayForm() {
 
   // debt pays
   const dcont = $('debtInputs');
-  const openDebts = state.debts.filter(d => (R.debtRemain[d.id] || 0) > 0.004);
+  const openDebts = state.debts.filter(d => (R.debtRemain[d.id] || 0) > 0.004 || (editingId && (state.history.find(x => x.id === editingId)?.debtPays?.[d.id] || 0) > 0));
   dcont.innerHTML = openDebts.map(d => {
     const rec = debtRec(d);
     let box = '';
@@ -3410,7 +3410,7 @@ function cancelEdit() {
 function collectOpsForCat(catId) {
   const id = String(catId);
   const rows = [];
-  state.history.slice().sort((a, b) => a.date === b.date ? b.id - a.id : (a.date < b.date ? 1 : -1)).forEach(h => {
+  state.history.slice().sort((a, b) => a.date === b.date ? Number(b.id) - Number(a.id) : (a.date < b.date ? 1 : -1)).forEach(h => {
     if (h.type === 'debt' || h.type === 'goal_spend' || h.type === 'invest_close') return;
     const v = pickAmt(h.expenses, id);
     if (v > 0.004) rows.push({ date: h.date, label: catName(id), amount: -v, id: h.id });
@@ -3420,7 +3420,7 @@ function collectOpsForCat(catId) {
 function collectOpsForDebt(debtId) {
   const id = String(debtId);
   const rows = [];
-  state.history.slice().sort((a, b) => a.date === b.date ? b.id - a.id : (a.date < b.date ? 1 : -1)).forEach(h => {
+  state.history.slice().sort((a, b) => a.date === b.date ? Number(b.id) - Number(a.id) : (a.date < b.date ? 1 : -1)).forEach(h => {
     if (h.type === 'debt' && String(h.debtId) === id) {
       rows.push({ date: h.date, label: 'новый долг' + (h.creditCash ? ' (+копилка)' : ''), amount: h.debtAmt, id: h.id });
     }
@@ -4069,7 +4069,7 @@ function renderAnalyticsHeat() {
   const needIds = state.cats.filter(c => c.need && !c.archived).map(c => String(c.id));
   const byCat = {};
   needIds.forEach(id => { byCat[id] = []; });
-  state.history.slice().sort((a, b) => a.date === b.date ? a.id - b.id : (a.date < b.date ? -1 : 1)).forEach(h => {
+  state.history.slice().sort((a, b) => a.date === b.date ? Number(a.id) - Number(b.id) : (a.date < b.date ? -1 : 1)).forEach(h => {
     if (h.type === 'debt' || h.type === 'goal_spend' || h.type === 'invest_close') return;
     needIds.forEach(id => {
       const v = pickAmt(h.expenses, id);
@@ -4534,7 +4534,7 @@ function renderAnalytics() {
 
 /* ===================== HISTORY ===================== */
 function renderHistory() {
-  const list = state.history.slice().sort((a, b) => a.date === b.date ? b.id - a.id : (a.date < b.date ? 1 : -1));
+  const list = state.history.slice().sort((a, b) => a.date === b.date ? Number(b.id) - Number(a.id) : (a.date < b.date ? 1 : -1));
   const cont = $('histList');
   if (!list.length) {
     cont.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">История пуста</p>';
@@ -5012,9 +5012,45 @@ function syncAllSpentBases() {
     if (num(c.spentBase) > allTime + 0.004) c.spentBase = allTime;
   });
 }
+let initialLoadDone = false;
+
+function archivePaidDebts(silent) {
+  if (!state || !state.debts || !R) return;
+  (state.debts || []).forEach(d => {
+    if (d.archived) return;
+    const rem = (R.debtRemain && R.debtRemain[d.id] != null) ? R.debtRemain[d.id] : d.amount;
+    if (rem <= 0.004) {
+      d.archived = true;
+      d.archivedAt = todayStr();
+      if (!silent) toast('<b>Долг закрыт</b><div class="text-sm mt-1">«' + esc(d.name) + '» полностью погашен и перенесён в архив.</div>', 'ok');
+    }
+  });
+}
+
+function restorePaidDebts(silent) {
+  if (!state || !state.debts || !R) return;
+  (state.debts || []).forEach(d => {
+    if (!d.archived) return;
+    const rem = (R.debtRemain && R.debtRemain[d.id] != null) ? R.debtRemain[d.id] : d.amount;
+    if (rem > 0.004) {
+      d.archived = false;
+      d.archivedAt = '';
+      if (!silent) toast('<b>Долг возвращён</b><div class="text-sm mt-1">«' + esc(d.name) + '» снова активен.</div>', 'ok');
+    }
+  });
+}
+
 function update() {
   safe('пересчёт', recalc);
   safe('spentBase', syncAllSpentBases);
+  if (!initialLoadDone) {
+    archivePaidDebts(true);
+    restorePaidDebts(true);
+    initialLoadDone = true;
+  } else {
+    archivePaidDebts(false);
+    restorePaidDebts(false);
+  }
   renderAll();
   try { localStorage.setItem('balance-tg-state-v1', JSON.stringify(state)); } catch (e) {}
   try { bbScheduleSave(); } catch (e) {}
