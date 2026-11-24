@@ -51,8 +51,9 @@ function getCookie(request, name) {
   return "";
 }
 
-function makeCookie(token) {
-  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`;
+function makeCookie(token, secure = true) {
+  const secureFlag = secure ? " Secure;" : "";
+  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly;${secureFlag} SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`;
 }
 
 function clearCookie() {
@@ -181,9 +182,15 @@ async function ensureSchema(db) {
 
 function originAllowed(request, url) {
   const origin = request.headers.get("Origin");
-  // Для браузерных запросов Origin обязателен и должен совпадать с Worker origin.
+  // Разрешаем same-origin и доверенные frontend-источники (Flutter Web).
+  const allowedOrigins = new Set([
+    url.origin,
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://balance-tg.pages.dev"
+  ]);
   // Запросы без Origin оставлены для совместимости с серверными клиентами.
-  return !origin || origin === url.origin;
+  return !origin || allowedOrigins.has(origin);
 }
 
 function getClientIp(request) {
@@ -372,7 +379,7 @@ async function authHandler(request, env, url, pathname, diagnostic) {
     return responseJson(
       { ok: true, user: { id: userId, email } },
       201,
-      { "Set-Cookie": makeCookie(token) }
+      { "Set-Cookie": makeCookie(token, url.protocol === "https:") }
     );
   }
 
@@ -397,7 +404,7 @@ async function authHandler(request, env, url, pathname, diagnostic) {
   return responseJson(
     { ok: true, user: { id: user.id, email: user.email } },
     200,
-    { "Set-Cookie": makeCookie(token) }
+    { "Set-Cookie": makeCookie(token, url.protocol === "https:") }
   );
 }
 
