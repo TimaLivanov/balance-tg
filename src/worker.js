@@ -28,12 +28,28 @@ const SYSTEM_PROMPT =
   "Здоровье денег: обязательные расходы не выше needsMax %, остаток не ниже saveMin %, запас не меньше runwayMin дней, долги закрыть за debtMonths месяцев. " +
   "При вопросе о рекомендации подушки объясни: цель, текущий остаток, остаток до цели, число дней периода и рекомендацию в день.";
 
+function corsHeadersFor(request, url) {
+  const origin = request?.headers?.get("Origin");
+  if (!origin || !originAllowed(request, url)) return {};
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin"
+  };
+}
+
 function responseJson(data, status = 200, extraHeaders = {}) {
+  const ctx = globalThis.__bb_ctx || {};
+  const request = ctx.request;
+  const url = ctx.url;
   return Response.json(data, {
     status,
     headers: {
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
+      ...(request && url ? corsHeadersFor(request, url) : {}),
       ...extraHeaders
     }
   });
@@ -965,6 +981,11 @@ export default {
     const diagnostic = { stage: "request_start" };
     const url = new URL(request.url);
     const pathname = url.pathname;
+    globalThis.__bb_ctx = { request, url };
+
+    if (pathname.startsWith("/api/") && request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeadersFor(request, url) });
+    }
 
     try {
       if (!pathname.startsWith("/api/")) {

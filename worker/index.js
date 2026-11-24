@@ -25,12 +25,28 @@ const SYSTEM_PROMPT =
   "Если информации недостаточно, прямо скажи об этом. " +
   "Используй только переданный контекст и персональную память текущего аккаунта.";
 
+function corsHeadersFor(request, url) {
+  const origin = request?.headers?.get("Origin");
+  if (!origin || !originAllowed(request, url)) return {};
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin"
+  };
+}
+
 function responseJson(data, status = 200, extraHeaders = {}) {
+  const ctx = globalThis.__bb_ctx || {};
+  const request = ctx.request;
+  const url = ctx.url;
   return Response.json(data, {
     status,
     headers: {
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
+      ...(request && url ? corsHeadersFor(request, url) : {}),
       ...extraHeaders
     }
   });
@@ -640,6 +656,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const pathname = url.pathname;
+    globalThis.__bb_ctx = { request, url };
+
+    if (pathname.startsWith("/api/") && request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeadersFor(request, url) });
+    }
 
     let stage = "request";
     try {
