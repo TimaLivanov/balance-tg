@@ -10,7 +10,7 @@
 // - Если Pages и Worker находятся на разных доменах, потребуется отдельная
 //   настройка CORS/cookie; этот файл намеренно не открывает CORS всем сайтам.
 
-const COOKIE_NAME = "bb_session";
+const COOKIE_NAME = "bb_session"; 
 const SESSION_DAYS = 30;
 const MAX_QUESTION = 5000;
 const MAX_CONTEXT = 30000;
