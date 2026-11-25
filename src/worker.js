@@ -69,7 +69,8 @@ function getCookie(request, name) {
 
 function makeCookie(token, secure = true) {
   const secureFlag = secure ? " Secure;" : "";
-  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly;${secureFlag} SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`;
+  // SameSite=None для кросс-доменных запросов (Flutter Web на другом домене)
+  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly;${secureFlag} SameSite=None; Max-Age=${SESSION_DAYS * 86400}`;
 }
 
 function clearCookie() {
