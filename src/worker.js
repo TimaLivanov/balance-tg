@@ -744,13 +744,16 @@ async function notifyDebugHandler(user, db, env) {
   const now = new Date();
   const hour = now.getUTCHours();
   const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
-  const localHour = (hour + Math.round(tzOffset / 60) + 24) % 24;
+  const localHour = localHourOf(now, tzOffset);
   const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
   const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
   const timeMatch = userHours.includes(localHour);
   const quietStart = (state && state.aiQuietStart) || "22:00";
   const quietEnd = (state && state.aiQuietEnd) || "08:00";
-  const hhmm = String(now.getUTCHours()).padStart(2,'0') + ":" + String(now.getUTCMinutes()).padStart(2,'0');
+  const localNow = new Date(now.getTime() + tzOffset * 60000);
+  const hhmm = String(localNow.getUTCHours()).padStart(2,'0') + ":" + String(localNow.getUTCMinutes()).padStart(2,'0');
+  const remindDays = (state && state.remindDays != null) ? state.remindDays : 2;
+  const preview = buildSmartMessage(state, now, tzOffset, analyzeState(state, now, tzOffset, remindDays));
   let quiet = false;
   if (quietStart > quietEnd) { if (hhmm >= quietStart || hhmm < quietEnd) quiet = true; }
   else { if (hhmm >= quietStart && hhmm < quietEnd) quiet = true; }
@@ -762,7 +765,7 @@ async function notifyDebugHandler(user, db, env) {
       const res = await fetch("https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: row.telegram_user_id, text: "Отладка BitBalance: UTC " + hour + ":00, локально " + localHour + ":00. Времена: " + userTimes.join(", ") })
+        body: JSON.stringify({ chat_id: row.telegram_user_id, text: "Проверка BitBalance · UTC " + hour + ":00, локально " + localHour + ":00. Времена: " + userTimes.join(", ") + "\n\n" + preview })
       });
       const data = await res.json();
       sent = !!(res.ok && data.ok);
@@ -780,6 +783,7 @@ async function notifyDebugHandler(user, db, env) {
     userHours,
     timeMatch,
     quiet,
+    preview,
     telegramLinked: Boolean(row && row.telegram_user_id),
     sent,
     sendError
@@ -821,7 +825,7 @@ async function pushTestHandler(user, db, env) {
   const subs = await db.prepare("SELECT endpoint, keys_json FROM bb_push_subscriptions WHERE user_id = ?").bind(user.id).all();
   const results = [];
   for (const sub of (subs.results || [])) {
-    const ok = await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "");
+    const ok = await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "", { title: "BitBalance", body: "Тестовое уведомление BitBalance. Уведомления работают!", url: "/flutter/", icon: "/flutter/icons/Icon-192.png" }, sub);
     results.push({ endpoint: sub.endpoint, ok });
   }
   return responseJson({ ok: true, results });
@@ -887,14 +891,61 @@ function base64UrlToBytes(b64u) {
   return out;
 }
 
-async function sendWebPush(endpoint, vapidPublicKey, vapidPrivateKey) {
+function concatBytes(...arrays) {
+  const total = arrays.reduce((s, a) => s + a.length, 0);
+  const out = new Uint8Array(total);
+  let at = 0;
+  for (const a of arrays) { out.set(a, at); at += a.length; }
+  return out;
+}
+
+function uint32be(v) {
+  return new Uint8Array([(v >>> 24) & 255, (v >>> 16) & 255, (v >>> 8) & 255, v & 255]);
+}
+
+async function hkdf(ikm, salt, info, length) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', salt, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const prk = new Uint8Array(await crypto.subtle.sign('HMAC', key, ikm));
+  const prkKey = await crypto.subtle.importKey('raw', prk, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const out = new Uint8Array(await crypto.subtle.sign(
+    'HMAC', prkKey, concatBytes(typeof info === 'string' ? enc.encode(info) : info, new Uint8Array([1]))));
+  return out.slice(0, length);
+}
+
+/** Шифрование payload по RFC 8291 (aes128gcm) для браузерных Push. */
+async function encryptPushPayload(subscription, payload) {
+  const keys = subscription && subscription.keys_json
+    ? (typeof subscription.keys_json === 'string' ? JSON.parse(subscription.keys_json) : subscription.keys_json)
+    : null;
+  if (!keys || !keys.p256dh || !keys.auth) return null;
+  const clientPub = base64UrlToBytes(keys.p256dh);
+  const auth = base64UrlToBytes(keys.auth);
+  const serverKeys = await crypto.subtle.generateKey(
+    { name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
+  const serverPub = new Uint8Array(await crypto.subtle.exportKey('raw', serverKeys.publicKey));
+  const clientKey = await crypto.subtle.importKey(
+    'raw', clientPub, { name: 'ECDH', namedCurve: 'P-256' }, false, []);
+  const shared = new Uint8Array(await crypto.subtle.deriveBits(
+    { public: clientKey }, serverKeys.privateKey, 256));
+  const info = concatBytes(new TextEncoder().encode('WebPush: info\0'), clientPub, serverPub);
+  const ikm = await hkdf(shared, auth, info, 32);
+  const salt = crypto.getRandomValues(new Uint8Array(12));
+  const cek = await hkdf(ikm, salt, 'Content-Encoding: aes128gcm\0', 16);
+  const nonce = await hkdf(ikm, salt, 'Content-Encoding: nonce\0', 12);
+  const plain = concatBytes(new TextEncoder().encode(JSON.stringify(payload)), new Uint8Array([1]));
+  const aesKey = await crypto.subtle.importKey('raw', cek, { name: 'AES-GCM' }, false, ['encrypt']);
+  const encrypted = new Uint8Array(await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv: nonce }, aesKey, plain));
+  return concatBytes(salt, uint32be(plain.length + 16), new Uint8Array([0]), encrypted);
+}
+
+async function sendWebPush(endpoint, vapidPublicKey, vapidPrivateKey, payload = null, subscription = null) {
   if (!vapidPublicKey || !vapidPrivateKey) return false;
   try {
     const pubBytes = base64UrlToBytes(vapidPublicKey);
-    // pubBytes: 04 || x (32) || y (32)
     const x = pubBytes.slice(1, 33);
     const y = pubBytes.slice(33, 65);
-    const privBytes = base64UrlToBytes(vapidPrivateKey);
     const jwk = {
       kty: "EC",
       crv: "P-256",
@@ -905,28 +956,34 @@ async function sendWebPush(endpoint, vapidPublicKey, vapidPrivateKey) {
     const privateKey = await crypto.subtle.importKey("jwk", jwk, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
     const origin = new URL(endpoint).origin;
     const header = { typ: "JWT", alg: "ES256" };
-    const payload = { aud: origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: "mailto:bitbalance@example.com" };
+    const jwtPayload = { aud: origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: "mailto:bitbalance@example.com" };
     const enc = (obj) => btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    const unsigned = enc(header) + "." + enc(payload);
+    const unsigned = enc(header) + "." + enc(jwtPayload);
     const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, privateKey, new TextEncoder().encode(unsigned));
-    // convert DER to raw r||s (Web Crypto returns raw for ECDSA? Actually subtle.sign returns raw r||s for ECDSA in Web Crypto)
     const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     const jwt = unsigned + "." + sigB64;
 
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Authorization": "vapid t=" + jwt + ", k=" + vapidPublicKey,
-        "TTL": "86400"
+    const headers = {
+      "Authorization": "vapid t=" + jwt + ", k=" + vapidPublicKey,
+      "TTL": "86400",
+      "Urgency": "high"
+    };
+    let body = null;
+    if (payload && subscription) {
+      const encrypted = await encryptPushPayload(subscription, payload);
+      if (encrypted) {
+        body = encrypted;
+        headers["Content-Encoding"] = "aes128gcm";
+        headers["Content-Type"] = "application/octet-stream";
       }
-    });
+    }
+    const res = await fetch(endpoint, { method: "POST", headers, body });
     return res.ok || res.status === 201;
   } catch (e) {
     console.error("webpush error:", String(e?.message || e));
     return false;
   }
 }
-
 
 function ruDateFull(s) {
   if (!s || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return s || "";
@@ -935,46 +992,131 @@ function ruDateFull(s) {
   return p[2] + " " + months[p[1]-1];
 }
 
-function buildSmartMessage(state, hour, now) {
-  const today = now.toISOString().slice(0,10);
+function localHourOf(now, tzOffset) {
+  return new Date(now.getTime() + (Number(tzOffset) || 0) * 60000).getUTCHours();
+}
+
+function localDateKey(now, tzOffset) {
+  return new Date(now.getTime() + (Number(tzOffset) || 0) * 60000).toISOString().slice(0, 10);
+}
+
+function roundUp100(v) {
+  return Math.ceil((Number(v) || 0) / 100) * 100;
+}
+
+function fmtRub(v) {
+  return Math.round(Number(v) || 0).toLocaleString('ru-RU').replace(/\u00a0/g, ' ');
+}
+
+function daysInclusive(today, due) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(due || ''))) return null;
+  const diff = Math.round((new Date(due + 'T00:00:00') - new Date(today + 'T00:00:00')) / 86400000);
+  return Math.max(1, diff + 1);
+}
+
+/** Разбор состояния пользователя — делается ДО формулирования уведомления. */
+function analyzeState(state, now, tzOffset, remindDays) {
+  const today = localDateKey(now, tzOffset);
+  const yesterday = localDateKey(new Date(now.getTime() - 86400000), tzOffset);
   const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
   const history = (state && Array.isArray(state.history)) ? state.history : [];
-  const debtTotal = debts.reduce((s, d) => d.archived ? s : s + (Number(d.amount) || 0), 0);
+  const cats = (state && Array.isArray(state.cats)) ? state.cats : [];
 
-  const lines = [];
-  if (hour < 11) lines.push("Доброе утро! ☀️");
-  else if (hour < 17) lines.push("Дневная сводка 📊");
-  else lines.push("Вечерняя сводка 🌙");
-
-  // Статус по умолчанию
-  let hasData = false;
-
-  // Долги с приближающимся сроком
-  const upcoming = debts.filter(d => {
-    if (d.archived) return false;
-    if (!d.due) return false;
-    const diff = (new Date(d.due) - new Date(today)) / 86400000;
-    return diff >= 0 && diff <= (state?.remindDays ?? 2);
-  });
-  if (upcoming.length) {
-    hasData = true;
-    lines.push("⚠️ Долги со сроком:");
-    upcoming.forEach(d => {
-      lines.push("• " + d.name + " — " + d.amount + " ₽ до " + ruDateFull(d.due));
+  const debtEventIds = new Set();
+  history.forEach(h => { if (h.type === 'debt' && h.debtId != null) debtEventIds.add(String(h.debtId)); });
+  const bal = {};
+  debts.forEach(d => { bal[d.id] = Number(d.amount) || 0; });
+  history.forEach(h => {
+    if (!h.debtPays) return;
+    Object.keys(h.debtPays).forEach(k => {
+      if (bal[k] == null) return;
+      bal[k] = Math.max(0, bal[k] - (Number(h.debtPays[k]) || 0));
     });
+  });
+
+  const open = debts.filter(d => !d.archived && !debtEventIds.has(String(d.id)) && (bal[d.id] || 0) > 0.004);
+  const dated = open.filter(d => d.due).map(d => {
+    const daysLeft = daysInclusive(today, d.due);
+    const overdue = !!daysLeft && d.due < today;
+    return {
+      id: d.id,
+      name: String(d.name || 'Долг'),
+      remain: Math.max(0, bal[d.id] || 0),
+      due: d.due,
+      daysLeft,
+      overdue,
+      rec: daysLeft ? roundUp100(Math.max(0, bal[d.id] || 0) / daysLeft) : null
+    };
+  }).sort((a, b) => (a.daysLeft || 9999) - (b.daysLeft || 9999));
+  const total = open.reduce((s, d) => s + Math.max(0, bal[d.id] || 0), 0);
+  const urgent = dated.filter(d => d.overdue || (d.daysLeft != null && d.daysLeft <= Number(remindDays || 0)));
+
+  const dayEntries = history.filter(h => h.type === 'day');
+  const hasToday = dayEntries.some(h => h.date === today);
+  const hasYesterday = dayEntries.some(h => h.date === yesterday);
+  const from = new Date(today + 'T00:00:00');
+  const to = new Date(from.getTime() + 7 * 86400000);
+  const next = new Date(from.getTime() + 14 * 86400000);
+  const keyOf = d => d.toISOString().slice(0, 10);
+  const sumExp = (a, b) => dayEntries
+    .filter(h => h.date >= a && h.date < b)
+    .reduce((s, h) => s + Object.values(h.expenses || {}).reduce((x, y) => x + (Number(y) || 0), 0), 0);
+  const spend7 = sumExp(keyOf(from), keyOf(to));
+  const spendPrev7 = sumExp(keyOf(to), keyOf(next));
+  const spendDelta = spendPrev7 > 0 ? (spend7 - spendPrev7) / spendPrev7 * 100 : 0;
+  const byCat = {};
+  dayEntries.filter(h => h.date >= keyOf(from) && h.date < keyOf(to)).forEach(h => {
+    Object.keys(h.expenses || {}).forEach(k => { byCat[k] = (byCat[k] || 0) + (Number(h.expenses[k]) || 0); });
+  });
+  const topCatId = Object.keys(byCat).sort((a, b) => byCat[b] - byCat[a])[0];
+  const cat = cats.find(c => String(c.id) === String(topCatId));
+  const cushion = (Number(state && state.startCushion) || 0) + dayEntries.reduce(
+    (s, h) => s + (Number(h.cushIn) || 0) - (Number(h.cushOut) || 0), 0);
+
+  return {
+    today, hour: localHourOf(now, tzOffset), debts: dated, total, urgent,
+    hasToday, hasYesterday, spend7, spendPrev7, spendDelta,
+    topCat: cat ? cat.name : (topCatId || ''), cushion,
+    historyCount: history.length
+  };
+}
+
+/** Умная сводка из анализа: только факты и одно конкретное действие. */
+function buildSmartMessage(state, now, tzOffset, analysis) {
+  const hour = analysis.hour;
+  const lines = [];
+  if (hour < 11) lines.push('Доброе утро! ☀️');
+  else if (hour < 17) lines.push('Дневная сводка 📊');
+  else lines.push('Вечерняя сводка 🌙');
+
+  if (analysis.urgent.length) {
+    lines.push('⚠️ Срок по долгам:');
+    analysis.urgent.slice(0, 3).forEach(d => {
+      lines.push('• «' + d.name + '»: осталось ' + fmtRub(d.remain) + ' ₽ до ' +
+        ruDateFull(d.due) + (d.overdue ? ' (срок прошёл)' : ' (через ' + d.daysLeft + ' дн.)') +
+        '. Внесите ' + fmtRub(d.rec) + ' ₽ сегодня.');
+    });
+  } else if (analysis.total > 0) {
+    const next = analysis.debts[0];
+    lines.push('💳 Долгов осталось ' + fmtRub(analysis.total) + ' ₽' +
+      (next && next.rec ? '. Рекомендуемый платёж: ' + fmtRub(next.rec) + ' ₽/день по «' + next.name + '».' : '.'));
+  } else {
+    lines.push('✅ Долгов нет — подушка и накопления работают на вас.');
   }
 
-  // Напоминание записать день
-  const hasToday = history.some(h => h.type !== "debt" && h.date === today);
-  if (!hasToday && hour >= 18) {
-    hasData = true;
-    lines.push("📝 Сегодня ещё не записан день — не забудьте внести данные.");
+  if (!analysis.hasToday && (hour >= 18 || !analysis.hasYesterday)) {
+    lines.push('📝 ' + (analysis.hasYesterday
+      ? 'Сегодня ещё не записан день — внесите данные до конца дня.'
+      : 'Вчера и сегодня нет записей — внесите данные за оба дня, график обновится.'));
   }
-
-  if (!hasData) lines.push("Всё под контролем ✅");
-  lines.push("");
-  lines.push("Откройте BitBalance, чтобы посмотреть детали.");
-  return lines.join("\n");
+  if (analysis.spendPrev7 > 0 && analysis.spendDelta >= 20) {
+    lines.push('💸 Траты за неделю ' + fmtRub(analysis.spend7) + ' ₽ — на ' +
+      Math.round(analysis.spendDelta) + '% выше прошлой. Проверьте' +
+      (analysis.topCat ? ' «' + analysis.topCat + '»' : ' обязательные категории') + '.');
+  }
+  if (lines.length === 1) lines.push('Всё под контролем ✅');
+  lines.push('', 'Откройте BitBalance, чтобы посмотреть детали.');
+  return lines.join('\n');
 }
 
 export default {
@@ -1129,7 +1271,7 @@ export default {
 
             // Долги с приближающимся сроком
             const debts = (state && Array.isArray(state.debts)) ? state.debts : [];
-            const today = now.toISOString().slice(0,10);
+            const today = localDateKey(now, tzOffset);
             // Автоплатежи: выполняем раз в день, если ещё не выполнены
             const autopays = (state && Array.isArray(state.autopay)) ? state.autopay : [];
             const todaysEntries = (state && Array.isArray(state.history)) ? state.history.filter(h => h.type === "day" && h.date === today) : [];
@@ -1195,29 +1337,53 @@ export default {
             const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
             if (!userHours.includes(localNow.getUTCHours())) return;
 
+            // Сначала анализ данных, затем формулировка уведомления.
+            const analysis = analyzeState(state, now, tzOffset, remindDays);
             const msgMode = (state && state.tgMessageMode) ? state.tgMessageMode : "smart";
-            let text = "";
-            if (msgMode === "ai" && env.GEMINI_API_KEY) {
+            const aiMax = Math.max(0, Number(state && state.aiMaxNotifications != null ? state.aiMaxNotifications : 3) || 0);
+            const aiList = Array.isArray(state && state.aiNotifications) ? state.aiNotifications : [];
+            const aiToday = aiList.filter(n => String((n && n.at) || '').slice(0, 10) === analysis.today).length;
+            const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
+            const useAi = msgMode === 'ai' && env.GEMINI_API_KEY && aiToday < aiMax && localHour === aiHour;
+            let text = '';
+            let aiUsed = false;
+            if (useAi) {
               try {
-                const debtRemain = {};
-                debts.forEach(d => { debtRemain[d.id] = d.amount; });
-                history.forEach(h => {
-                  if (h.debtPays) Object.keys(h.debtPays).forEach(k => { if (debtRemain[k] != null) debtRemain[k] = Math.max(0, debtRemain[k] - Number(h.debtPays[k])); });
+                const facts = JSON.stringify({
+                  today: analysis.today, hour: analysis.hour,
+                  debts: analysis.debts.map(d => ({ name: d.name, remain: d.remain, due: d.due, daysLeft: d.daysLeft, overdue: d.overdue, rec: d.rec })),
+                  debtTotal: analysis.total,
+                  historyCount: analysis.historyCount,
+                  dayRecordedToday: analysis.hasToday,
+                  dayRecordedYesterday: analysis.hasYesterday,
+                  spend7: analysis.spend7, spendPrev7: analysis.spendPrev7,
+                  spendDeltaPct: Math.round(analysis.spendDelta), topCategory: analysis.topCat,
+                  cushion: analysis.cushion
                 });
-                const recentHistory = history.slice(-5).map(h => ({ date: h.date, income: h.income, expenses: h.expenses, debtPays: h.debtPays }));
-                const ctx = JSON.stringify({ debts: debts.map(d=>({name:d.name, amount:d.amount, remain: Math.max(0, debtRemain[d.id] || 0), due:d.due})), historyCount: history.length, recentHistory });
                 const r = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
                   method: "POST",
                   headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
-                  body: JSON.stringify({ model: "gemini-3.7-flash", store: false, system_instruction: "Ты финансовый помощник BitBalance. Напиши короткое уведомление (3-5 строк) на русском с эмодзи. Упомяни долги со сроком, рост расходов, почти закрытые долги, темпы погашения. Анализируй историю операций: сколько дней прошло, сколько потрачено на долги. Используй полные даты (10 января). Не используй короткие даты.", input: "Данные: " + ctx + "\nВремя: " + hour + ":00" }),
+                  body: JSON.stringify({
+                    model: "gemini-3.7-flash", store: false,
+                    system_instruction: "Ты финансовый помощник BitBalance. Сначала проанализируй факты, затем напиши короткое уведомление (3-5 строк) на русском. Используй ТОЛЬКО числа и даты из фактов, ничего не выдумывай. Обязательно назови конкретное действие на сегодня: какую сумму и по какому долгу внести, или какие данные записать, или какую категорию проверить. Даты пиши полными словами (10 января), не короткими. Без общих фраз и шаблонов.",
+                    input: "Факты: " + facts + "\nМестное время: " + analysis.hour + ":00"
+                  }),
                   signal: AbortSignal.timeout(20000)
                 });
                 const data = await r.json();
                 const ans = (data?.steps || []).filter(st => st.type === "model_output").flatMap(st => st.content || []).filter(c => c.type === "text").map(c => c.text).join("\n").trim();
-                if (ans) text = ans;
+                if (ans && ans.length > 10) {
+                  text = ans.slice(0, 900);
+                  aiUsed = true;
+                  state.aiNotifications = [...aiList, { at: now.toISOString(), mode: 'ai', text: text.slice(0, 200) }].slice(-30);
+                  try {
+                    await env.DB.prepare("INSERT INTO bb_user_data (user_id, data_json, version, updated_at) VALUES (?, ?, 1, ?) ON CONFLICT(user_id) DO UPDATE SET data_json = excluded.data_json, version = bb_user_data.version + 1, updated_at = excluded.updated_at")
+                      .bind(u.id, JSON.stringify(state), new Date().toISOString()).run();
+                  } catch (e) {}
+                }
               } catch (e) {}
             }
-            if (!text) text = buildSmartMessage(state, hour, now);
+            if (!text) text = buildSmartMessage(state, now, tzOffset, analysis);
             if (firedText) text += firedText;
 
             // Telegram
@@ -1233,7 +1399,7 @@ export default {
             const subs = await env.DB.prepare("SELECT endpoint, keys_json FROM bb_push_subscriptions WHERE user_id = ?").bind(u.id).all();
             for (const sub of (subs.results || [])) {
               try {
-                await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "");
+                await sendWebPush(sub.endpoint, env.VAPID_PUBLIC_KEY || "", env.VAPID_PRIVATE_KEY || "", { title: "BitBalance", body: text, url: "/flutter/", icon: "/flutter/icons/Icon-192.png" }, sub);
               } catch {}
             }
           } catch (e) {
