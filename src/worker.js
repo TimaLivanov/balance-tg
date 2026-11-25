@@ -745,9 +745,9 @@ async function notifyDebugHandler(user, db, env) {
   const hour = now.getUTCHours();
   const tzOffset = (state && state.tzOffset != null) ? Number(state.tzOffset) : 0;
   const localHour = localHourOf(now, tzOffset);
+  const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
   const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
   const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
-  const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
   if ((state && state.tgMessageMode) === 'ai' && !isNaN(aiHour) && !userHours.includes(aiHour)) userHours.push(aiHour);
   const timeMatch = userHours.includes(localHour);
   const quietStart = (state && state.aiQuietStart) || "22:00";
