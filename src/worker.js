@@ -1075,15 +1075,96 @@ function analyzeState(state, now, tzOffset, remindDays) {
   const cushion = (Number(state && state.startCushion) || 0) + dayEntries.reduce(
     (s, h) => s + (Number(h.cushIn) || 0) - (Number(h.cushOut) || 0), 0);
 
+  // --- Подушка, цели, планы категорий и доходы: без них сводка бесполезна ---
+  const win = Math.max(1, Number(state && state.windowDays) || 30);
+  const shiftDate = (key, days) =>
+    new Date(Date.parse(key + 'T00:00:00Z') + days * 86400000).toISOString().slice(0, 10);
+  const windowFrom = shiftDate(today, -(win - 1));
+  const include = (state && state.cushionInclude) || 'need';
+  const baseMode = (state && state.cushionBase) || 'avg';
+  const pickedCats = cats.filter(c => !c.archived && (
+    include === 'all' ? true : include === 'need_rare' ? (c.need || c.rare) : !!c.need));
+  let monthlyBase = 0;
+  const plans = [];
+  pickedCats.forEach(c => {
+    let spentWin = 0, allTime = 0;
+    const daysWith = new Set();
+    dayEntries.forEach(h => {
+      if (h.type === 'debt') return;
+      const v = Number((h.expenses || {})[c.id]) || 0;
+      if (v <= 0) return;
+      allTime += v;
+      if (h.date >= windowFrom && h.date <= today) { spentWin += v; daysWith.add(h.date); }
+    });
+    const span = daysWith.size || Math.min(win, Math.max(1, dayEntries.length));
+    const avgDay = spentWin / span;
+    const totalSpent = Math.max(0, allTime - Math.min(Math.max(0, Number(c.spentBase) || 0), allTime));
+    let minDay = null, remaining = null, days = null;
+    if (c.plan && Number(c.plan.amount) > 0) {
+      remaining = Math.max(0, Number(c.plan.amount) - totalSpent);
+      if (c.plan.date) days = daysInclusive(today, c.plan.date);
+      if (days && remaining > 0) minDay = remaining / days;
+    }
+    const use = baseMode === 'min'
+      ? (minDay > 0 ? minDay : avgDay)
+      : baseMode === 'rec'
+        ? (avgDay > 0 ? avgDay : (minDay > 0 ? minDay : 0))
+        : avgDay;
+    monthlyBase += use * 30;
+    if (remaining != null && remaining > 0.004) {
+      plans.push({
+        name: String(c.name || 'Категория'), remaining, minDay, days,
+        overdue: !!(c.plan.date && c.plan.date < today)
+      });
+    }
+  });
+  plans.sort((a, b) => (a.minDay || Infinity) - (b.minDay || Infinity));
+
+  const months = Math.min(12, Math.max(1, Number(state && state.cushionMonths) || 3));
+  const cushionGoal = monthlyBase * months;
+  const periodDays = months * 30;
+  const cushionRemain = Math.max(0, cushionGoal - cushion);
+  const cushionDone = cushionGoal > 0 && cushion + 0.004 >= cushionGoal;
+  const cushionRec = cushionDone ? 0 : roundUp100(cushionRemain / periodDays);
+
+  const savings = (state && Array.isArray(state.savings)) ? state.savings : [];
+  const activeGoals = savings.filter(g => !g.archived && g.plan && Number(g.plan.amount) > 0)
+    .map(g => {
+      let funded = Number(g.startFunded) || 0;
+      dayEntries.forEach(h => {
+        funded += Number((h.savings || {})[g.id]) || 0;
+        funded -= Number((h.savSpend || {})[g.id]) || 0;
+      });
+      const remaining = Math.max(0, Number(g.plan.amount) - funded);
+      const days = g.plan.date ? daysInclusive(today, g.plan.date) : null;
+      return {
+        name: String(g.name || 'Цель'), funded, remaining, days,
+        minDay: days ? roundUp100(remaining / days) : null,
+        overdue: !!(g.plan.date && g.plan.date < today)
+      };
+    })
+    .filter(g => g.remaining > 0.004)
+    .sort((a, b) => (a.days || 9999) - (b.days || 9999));
+
+  const weekFrom = shiftDate(today, -6);
+  const income7 = dayEntries.filter(h => h.date >= weekFrom && h.date <= today)
+    .reduce((s, h) => s + (Number(h.income) || 0), 0);
+  const lastEntry = dayEntries.reduce(
+    (best, h) => (!best || h.date > best ? h.date : best), null);
+  const daysSinceEntry = lastEntry
+    ? Math.round((Date.parse(today + 'T00:00:00Z') - Date.parse(lastEntry + 'T00:00:00Z')) / 86400000)
+    : null;
+
   return {
     today, hour: localHourOf(now, tzOffset), debts: dated, total, urgent,
-    hasToday, hasYesterday, spend7, spendPrev7, spendDelta,
-    topCat: cat ? cat.name : (topCatId || ''), cushion,
-    historyCount: history.length
+    hasToday, hasYesterday, spend7, spendPrev7, spendDelta, income7,
+    topCat: cat ? cat.name : (topCatId || ''), cushion, cushionGoal,
+    cushionRemain, cushionDone, cushionRec, months, plans, activeGoals,
+    daysSinceEntry, historyCount: history.length
   };
 }
 
-/** Умная сводка из анализа: только факты и одно конкретное действие. */
+/** Умная сводка: цифры из данных + конкретное действие на сегодня. */
 function buildSmartMessage(state, now, tzOffset, analysis) {
   const hour = analysis.hour;
   const lines = [];
@@ -1091,32 +1172,78 @@ function buildSmartMessage(state, now, tzOffset, analysis) {
   else if (hour < 17) lines.push('Дневная сводка 📊');
   else lines.push('Вечерняя сводка 🌙');
 
+  const action = [];
+
   if (analysis.urgent.length) {
-    lines.push('⚠️ Срок по долгам:');
+    lines.push('⚠️ Ближайшие платежи по долгам:');
     analysis.urgent.slice(0, 3).forEach(d => {
-      lines.push('• «' + d.name + '»: осталось ' + fmtRub(d.remain) + ' ₽ до ' +
-        ruDateFull(d.due) + (d.overdue ? ' (срок прошёл)' : ' (через ' + d.daysLeft + ' дн.)') +
-        '. Внесите ' + fmtRub(d.rec) + ' ₽ сегодня.');
+      lines.push('• «' + d.name + '»: ' + fmtRub(d.remain) + ' ₽ до ' + ruDateFull(d.due) +
+        (d.overdue ? ' — срок прошёл' : ' — ' + d.daysLeft + ' дн.') +
+        (d.rec ? '; рекомендуем ' + fmtRub(d.rec) + ' ₽/день' : '') + '.');
     });
+    if (analysis.urgent[0].rec)
+      action.push(fmtRub(analysis.urgent[0].rec) + ' ₽ на «' + analysis.urgent[0].name + '»');
   } else if (analysis.total > 0) {
     const next = analysis.debts[0];
     lines.push('💳 Долгов осталось ' + fmtRub(analysis.total) + ' ₽' +
-      (next && next.rec ? '. Рекомендуемый платёж: ' + fmtRub(next.rec) + ' ₽/день по «' + next.name + '».' : '.'));
-  } else {
-    lines.push('✅ Долгов нет — подушка и накопления работают на вас.');
+      (next && next.rec ? '; «' + next.name + '» — ' + fmtRub(next.rec) + ' ₽/день' : '') + '.');
+    if (next && next.rec) action.push(fmtRub(next.rec) + ' ₽ на «' + next.name + '»');
   }
 
+  if (analysis.cushionGoal > 0) {
+    if (analysis.cushionDone) {
+      lines.push('🛟 Подушка набрана: ' + fmtRub(analysis.cushion) + ' ₽ из ' +
+        fmtRub(analysis.cushionGoal) + ' ₽. Свободные деньги можно направить на цели.');
+    } else {
+      const pct = Math.round(analysis.cushion / analysis.cushionGoal * 100);
+      lines.push('🛟 Подушка: ' + fmtRub(analysis.cushion) + ' ₽ из ' +
+        fmtRub(analysis.cushionGoal) + ' ₽ (' + pct + '%). Осталось ' +
+        fmtRub(analysis.cushionRemain) + ' ₽ за ' + analysis.months + ' мес.');
+      if (analysis.cushionRec > 0)
+        action.push(fmtRub(analysis.cushionRec) + ' ₽ в подушку');
+    }
+  } else if (analysis.historyCount === 0) {
+    lines.push('🛟 Данных пока нет: внесите первый день с доходами и расходами — ' +
+      'тогда здесь появятся подушка, нормы и долги.');
+  }
+
+  if (analysis.activeGoals.length) {
+    const g = analysis.activeGoals[0];
+    lines.push('🎯 «' + g.name + '»: ' + fmtRub(g.funded) + ' ₽ из ' +
+      fmtRub(g.funded + g.remaining) + ' ₽, осталось ' + fmtRub(g.remaining) + ' ₽' +
+      (g.days ? ' за ' + g.days + ' дн.' : '') + '.');
+    if (g.minDay > 0) action.push(fmtRub(g.minDay) + ' ₽ на «' + g.name + '»');
+  }
+
+  if (analysis.plans.length && !analysis.urgent.length) {
+    const pl = analysis.plans[0];
+    lines.push('📌 План «' + pl.name + '»: осталось ' + fmtRub(pl.remaining) + ' ₽' +
+      (pl.overdue ? ' (срок прошёл)' : pl.days ? ' за ' + pl.days + ' дн.' : '') + '.');
+    if (pl.minDay > 0) action.push(fmtRub(pl.minDay) + ' ₽ на «' + pl.name + '»');
+  }
+
+  if (analysis.income7 > 0 || analysis.spend7 > 0) {
+    lines.push('💰 За неделю: доход ' + fmtRub(analysis.income7) + ' ₽, расход ' +
+      fmtRub(analysis.spend7) + ' ₽, разница ' +
+      fmtRub(analysis.income7 - analysis.spend7) + ' ₽.');
+  }
+  if (analysis.spendPrev7 > 0 && analysis.spendDelta >= 20) {
+    lines.push('💸 Расходы на ' + Math.round(analysis.spendDelta) + '% выше прошлой недели — ' +
+      'проверьте' + (analysis.topCat ? ' «' + analysis.topCat + '»' : ' обязательные категории') + '.');
+  }
   if (!analysis.hasToday && (hour >= 18 || !analysis.hasYesterday)) {
     lines.push('📝 ' + (analysis.hasYesterday
       ? 'Сегодня ещё не записан день — внесите данные до конца дня.'
-      : 'Вчера и сегодня нет записей — внесите данные за оба дня, график обновится.'));
+      : (analysis.daysSinceEntry != null
+          ? 'Нет записей уже ' + analysis.daysSinceEntry + ' дн. — внесите данные, график обновится.'
+          : 'Вчера и сегодня нет записей — внесите данные за оба дня, график обновится.')));
   }
-  if (analysis.spendPrev7 > 0 && analysis.spendDelta >= 20) {
-    lines.push('💸 Траты за неделю ' + fmtRub(analysis.spend7) + ' ₽ — на ' +
-      Math.round(analysis.spendDelta) + '% выше прошлой. Проверьте' +
-      (analysis.topCat ? ' «' + analysis.topCat + '»' : ' обязательные категории') + '.');
+
+  if (action.length) {
+    lines.push('', '👉 Сегодня: ' + action.slice(0, 3).join(' · ') + '.');
+  } else if (lines.length === 1) {
+    lines.push('Всё под контролем ✅');
   }
-  if (lines.length === 1) lines.push('Всё под контролем ✅');
   lines.push('', 'Откройте BitBalance, чтобы посмотреть детали.');
   return lines.join('\n');
 }
@@ -1362,14 +1489,19 @@ export default {
                   dayRecordedYesterday: analysis.hasYesterday,
                   spend7: analysis.spend7, spendPrev7: analysis.spendPrev7,
                   spendDeltaPct: Math.round(analysis.spendDelta), topCategory: analysis.topCat,
-                  cushion: analysis.cushion
+                  income7: analysis.income7, daysSinceEntry: analysis.daysSinceEntry,
+                  cushion: analysis.cushion, cushionGoal: analysis.cushionGoal,
+                  cushionRemain: analysis.cushionRemain, cushionDone: analysis.cushionDone,
+                  cushionRec: analysis.cushionRec, cushionMonths: analysis.months,
+                  categoryPlans: analysis.plans.map(p => ({ name: p.name, remaining: p.remaining, days: p.days, minDay: p.minDay, overdue: p.overdue })),
+                  savingsGoals: analysis.activeGoals.map(g => ({ name: g.name, funded: g.funded, remaining: g.remaining, days: g.days, minDay: g.minDay }))
                 });
                 const r = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
                   method: "POST",
                   headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
                   body: JSON.stringify({
                     model: "gemini-3.7-flash", store: false,
-                    system_instruction: "Ты финансовый помощник BitBalance. Сначала проанализируй факты, затем напиши короткое уведомление (3-5 строк) на русском. Используй ТОЛЬКО числа и даты из фактов, ничего не выдумывай. Обязательно назови конкретное действие на сегодня: какую сумму и по какому долгу внести, или какие данные записать, или какую категорию проверить. Даты пиши полными словами (10 января), не короткими. Без общих фраз и шаблонов.",
+                    system_instruction: "Ты финансовый помощник BitBalance. Сначала проанализируй факты, затем напиши короткое уведомление (3-5 строк) на русском. Используй ТОЛЬКО числа и даты из фактов, ничего не выдумывай. Обязательно назови конкретное действие на сегодня с суммой: платёж по долгу, пополнение подушки, взнос на цель или запись недостающих данных. Если долгов нет, не пиши общих фраз вроде «всё под контролем» — сразу дай цифры по подушке, целям и планам категорий. Даты пиши полными словами (10 января), не короткими. Без шаблонов.",
                     input: "Факты: " + facts + "\nМестное время: " + analysis.hour + ":00"
                   }),
                   signal: AbortSignal.timeout(20000)
