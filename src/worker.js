@@ -747,6 +747,8 @@ async function notifyDebugHandler(user, db, env) {
   const localHour = localHourOf(now, tzOffset);
   const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
   const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
+  const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
+  if ((state && state.tgMessageMode) === 'ai' && !isNaN(aiHour) && !userHours.includes(aiHour)) userHours.push(aiHour);
   const timeMatch = userHours.includes(localHour);
   const quietStart = (state && state.aiQuietStart) || "22:00";
   const quietEnd = (state && state.aiQuietEnd) || "08:00";
@@ -1333,17 +1335,19 @@ export default {
             });
 
             // Проверяем, совпадает ли текущий час с одним из настроенных времён отправки
+            const msgMode = (state && state.tgMessageMode) ? state.tgMessageMode : "smart";
+            const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
             const userTimes = (state && Array.isArray(state.tgNotifyTimes)) ? state.tgNotifyTimes : ["07:00","12:00","19:00"];
-            const userHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
-            if (!userHours.includes(localNow.getUTCHours())) return;
+            const sendHours = userTimes.map(t => parseInt(String(t).split(":")[0], 10)).filter(n => !isNaN(n));
+            // Время ИИ-разбора всегда должно запускать отправку, даже если его нет в списке частоты.
+            if (msgMode === 'ai' && !isNaN(aiHour) && !sendHours.includes(aiHour)) sendHours.push(aiHour);
+            if (!sendHours.includes(localNow.getUTCHours())) return;
 
             // Сначала анализ данных, затем формулировка уведомления.
             const analysis = analyzeState(state, now, tzOffset, remindDays);
-            const msgMode = (state && state.tgMessageMode) ? state.tgMessageMode : "smart";
             const aiMax = Math.max(0, Number(state && state.aiMaxNotifications != null ? state.aiMaxNotifications : 3) || 0);
             const aiList = Array.isArray(state && state.aiNotifications) ? state.aiNotifications : [];
             const aiToday = aiList.filter(n => String((n && n.at) || '').slice(0, 10) === analysis.today).length;
-            const aiHour = parseInt(String((state && state.aiNotifyTime) || '09:00').split(':')[0], 10);
             const useAi = msgMode === 'ai' && env.GEMINI_API_KEY && aiToday < aiMax && localHour === aiHour;
             let text = '';
             let aiUsed = false;
